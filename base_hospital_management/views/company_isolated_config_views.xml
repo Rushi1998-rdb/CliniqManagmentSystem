@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="product_category_form_company" model="ir.ui.view">
+        <field name="name">product.category.form.company</field>
+        <field name="model">product.category</field>
+        <field name="inherit_id" ref="product.product_category_form_view"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='parent_id']" position="after">
+                <field name="company_id" groups="base.group_multi_company" options="{'no_create': True}"/>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="product_category_list_company" model="ir.ui.view">
+        <field name="name">product.category.list.company</field>
+        <field name="model">product.category</field>
+        <field name="inherit_id" ref="product.product_category_list_view"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='display_name']" position="after">
+                <field name="company_id" groups="base.group_multi_company" optional="show"/>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="crm_tag_form_company" model="ir.ui.view">
+        <field name="name">crm.tag.form.company</field>
+        <field name="model">crm.tag</field>
+        <field name="inherit_id" ref="sales_team.sales_team_crm_tag_view_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='color']" position="after">
+                <field name="company_id" groups="base.group_multi_company" options="{'no_create': True}"/>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="crm_tag_tree_company" model="ir.ui.view">
+        <field name="name">crm.tag.tree.company</field>
+        <field name="model">crm.tag</field>
+        <field name="inherit_id" ref="sales_team.sales_team_crm_tag_view_tree"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='color']" position="after">
+                <field name="company_id" groups="base.group_multi_company" optional="show"/>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="account_incoterms_tree_company" model="ir.ui.view">
+        <field name="name">account.incoterms.tree.company</field>
+        <field name="model">account.incoterms</field>
+        <field name="inherit_id" ref="account.view_incoterms_tree"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='name']" position="after">
+                <field name="company_id" groups="base.group_multi_company" optional="show"/>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="account_incoterms_form_company" model="ir.ui.view">
+        <field name="name">account.incoterms.form.company</field>
+        <field name="model">account.incoterms</field>
+        <field name="inherit_id" ref="account.account_incoterms_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='name']" position="after">
+                <field name="company_id" groups="base.group_multi_company" options="{'no_create': True}"/>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="res_currency_form_company" model="ir.ui.view">
+        <field name="name">res.currency.form.company</field>
+        <field name="model">res.currency</field>
+        <field name="inherit_id" ref="base.view_currency_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='active']" position="after">
+                <field name="company_id" groups="base.group_multi_company" options="{'no_create': True}"/>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="res_currency_tree_company" model="ir.ui.view">
+        <field name="name">res.currency.tree.company</field>
+        <field name="model">res.currency</field>
+        <field name="inherit_id" ref="base.view_currency_tree"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='active']" position="after">
+                <field name="company_id" groups="base.group_multi_company" optional="show"/>
+            </xpath>
+        </field>
+    </record>
+</odoo>

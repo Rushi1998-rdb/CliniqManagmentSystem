@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="report_viewer_page" name="Hospital Report Viewer">
+        <html>
+            <head>
+                <meta charset="utf-8"/>
+                <meta name="viewport" content="width=device-width, initial-scale=1"/>
+                <title><t t-esc="title"/></title>
+                <link rel="shortcut icon" t-att-href="favicon_url" type="image/png"/>
+                <style>
+                    html,
+                    body {
+                        margin: 0;
+                        width: 100%;
+                        height: 100%;
+                        overflow: hidden;
+                        background: #f4f6f8;
+                    }
+
+                    iframe {
+                        width: 100%;
+                        height: 100%;
+                        border: 0;
+                        display: block;
+                        background: #fff;
+                    }
+                </style>
+            </head>
+            <body>
+                <iframe t-att-src="pdf_url" t-att-title="title"/>
+            </body>
+        </html>
+    </template>
+</odoo>

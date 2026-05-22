@@ -1,0 +1,202 @@
+<?xml version="1.0" encoding="utf-8"?>
+<templates xml:space="preserve">
+    <t t-name="ReportDashboard">
+        <div class="report-dashboard">
+            <div class="report-dashboard__shell">
+                <div class="report-dashboard__header">
+                    <div>
+                        <h1>Reports</h1>
+                        <p>View collection and analytics for <t t-esc="state.company_name"/></p>
+                    </div>
+                    <div class="report-dashboard__actions">
+                        <button class="btn btn-light" t-on-click="exportTransactions">Export</button>
+                        <button class="btn btn-light" t-on-click="printDashboard">Print</button>
+                    </div>
+                </div>
+
+                <div class="report-dashboard__cards">
+                    <t t-foreach="state.cards" t-as="card" t-key="card.key">
+                        <div class="report-dashboard__card">
+                            <div class="report-dashboard__card-head">
+                                <div>
+                                    <div class="report-dashboard__card-title"><t t-esc="card.title"/></div>
+                                    <div class="report-dashboard__card-caption"><t t-esc="card.caption"/></div>
+                                </div>
+                                <button type="button"
+                                        class="report-dashboard__card-arrow"
+                                        t-on-click="() => this.openCardRecords(card.key)">
+                                    <i class="fa fa-arrow-right"/>
+                                </button>
+                            </div>
+                            <div class="report-dashboard__card-amount"><t t-esc="card.amount_display"/></div>
+                            <div class="report-dashboard__card-growth">
+                                <t t-esc="card.growth"/>% <span><t t-esc="card.compare_label"/></span>
+                            </div>
+                        </div>
+                    </t>
+                </div>
+
+                <div class="report-dashboard__grid">
+                    <div class="report-dashboard__stack">
+                        <div class="report-dashboard__panel">
+                            <div class="report-dashboard__panel-head">
+                                <div>
+                                    <h2>Collection Breakdown</h2>
+                                    <p>Service wise collection</p>
+                                </div>
+                                <select class="form-select" t-att-value="state.breakdown_period" t-on-change="onBreakdownPeriodChange">
+                                    <option value="today">Today</option>
+                                    <option value="last_7_days">Last 7 Days</option>
+                                    <option value="month">This Month</option>
+                                    <option value="year">This Year</option>
+                                </select>
+                            </div>
+                            <table class="table report-dashboard__table">
+                                <thead>
+                                    <tr>
+                                        <th>Service</th>
+                                        <th>Count</th>
+                                        <th>Amount</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <t t-foreach="state.breakdown" t-as="item" t-key="item.service_key">
+                                        <tr>
+                                            <td><t t-esc="item.service"/></td>
+                                            <td><t t-esc="item.count"/></td>
+                                            <td><t t-esc="item.amount_display"/></td>
+                                        </tr>
+                                    </t>
+                                </tbody>
+                            </table>
+                            <div class="report-dashboard__total-row">
+                                <span>Total Collection</span>
+                                <strong><t t-esc="state.breakdown_total"/></strong>
+                            </div>
+                        </div>
+
+                        <div class="report-dashboard__panel report-dashboard__transactions">
+                            <div class="report-dashboard__panel-head report-dashboard__panel-head--wrap">
+                                <div>
+                                    <h2>Detailed Transactions</h2>
+                                    <p>Company wise charges and collections</p>
+                                </div>
+                                <div class="report-dashboard__filters">
+                                    <input type="date" class="form-control"
+                                           t-att-value="state.transaction_start"
+                                           t-on-change="(ev) => this.onTransactionDateChange('transaction_start', ev)"/>
+                                    <input type="date" class="form-control"
+                                           t-att-value="state.transaction_end"
+                                           t-on-change="(ev) => this.onTransactionDateChange('transaction_end', ev)"/>
+                                    <button class="btn btn-primary" t-on-click="generateTransactions">Generate</button>
+                                </div>
+                            </div>
+                            <div class="table-responsive">
+                                <table class="table report-dashboard__table">
+                                    <thead>
+                                        <tr>
+                                            <th>Date</th>
+                                            <th>OP No.</th>
+                                            <th>Patient No.</th>
+                                            <th>Patient Name</th>
+                                            <th>Type</th>
+                                            <th>Doctor</th>
+                                            <th>Service</th>
+                                            <th>Amount</th>
+                                            <th>Time</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <t t-if="state.transactions.length">
+                                            <t t-foreach="state.transactions" t-as="tx" t-key="tx.date + tx.op_number + tx.patient_number + tx.service + tx.amount">
+                                                <tr>
+                                                    <td><t t-esc="tx.date"/></td>
+                                                    <td><t t-esc="tx.op_number"/></td>
+                                                    <td><t t-esc="tx.patient_number"/></td>
+                                                    <td><t t-esc="tx.patient_name"/></td>
+                                                    <td><t t-esc="tx.type"/></td>
+                                                    <td><t t-esc="tx.doctor"/></td>
+                                                    <td><t t-esc="tx.service"/></td>
+                                                    <td><t t-esc="tx.amount_display"/></td>
+                                                    <td><t t-esc="tx.time"/></td>
+                                                </tr>
+                                            </t>
+                                        </t>
+                                        <t t-else="">
+                                            <tr>
+                                                <td colspan="9" class="text-center">No transactions found for the selected range.</td>
+                                            </tr>
+                                        </t>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="report-dashboard__stack">
+                        <div class="report-dashboard__panel">
+                            <div class="report-dashboard__panel-head">
+                                <div>
+                                    <h2>Revenue Chart</h2>
+                                    <p>Service mix</p>
+                                </div>
+                                <select class="form-select" t-att-value="state.revenue_period" t-on-change="onRevenuePeriodChange">
+                                    <option value="today">Today</option>
+                                    <option value="last_7_days">Last 7 Days</option>
+                                    <option value="month">This Month</option>
+                                    <option value="year">This Year</option>
+                                </select>
+                            </div>
+                            <div class="report-dashboard__chart-wrap">
+                                <div class="report-dashboard__donut" t-att-style="this.chartStyle()">
+                                    <div class="report-dashboard__donut-center">
+                                        <span>Total</span>
+                                        <strong><t t-esc="state.revenue_total"/></strong>
+                                    </div>
+                                </div>
+                                <div class="report-dashboard__legend">
+                                    <t t-foreach="state.revenue_chart" t-as="item" t-key="item.service_key">
+                                        <div class="report-dashboard__legend-item">
+                                            <div class="report-dashboard__legend-left">
+                                                <span t-att-class="'report-dashboard__dot ' + this.serviceColor(item.service_key)"/>
+                                                <span><t t-esc="item.service"/></span>
+                                            </div>
+                                            <strong><t t-esc="item.percentage"/>%</strong>
+                                        </div>
+                                    </t>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="report-dashboard__panel">
+                            <div class="report-dashboard__panel-head">
+                                <div>
+                                    <h2>Quick Stats</h2>
+                                    <p>Today</p>
+                                </div>
+                            </div>
+                            <div class="report-dashboard__stats">
+                                <div class="report-dashboard__stat-box">
+                                    <span>Total Patients Today</span>
+                                    <strong><t t-esc="state.quick_stats.total_patients_today || 0"/></strong>
+                                </div>
+                                <div class="report-dashboard__stat-box">
+                                    <span>New Patients</span>
+                                    <strong><t t-esc="state.quick_stats.new_patients || 0"/></strong>
+                                </div>
+                                <div class="report-dashboard__stat-box">
+                                    <span>Follow Ups</span>
+                                    <strong><t t-esc="state.quick_stats.follow_ups || 0"/></strong>
+                                </div>
+                                <div class="report-dashboard__stat-box">
+                                    <span>Completed</span>
+                                    <strong><t t-esc="state.quick_stats.completed || 0"/></strong>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </t>
+</templates>

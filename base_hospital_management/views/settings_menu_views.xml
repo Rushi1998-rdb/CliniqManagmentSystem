@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Let User Admin open the Settings root -->
+    <record id="base.menu_administration" model="ir.ui.menu">
+        <field name="groups_id" eval="[(4, ref('base_hospital_management.base_hospital_management_group_user_admin'))]"/>
+    </record>
+
+    <!-- Keep Users & Companies visible for User Admin and System Admin/Manager -->
+    <record id="base.menu_users" model="ir.ui.menu">
+        <field name="groups_id" eval="[
+            (4, ref('base_hospital_management.base_hospital_management_group_user_admin')),
+            (4, ref('base.group_system')),
+            (4, ref('base.group_erp_manager'))
+        ]"/>
+    </record>
+
+    <!-- Keep Users visible for User Admin and System Admin/Manager -->
+    <record id="base.menu_action_res_users" model="ir.ui.menu">
+        <field name="groups_id" eval="[
+            (4, ref('base_hospital_management.base_hospital_management_group_user_admin')),
+            (4, ref('base.group_system')),
+            (4, ref('base.group_erp_manager'))
+        ]"/>
+    </record>
+
+    <!-- Keep Companies visible for User Admin and System Admin/Manager -->
+    <record id="base.menu_action_res_company_form" model="ir.ui.menu">
+        <field name="groups_id" eval="[
+            (4, ref('base_hospital_management.base_hospital_management_group_user_admin')),
+            (4, ref('base.group_system')),
+            (4, ref('base.group_erp_manager'))
+        ]"/>
+    </record>
+
+    <!-- Hide Groups menu from User Admin while keeping it for actual administrators -->
+    <record id="base.menu_action_res_groups" model="ir.ui.menu">
+        <field name="groups_id" eval="[
+            (6, 0, [
+                ref('base.group_system')
+            ])
+        ]"/>
+    </record>
+
+    <!-- Restrict the remaining Settings menus to system administrators only -->
+    <record id="base.menu_translation" model="ir.ui.menu">
+        <field name="groups_id" eval="[(6, 0, [ref('base.group_system')])]"/>
+    </record>
+
+    <record id="base.menu_config" model="ir.ui.menu">
+        <field name="groups_id" eval="[(6, 0, [ref('base.group_system')])]"/>
+    </record>
+
+    <record id="base.menu_custom" model="ir.ui.menu">
+        <field name="groups_id" eval="[(6, 0, [ref('base.group_system')])]"/>
+    </record>
+
+    <!-- commented out because gamification module might not be installed 
+    <record id="gamification.gamification_menu" model="ir.ui.menu">
+        <field name="groups_id" eval="[(6, 0, [ref('base.group_system'), ref('base.group_erp_manager')])]"/>
+    </record>
+    -->
+</odoo>

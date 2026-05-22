@@ -1,0 +1,55 @@
+/* Add red asterisk to required field labels */
+.oe_form_field.required label:after {
+    content: " *";
+    color: red;
+    font-weight: bold;
+}
+
+/* Target specific required fields */
+label[for="name"]:after,
+label[for="date_of_birth"]:after,
+label[for="blood_group"]:after,
+label[for="gender"]:after {
+    content: " *";
+    color: #ff0000;
+    font-weight: bold;
+    margin-left: 2px;
+}
+
+/* Style for field containers */
+.o_group .o_field_widget {
+    margin-bottom: 8px;
+}
+
+/* Make required fields more visible */
+.o_field_widget[required="1"] input,
+.o_field_widget[required="1"] select {
+    border-left: 3px solid #ff0000;
+}
+
+/* Improve label styling */
+.o_form_label {
+    font-weight: 500;
+    color: #333;
+    margin-bottom: 4px;
+    display: block;
+}
+
+/* Style for radio buttons */
+.o_field_radio .o_radio_item {
+    display: inline-block;
+    margin-right: 15px;
+}
+
+/* Clean up the title section */
+.oe_title h1 {
+    font-size: 24px;
+    color: #2b8d72;
+    margin-bottom: 5px;
+}
+
+.oe_title .oe_subtitle {
+    font-size: 16px;
+    color: #666;
+    margin-bottom: 20px;
+}

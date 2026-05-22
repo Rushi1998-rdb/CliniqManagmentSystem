@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_barcode_nomenclature_form_inherit" model="ir.ui.view">
+        <field name="name">barcode.nomenclature.form.inherit</field>
+        <field name="model">barcode.nomenclature</field>
+        <field name="inherit_id" ref="barcodes.view_barcode_nomenclature_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='upc_ean_conv']" position="after">
+                <field name="company_id" groups="base.group_multi_company"/>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="view_barcode_nomenclature_tree_inherit" model="ir.ui.view">
+        <field name="name">barcode.nomenclature.tree.inherit</field>
+        <field name="model">barcode.nomenclature</field>
+        <field name="inherit_id" ref="barcodes.view_barcode_nomenclature_tree"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='name']" position="after">
+                <field name="company_id" groups="base.group_multi_company" optional="show"/>
+            </xpath>
+        </field>
+    </record>
+</odoo>

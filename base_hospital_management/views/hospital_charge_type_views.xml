@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="hospital_charge_type_view_tree" model="ir.ui.view">
+        <field name="name">hospital.charge.type.view.tree</field>
+        <field name="model">hospital.charge.type</field>
+        <field name="arch" type="xml">
+            <tree editable="bottom">
+                <field name="name"/>
+                <field name="company_id" groups="base.group_multi_company"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="hospital_charge_type_action" model="ir.actions.act_window">
+        <field name="name">Additional Charge Types</field>
+        <field name="res_model">hospital.charge.type</field>
+        <field name="view_mode">tree</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Create a new charge type
+            </p>
+            <p>
+                Manage categories of additional charges like Nursing, Injection, etc.
+            </p>
+        </field>
+    </record>
+
+    <menuitem id="menu_hospital_charge_type"
+              name="Additional Charge Types"
+              parent="base_hospital_management.hospital_menu_configuration"
+              action="hospital_charge_type_action"
+              sequence="100"/>
+</odoo>

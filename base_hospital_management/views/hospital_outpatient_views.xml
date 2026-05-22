@@ -1,0 +1,439 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+    <!--    Hospital outpatient tree view-->
+    <record id="hospital_outpatient_view_tree" model="ir.ui.view">
+        <field name="name">hospital.outpatient.view.tree</field>
+        <field name="model">hospital.outpatient</field>
+        <field name="arch" type="xml">
+            
+            <tree
+                default_order="sort_priority asc, visit_time_minutes asc"
+                decoration-success="patient_queue_type == 'new'"
+                decoration-info="patient_queue_type == 'revisit'"
+                decoration-muted="state == 'done'"
+            >
+                <field name="visit_time" column_invisible="True"/>
+                <field name="patient_queue_type" column_invisible="True"/>
+                <field name="sort_priority" column_invisible="True"/>
+                <field name="visit_time_minutes" column_invisible="True"/>
+                <field name="op_reference" string="OP Reference"/>
+                <field name="slot"/>
+                <!-- <field name="patient_id"/> -->
+                <field name="display_patient_name" string="Patient"/>
+                <field name="doctor_id"/>
+                <field name="op_date"/>
+                <field name="reason"/>
+                <!-- <field name="state" widget='badge'
+                       decoration-success="state=='done'"
+                       decoration-danger="state=='cancel'"
+                       decoration-warning="state=='draft'"
+                       decoration-info="state=='op'"/> -->
+                <field name="state" widget="badge"
+                    decoration-danger="state == 'waiting'"
+                    decoration-warning="state == 'op'"
+                    decoration-muted="state == 'done'"/>
+                <field name="patient_place" string="Place"/>
+                <field name="payment_mode"/>
+                <field name="visit_time_local" string="Visit Time"/>
+                <field name="general_fee"/>
+                <!-- <field name="lab_test_charge"/> -->
+                <field name="total_amount"/>
+                <field name="invoice_due_amount"/>
+                <field name="total_due_amount"/>
+                <!-- <field name="state" widget='badge'
+                       decoration-success="state=='invoiced'"
+                       decoration-danger="state=='cancel'"
+                       decoration-warning="state=='draft'"
+                       decoration-info="state=='op'"/>
+                <field name="general_fee"/> -->
+            </tree>
+        </field>
+    </record>
+    <!-- <record id="hospital_outpatient_view_graph" model="ir.ui.view">
+        <field name="name">hospital.outpatient.view.graph</field>
+        <field name="model">hospital.outpatient</field>
+        <field name="arch" type="xml">
+            <graph string="Outpatient Analysis" type="bar">
+                <field name="op_date" interval="day" type="row"/>
+                <field name="state" type="col"/>
+                <field name="total_amount" type="measure"/>
+            </graph>
+        </field>
+    </record> -->
+    <record id="hospital_outpatient_view_graph" model="ir.ui.view">
+        <field name="name">hospital.outpatient.view.graph</field>
+        <field name="model">hospital.outpatient</field>
+        <field name="arch" type="xml">
+            <graph string="Outpatient Analysis" type="bar">
+                <field name="op_date" interval="day"/>
+                <field name="doctor_id"/>
+                <field name="total_amount" type="measure"/>
+            </graph>
+        </field>
+    </record>
+    
+    <!--    Hospital outpatient form view-->
+    <record id="hospital_outpatient_view_form" model="ir.ui.view">
+        <field name="name">hospital.outpatient.view.form</field>
+        <field name="model">hospital.outpatient</field>
+        <field name="arch" type="xml">
+            <form>
+                <field name="company_id" invisible="1"/>
+                <header>
+                    <button name="action_confirm" string="Confirm"
+                            type="object" class="oe_highlight" invisible="state != 'waiting'"
+                            groups="base_hospital_management.base_hospital_management_group_manager,
+                            base_hospital_management.base_hospital_management_group_doctor,
+                            base_hospital_management.base_hospital_management_group_receptionist,
+                            base_hospital_management.base_hospital_management_group_nurse"/>
+                    <button name="action_print_prescription" string="Print"
+                            type="object" class="oe_highlight"
+                            invisible="state not in ('op','inpatient','invoice')"
+                            groups="base_hospital_management.base_hospital_management_group_manager,
+                            base_hospital_management.base_hospital_management_group_doctor,
+                            base_hospital_management.base_hospital_management_group_receptionist,
+                            base_hospital_management.base_hospital_management_group_nurse"/>
+                    <!-- <button name="action_convert_to_inpatient"
+                            string="Convert to Inpatient"
+                            class="oe_highlight" invisible="state !='op'" type="object"
+                            groups="base_hospital_management.base_hospital_management_group_manager,
+                            base_hospital_management.base_hospital_management_group_doctor,
+                            base_hospital_management.base_hospital_management_group_receptionist,
+                            base_hospital_management.base_hospital_management_group_nurse"/> -->
+                    <!-- <button name="action_create_lab_test"
+                            string="Create Test" class="oe_highlight"
+                            invisible="state!='op'" type="object"
+                            groups="base_hospital_management.base_hospital_management_group_manager,
+                            base_hospital_management.base_hospital_management_group_receptionist,
+                            base_hospital_management.base_hospital_management_group_lab_assistant,
+                            base_hospital_management.base_hospital_management_group_nurse"/> -->
+                    <!-- <button name="create_invoice"
+                            string="Create Invoice" class="oe_highlight"
+                            invisible="state not in ('op','rft')" type="object"
+                            groups="base_hospital_management.base_hospital_management_group_manager,
+                            base_hospital_management.base_hospital_management_group_lab_assistant,
+                            base_hospital_management.base_hospital_management_group_receptionist"/> -->
+                    <!-- <button name="action_op_cancel" string="Cancel"
+                            invisible="state != 'op'" type="object"
+                            groups="base_hospital_management.base_hospital_management_group_manager,
+                            base_hospital_management.base_hospital_management_group_receptionist,
+                            base_hospital_management.base_hospital_management_group_doctor,
+                            base_hospital_management.base_hospital_management_group_nurse"/> -->
+                    <field name="state" widget="statusbar"
+                           statusbar_visible="waiting,op,done"/>
+                </header>
+                <sheet>
+                    <div class="oe_button_box" name="button_box">
+                        <button invisible="test_count == 0"
+                                name="action_view_test" type="object"
+                                class="oe_stat_button"
+                                icon="fa-tint">
+                            <field name="test_count" widget="statinfo"/>
+                        </button>
+                        <button name="%(account.action_move_out_invoice_type)d" type="action"
+                                class="oe_stat_button"
+                                invisible="not invoice_id"
+                                icon="fa-pencil-square-o"
+                                context="{'form_view_initial_mode': 'edit', 'default_move_type': 'out_invoice'}">
+                            <div class="o_stat_info">
+                                <span class="o_stat_value">
+                                    <field name="invoice_state" invisible="1"/>
+                                    <field name="payment_state" invisible="1"/>
+                                    <field name="invoice_id" readonly="1" invisible="1"/>
+                                    <span invisible="invoice_state != 'draft'">Draft</span>
+                                    <span invisible="invoice_state == 'draft' or payment_state in ('paid', 'in_payment')">Open</span>
+                                    <span invisible="payment_state not in ('paid', 'in_payment')">Paid</span>
+                                </span>
+                                <span class="o_stat_text">Invoice</span>
+                            </div>
+                        </button>
+                        <button name="action_view_associated_patients"
+                                type="object"
+                                class="oe_stat_button"
+                                icon="fa-users"
+                                invisible="associated_patient_count == 0">
+                            <field name="associated_patient_count" widget="statinfo"/>
+                        </button>
+                    </div>
+                    <h1>
+                        <field name="op_reference"/>
+                    </h1>
+                    <group>
+                        <group>
+                            <!-- <field name="patient_id"
+                                placeholder="Enter phone number"
+                                readonly="state in ('invoice','cancel')"
+                                options="{'no_quick_create': False}"/> -->
+                                <!-- In hospital_outpatient_views.xml, find the patient_id field and update it -->
+                                <field name="patient_id"
+                                    placeholder="Enter phone number"
+                                    readonly="state in ('invoice','cancel')"
+                                    options="{'no_quick_create': False}"
+                                    context="{'form_view_ref': 'base_hospital_management.res_partner_view_form'}"/>
+                            <field name="op_date"
+                                   readonly="state in ('invoice','cancel')"/>
+                            
+                            <field name="blood_group" string="Blood Group" readonly="1"/>
+                            <field name="patient_details" string="Patient Details" readonly="1"/>
+                            <!-- <field name="invoiced" invisible="1"/> -->
+                        </group>
+                        <group>
+                            <field name="doctor_id"
+                                   options="{'no_create': True, 'no_edit': True}"
+                                   readonly="state in ('invoice','cancel')"/>
+                            <field name="company_id" invisible="1"/>
+                            <field name="company_id" groups="base.group_multi_company" options="{'no_create': True}"/>
+                            <field name="patient_place" string="Place" readonly="1"/>
+                            <field name="slot" string="Slot Number"
+                                
+                                   readonly="state in ('invoice','cancel')"/>
+                            <!-- <field name="slot" invisible="state not in ('op','inpatient','invoice')"
+                                   readonly="state in ('invoice','cancel')"  widget="float_time"/> -->
+                            <field name="test_count" invisible="1"/>
+                        </group>
+
+                        <group string="Chief Complaint" 
+                               groups="base_hospital_management.base_hospital_management_group_manager,
+                                      base_hospital_management.base_hospital_management_group_doctor">
+                            <field name="chief_complaint" rows="5" style="min-height: 110px;"/>
+                            <field name="duration"/>
+                            <field name="case_type"/>
+                        </group>
+
+                        <!-- ================= Vitals ================= -->
+                        <!-- Restricted to Admin and Doctor only -->
+                        <group string="Vitals"
+                               groups="base_hospital_management.base_hospital_management_group_manager,
+                                      base_hospital_management.base_hospital_management_group_doctor">
+                            <field name="temperature"/>
+                            <field name="bp"/>
+                            <field name="pulse"/>
+                            <field name="spo2"/>
+                            <field name="weight"/>
+                            <field name="height"/>
+                            <field name="visit_time" invisible="1"/>
+                            <field name="visit_time_local" string="Visit Time" readonly="1"/>
+                        </group>
+
+                        <!-- ================= Clinical Details ================= -->
+                        <!-- Restricted to Admin and Doctor only -->
+                        <group string="Clinical Details"
+                               groups="base_hospital_management.base_hospital_management_group_manager,
+                                      base_hospital_management.base_hospital_management_group_doctor">
+                            <field name="on_examination" rows="5" style="min-height: 90px;"/>
+                            <field name="clinical_notes" rows="10" style="min-height: 180px;"/>
+                            <field name="diagnosis" rows="5" style="min-height: 110px;"/>
+                            <field name="differential_diagnosis" rows="5" style="min-height: 110px;"/>
+                        </group>
+
+
+                        <group string="Follow-up">
+                            <field name="next_followup_datetime"/>
+                            <field name="payment_mode"/>
+                            <field name="general_fee"/>
+                            <field name="charge_ids" string="Additional Charges">
+                                <tree editable="bottom">
+                                    <field name="company_id" column_invisible="True"/>
+                                    <field name="charge_type_id" string="Charge Name" 
+                                           options="{'no_create_edit': False, 'no_open': True}"/>
+                                    <field name="amount" string="Amount"/>
+                                </tree>
+                            </field>
+                            <field name="total_amount" readonly="1"/>
+                            <button name="action_create_invoice"
+                                    string="Create Invoice"
+                                    type="object"
+                                    class="btn-primary"
+                                    invisible="payment_mode == False or state != 'op' or invoice_id != False"
+                                    groups="base_hospital_management.base_hospital_management_group_manager,base_hospital_management.base_hospital_management_group_doctor"/>
+                            <button name="action_view_invoice"
+                                    string="View Invoice"
+                                    type="object"
+                                    class="btn-primary"
+                                    invisible="not invoice_id"/>
+                            <div invisible="not invoice_id" class="text-success mt-2">
+                                <i class="fa fa-check"/> Invoice Created
+                            </div>
+                        </group>
+
+                    </group>
+                    <group>
+                        <field name="habit_history"/>
+                        <field name="reason"/>
+                    </group>
+
+                    <notebook invisible="state not in ('op','inpatient','done')"
+                              groups="base_hospital_management.base_hospital_management_group_manager,
+                                      base_hospital_management.base_hospital_management_group_doctor,
+                                      base_hospital_management.base_hospital_management_group_nurse">
+                        
+                        <!-- Prescription Page - Hidden from receptionist -->
+                        <page name="Prescription" string="Prescription"
+                              groups="base_hospital_management.base_hospital_management_group_manager,
+                                      base_hospital_management.base_hospital_management_group_doctor,
+                                      base_hospital_management.base_hospital_management_group_nurse">
+                            <field name="prescription_ids"
+                                   readonly="state in ('invoice','cancel')"
+                                   string="Prescription">
+                                <tree editable="bottom">
+                                    <field name="company_id" column_invisible="True"/>
+                                    <field name="medicine_id"
+                                           context="{'default_medicine_ok': True}"/>
+                                    <field name="medicine_type" column_invisible="True"/>
+                                    <field name="no_intakes" placeholder="e.g. 1 or 5ml"/>
+                                    <field name="selected_times" widget="many2many_tags"/>
+                                    <field name="days"/>
+                                    <field name="total_dosage_display" string="Requirement"/>
+                                    <field name="quantity" string="Qty (Bottles/Units)"/>
+                                </tree>
+                            </field>
+                        </page>
+                        
+                        <!-- Lab Tests Page - Hidden from receptionist -->
+                        <page string="Lab Tests"
+                              groups="base_hospital_management.base_hospital_management_group_manager,
+                                      base_hospital_management.base_hospital_management_group_doctor,
+                                      base_hospital_management.base_hospital_management_group_lab_assistant,
+                                      base_hospital_management.base_hospital_management_group_nurse">
+                            <field name="lab_result_ids"
+                                context="{'default_patient_id': patient_id,
+                                            'default_outpatient_id': id}">
+                                
+                                <tree editable="bottom">
+                                    <field name="test_id"/>
+                                    <field name="ordered_date"/>
+                                    <field name="result_value"/>
+                                    <field name="normal_range"/>
+                                    <field name="picture" />
+                                    <field name="report_file" filename="report_filename" widget="binary"/>
+                                    <field name="lab_test_charge"/>
+                                    <field name="status"/>
+                                </tree>
+
+                                <form>
+                                    <group>
+                                        <field name="patient_id" invisible="1"/>
+                                        <field name="outpatient_id" invisible="1"/>
+
+                                        <group>
+                                            <field name="test_id"/>
+                                            <field name="ordered_date"/>
+                                            <field name="status"/>
+                                        </group>
+
+                                        <group>
+                                            <field name="result_value"/>
+                                            <field name="normal_range"/>
+                                        </group>
+
+                                        <group>
+                                            <field name="picture"/>
+                                            <field name="report_file" filename="report_filename"/>
+                                            <field name="lab_test_charge"/>
+                                        </group>
+
+                                        <group>
+                                            <field name="doctor_remarks"/>
+                                        </group>
+                                    </group>
+                                </form>
+
+                            </field>
+                        </page>
+
+                    </notebook>
+                </sheet>
+                <div class="oe_chatter">
+                    <field name="message_follower_ids"/>
+                    <field name="message_ids"/>
+                </div>
+            </form>
+        </field>
+    </record>
+    <!--    Hospital outpatient search view-->
+    <!-- <record id="hospital_outpatient_view_search" model="ir.ui.view">
+        <field name="name">hospital.outpatient.view.search</field>
+        <field name="model">hospital.outpatient</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="patient_id"/>
+                <filter name="today"
+                        string="Today"
+                        domain="[('op_date','=',context_today())]"/>
+                <filter string="Inactive" name="active"
+                        domain="[('active', '=', False)]"/>
+            </search>
+        </field>
+    </record> -->
+
+    <!--    Hospital outpatient search view-->
+    <!-- <record id="hospital_outpatient_view_search" model="ir.ui.view">
+        <field name="name">hospital.outpatient.view.search</field>
+        <field name="model">hospital.outpatient</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="patient_id"/>
+                <field name="op_date" string="Date"/>
+                <filter name="today"
+                        string="Today"
+                        domain="[('op_date','=',context_today())]"/>
+                <filter name="custom_date"
+                        string="Custom Date"
+                        domain="[('op_date','=',self)]"
+                        context="{'self': op_date}"/>
+                <separator/>
+                <filter string="Inactive" name="active"
+                        domain="[('active', '=', False)]"/>
+            </search>
+        </field>
+    </record> -->
+    
+    <!--    Hospital outpatient search view-->
+    <record id="hospital_outpatient_view_search" model="ir.ui.view">
+        <field name="name">hospital.outpatient.view.search</field>
+        <field name="model">hospital.outpatient</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="patient_id"/>
+                <field name="op_date" string="Date"/>
+                
+                <filter name="today"
+                        string="Today"
+                        domain="[('op_date','=',context_today())]"/>
+                <filter name="this_week"
+                        string="This Week"
+                        domain="[('op_date','&gt;=',context_today()), ('op_date','&lt;=',context_today()+7)]"/>
+                
+                <separator/>
+                
+                <!-- This will group by date and show in descending order -->
+                <filter name="group_by_date_desc"
+                        string="Group by Date (Newest First)"
+                        context="{'group_by': 'op_date:desc'}"/>
+                
+                <separator/>
+                
+                <filter string="Inactive" name="active"
+                        domain="[('active', '=', False)]"/>
+            </search>
+        </field>
+    </record>
+    
+    <!--    Out patients menu action-->
+    <record id="hospital_outpatient_action" model="ir.actions.act_window">
+        <field name="name">Out Patients</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">hospital.outpatient</field>
+        <field name="view_mode">tree,form,graph</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Create a new OP!
+            </p>
+        </field>
+    </record>
+    <!--    Out patients menu-->
+    <menuitem id="hospital_outpatient_menu" name="Outpatient"
+              sequence="2"
+              parent="appointment_menu_patient"
+              action="hospital_outpatient_action"/>
+</odoo>

@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_company_form_inherit_timing" model="ir.ui.view">
+        <field name="name">res.company.form.inherit.timing</field>
+        <field name="model">res.company</field>
+        <field name="inherit_id" ref="base.view_company_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='website']" position="attributes">
+                <attribute name="placeholder">https://mycliniqmanagement.com/</attribute>
+            </xpath>
+
+            <!-- After website field -->
+            <xpath expr="//field[@name='website']" position="after">
+
+                <field name="clinic_timing"
+                    placeholder="9:00 - 2:00 / 3:00 - 9:00"/>
+
+            </xpath>
+
+        </field>
+    </record>
+
+    <record id="view_partner_form_inherit_website_placeholder" model="ir.ui.view">
+        <field name="name">res.partner.form.inherit.website.placeholder</field>
+        <field name="model">res.partner</field>
+        <field name="inherit_id" ref="base.view_partner_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='website']" position="attributes">
+                <attribute name="placeholder">https://mycliniqmanagement.com/</attribute>
+            </xpath>
+        </field>
+    </record>
+</odoo>

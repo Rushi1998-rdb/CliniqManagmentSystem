@@ -1,0 +1,504 @@
+:root {
+    --cliniq-blue: #1477d4;
+    --cliniq-blue-dark: #07519a;
+    --cliniq-ink: #16253b;
+    --cliniq-muted: #536071;
+    --cliniq-line: #dce7f2;
+    --cliniq-soft: #eef8ff;
+}
+
+html,
+body {
+    min-height: 100%;
+}
+
+body.cliniq-login-body {
+    margin: 0;
+    color: var(--cliniq-ink);
+    background: #f4f9fe;
+    font-family: "Inter", "Segoe UI", Arial, sans-serif;
+}
+
+.cliniq-login-page {
+    min-height: 100vh;
+    display: grid;
+    grid-template-rows: auto 1fr auto auto;
+    background: #f4f9fe;
+}
+
+.cliniq-login-header {
+    height: 92px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 48px;
+    background: #ffffff;
+    box-shadow: 0 1px 0 rgba(14, 45, 82, .08);
+    z-index: 2;
+}
+
+.cliniq-brand {
+    display: inline-flex;
+    align-items: center;
+    gap: 12px;
+    color: var(--cliniq-ink);
+    text-decoration: none;
+}
+
+.cliniq-brand-mark {
+    width: 46px;
+    height: 46px;
+    display: grid;
+    place-items: center;
+    border-radius: 50%;
+    background: var(--cliniq-blue);
+    color: #ffffff;
+    font-size: 25px;
+    box-shadow: 0 8px 18px rgba(20, 119, 212, .22);
+}
+
+.cliniq-brand-name {
+    display: block;
+    color: #094987;
+    font-size: 32px;
+    font-weight: 800;
+    line-height: .9;
+}
+
+.cliniq-brand-subtitle {
+    display: block;
+    margin-top: 4px;
+    color: #1f2937;
+    font-size: 14px;
+    font-weight: 600;
+}
+
+.cliniq-nav {
+    display: flex;
+    align-items: center;
+    gap: 62px;
+}
+
+.cliniq-nav a {
+    position: relative;
+    color: #1d2635;
+    font-size: 16px;
+    font-weight: 600;
+    text-decoration: none;
+    white-space: nowrap;
+}
+
+.cliniq-nav a.active,
+.cliniq-nav a:hover {
+    color: var(--cliniq-blue);
+}
+
+.cliniq-nav a.active:after {
+    content: "";
+    position: absolute;
+    left: -6px;
+    right: -6px;
+    bottom: -18px;
+    height: 2px;
+    background: var(--cliniq-blue);
+    border-radius: 999px;
+}
+
+.cliniq-login-main {
+    display: grid;
+    grid-template-columns: minmax(390px, 38%) 1fr;
+    min-height: 522px;
+    background:
+        linear-gradient(90deg, #f8fbff 0%, #eef8ff 31%, rgba(238, 248, 255, .62) 43%, rgba(238, 248, 255, 0) 54%),
+        #f7fbff;
+}
+
+.cliniq-login-panel {
+    position: relative;
+    padding: 36px 44px 24px;
+    background: linear-gradient(90deg, #f7fbff 0%, #eef8ff 76%, rgba(238, 248, 255, .34) 100%);
+    z-index: 1;
+}
+
+.cliniq-login-panel h1 {
+    margin: 0 0 6px;
+    color: #14243b;
+    font-size: 30px;
+    font-weight: 800;
+    line-height: 1.15;
+}
+
+.cliniq-login-panel .cliniq-welcome {
+    margin: 0 0 26px;
+    color: var(--cliniq-muted);
+    font-size: 14px;
+    font-weight: 500;
+}
+
+.cliniq-login-panel .oe_login_form,
+.cliniq-login-panel .oe_signup_form,
+.cliniq-login-panel .oe_reset_password_form {
+    max-width: 378px;
+}
+
+.cliniq-login-panel label {
+    margin-bottom: 8px;
+    color: #2a3546;
+    font-size: 13px;
+    font-weight: 800;
+}
+
+.cliniq-login-panel .mb-3 {
+    margin-bottom: 18px !important;
+}
+
+.cliniq-input-wrap,
+.cliniq-login-panel .input-group {
+    position: relative;
+}
+
+.cliniq-input-wrap .fa {
+    position: absolute;
+    top: 50%;
+    left: 14px;
+    color: #7f8fa3;
+    font-size: 15px;
+    transform: translateY(-50%);
+    z-index: 2;
+}
+
+.cliniq-login-panel .form-control {
+    height: 39px;
+    border: 1px solid var(--cliniq-line);
+    border-radius: 6px;
+    color: var(--cliniq-ink);
+    font-size: 13px;
+    box-shadow: none;
+}
+
+.cliniq-input-wrap .form-control {
+    padding-left: 38px;
+}
+
+.cliniq-password-eye {
+    position: absolute;
+    top: 50%;
+    right: 14px;
+    color: #7f8fa3;
+    font-size: 14px;
+    transform: translateY(-50%);
+    pointer-events: none;
+}
+
+.cliniq-login-panel .form-control:focus {
+    border-color: #86bff1;
+    box-shadow: 0 0 0 3px rgba(20, 119, 212, .12);
+}
+
+.cliniq-login-panel .input-group .form-control {
+    border-radius: 6px 0 0 6px;
+    background: #f1f4f8;
+}
+
+.cliniq-login-panel .input-group .btn {
+    border-radius: 0 6px 6px 0;
+}
+
+.cliniq-login-panel .btn-primary {
+    height: 39px;
+    border: 0;
+    border-radius: 5px;
+    background: var(--cliniq-blue);
+    color: #ffffff;
+    font-size: 13px;
+    font-weight: 800;
+    box-shadow: 0 9px 18px rgba(20, 119, 212, .22);
+}
+
+.cliniq-login-panel .btn-primary:hover,
+.cliniq-login-panel .btn-primary:focus {
+    background: var(--cliniq-blue-dark);
+}
+
+.cliniq-login-options {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 18px;
+    max-width: 378px;
+    margin: -1px 0 18px;
+    font-size: 12px;
+}
+
+.cliniq-login-options label {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    margin: 0;
+    color: #354153;
+    font-size: 12px;
+    font-weight: 700;
+}
+
+.cliniq-login-options input {
+    width: 14px;
+    height: 14px;
+    accent-color: var(--cliniq-blue);
+}
+
+.cliniq-login-options a,
+.cliniq-login-panel .btn-link {
+    color: var(--cliniq-blue);
+    text-decoration: none;
+}
+
+.cliniq-login-options a[href*="reset_password"] {
+    display: none !important;
+}
+
+.cliniq-login-panel .alert {
+    max-width: 378px;
+    margin-bottom: 16px;
+    border-radius: 6px;
+    font-size: 13px;
+}
+
+.cliniq-login-panel .oe_login_buttons {
+    max-width: 378px;
+}
+
+.cliniq-login-panel .o_login_auth {
+    margin-top: 20px;
+}
+
+.cliniq-or {
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
+    align-items: center;
+    gap: 14px;
+    max-width: 378px;
+    margin: 20px 0;
+    color: #667587;
+    font-size: 11px;
+    font-weight: 700;
+}
+
+.cliniq-or:before,
+.cliniq-or:after {
+    content: "";
+    height: 1px;
+    background: #dce7f2;
+}
+
+.cliniq-unique-id {
+    width: 100%;
+    max-width: 378px;
+    height: 38px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    border: 1px solid #dce7f2;
+    border-radius: 5px;
+    background: #ffffff;
+    color: #2d3748;
+    font-size: 13px;
+    font-weight: 800;
+    text-decoration: none;
+}
+
+.cliniq-unique-id .fa {
+    color: var(--cliniq-blue);
+}
+
+.cliniq-help-card {
+    max-width: 378px;
+    display: flex;
+    align-items: center;
+    gap: 18px;
+    margin-top: 20px;
+    padding: 17px 14px;
+    border-radius: 6px;
+    background: #eaf7ff;
+    color: #1f2b3d;
+}
+
+.cliniq-help-card .cliniq-help-icon {
+    width: 58px;
+    height: 58px;
+    display: grid;
+    flex: 0 0 auto;
+    place-items: center;
+    border: 1px solid #9dc9fb;
+    border-radius: 50%;
+    color: var(--cliniq-blue);
+    background: #f4fbff;
+    font-size: 29px;
+}
+
+.cliniq-help-card strong {
+    display: block;
+    margin-bottom: 6px;
+    font-size: 13px;
+}
+
+.cliniq-help-card p {
+    margin: 0 0 7px;
+    color: #344154;
+    font-size: 12px;
+}
+
+.cliniq-help-card span {
+    color: var(--cliniq-blue);
+    font-weight: 800;
+}
+
+.cliniq-visual {
+    min-height: 522px;
+    background-image: url("/custom_branding/static/src/img/CliniqHospital.png");
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: cover;
+}
+
+.cliniq-contact-strip {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 0;
+    padding: 21px 104px;
+    background: #eff8ff;
+}
+
+.cliniq-contact-item {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 18px;
+    min-width: 0;
+    padding: 0 34px;
+    border-right: 1px solid #d9e8f4;
+}
+
+.cliniq-contact-item:last-child {
+    border-right: 0;
+}
+
+.cliniq-contact-icon {
+    width: 48px;
+    height: 48px;
+    display: grid;
+    flex: 0 0 auto;
+    place-items: center;
+    border-radius: 50%;
+    background: #dceeff;
+    color: var(--cliniq-blue);
+    font-size: 20px;
+}
+
+.cliniq-contact-label {
+    display: block;
+    margin-bottom: 3px;
+    color: #243043;
+    font-size: 13px;
+    font-weight: 800;
+}
+
+.cliniq-contact-value {
+    display: block;
+    color: #415166;
+    font-size: 14px;
+    word-break: break-word;
+}
+
+.cliniq-contact-value.highlight {
+    color: var(--cliniq-blue);
+    font-size: 18px;
+    font-weight: 800;
+}
+
+.cliniq-footer {
+    padding: 16px;
+    background: linear-gradient(90deg, #07519a, #0b5aae);
+    color: #ffffff;
+    text-align: center;
+    font-size: 13px;
+}
+
+@media (max-width: 991px) {
+    .cliniq-login-header {
+        height: auto;
+        align-items: flex-start;
+        gap: 22px;
+        padding: 22px 24px;
+    }
+
+    .cliniq-nav {
+        flex-wrap: wrap;
+        justify-content: flex-end;
+        gap: 18px 28px;
+    }
+
+    .cliniq-nav a.active:after {
+        bottom: -7px;
+    }
+
+    .cliniq-login-main {
+        grid-template-columns: 1fr;
+    }
+
+    .cliniq-login-panel {
+        order: 2;
+        padding: 30px 24px;
+    }
+
+    .cliniq-visual {
+        min-height: 320px;
+        order: 1;
+    }
+
+    .cliniq-contact-strip {
+        grid-template-columns: 1fr;
+        padding: 18px 24px;
+    }
+
+    .cliniq-contact-item {
+        justify-content: flex-start;
+        padding: 14px 0;
+        border-right: 0;
+        border-bottom: 1px solid #d9e8f4;
+    }
+
+    .cliniq-contact-item:last-child {
+        border-bottom: 0;
+    }
+}
+
+@media (max-width: 575px) {
+    .cliniq-login-header {
+        padding: 18px;
+    }
+
+    .cliniq-brand-name {
+        font-size: 26px;
+    }
+
+    .cliniq-brand-mark {
+        width: 40px;
+        height: 40px;
+        font-size: 21px;
+    }
+
+    .cliniq-nav {
+        display: none;
+    }
+
+    .cliniq-login-panel h1 {
+        font-size: 26px;
+    }
+
+    .cliniq-login-options {
+        align-items: flex-start;
+        flex-direction: column;
+        gap: 10px;
+    }
+}

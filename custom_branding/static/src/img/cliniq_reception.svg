@@ -1,0 +1,72 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 980 520" role="img" aria-labelledby="title desc">
+  <title id="title">CliniQ clinic reception</title>
+  <desc id="desc">Bright modern clinic reception with a front desk, doors, and CliniQ wall branding.</desc>
+  <defs>
+    <linearGradient id="wall" x1="0" x2="1">
+      <stop offset="0" stop-color="#f7fbff"/>
+      <stop offset=".48" stop-color="#eef7fb"/>
+      <stop offset="1" stop-color="#d7edf3"/>
+    </linearGradient>
+    <linearGradient id="floor" x1="0" x2="1" y1="0" y2="1">
+      <stop offset="0" stop-color="#fbfcfd"/>
+      <stop offset="1" stop-color="#e9f1f4"/>
+    </linearGradient>
+    <linearGradient id="desk" x1="0" x2="1">
+      <stop offset="0" stop-color="#ffffff"/>
+      <stop offset=".52" stop-color="#f6fbfd"/>
+      <stop offset="1" stop-color="#d6edf4"/>
+    </linearGradient>
+    <filter id="shadow" x="-20%" y="-20%" width="140%" height="160%">
+      <feDropShadow dx="0" dy="10" stdDeviation="12" flood-color="#416371" flood-opacity=".18"/>
+    </filter>
+  </defs>
+  <rect width="980" height="520" fill="url(#wall)"/>
+  <path d="M0 360h980v160H0z" fill="url(#floor)"/>
+  <path d="M398 0h18l116 60v300H398z" fill="#eef4f6"/>
+  <path d="M410 0h88l112 58H522z" fill="#ffffff" opacity=".8"/>
+  <g opacity=".9">
+    <rect x="52" y="58" width="96" height="230" rx="4" fill="#f9fbfc" stroke="#d9e4e9"/>
+    <rect x="68" y="88" width="62" height="96" rx="3" fill="#dcebf1"/>
+    <rect x="86" y="192" width="28" height="7" rx="3" fill="#8fb8c7"/>
+    <rect x="190" y="48" width="86" height="242" rx="4" fill="#fbfcfd" stroke="#dbe5e8"/>
+    <rect x="207" y="82" width="52" height="92" rx="3" fill="#e7f1f4"/>
+    <circle cx="263" cy="176" r="4" fill="#9aaeb6"/>
+    <rect x="322" y="70" width="70" height="214" rx="4" fill="#f9fbfc" stroke="#d9e4e9"/>
+    <rect x="337" y="98" width="41" height="78" rx="3" fill="#e4eef2"/>
+  </g>
+  <g opacity=".85">
+    <rect x="46" y="16" width="144" height="16" rx="8" fill="#ffffff"/>
+    <rect x="218" y="16" width="144" height="16" rx="8" fill="#ffffff"/>
+    <rect x="412" y="16" width="144" height="16" rx="8" fill="#ffffff"/>
+  </g>
+  <path d="M552 0h428v374H552z" fill="#bfe4ec" opacity=".9"/>
+  <g transform="translate(632 112)">
+    <circle cx="45" cy="45" r="34" fill="#ffffff" opacity=".45"/>
+    <circle cx="45" cy="45" r="27" fill="#2b86df"/>
+    <rect x="38" y="27" width="14" height="36" rx="4" fill="#ffffff"/>
+    <rect x="27" y="38" width="36" height="14" rx="4" fill="#ffffff"/>
+    <text x="88" y="48" font-family="Arial, sans-serif" font-size="54" font-weight="700" fill="#07528d">CliniQ</text>
+    <text x="91" y="82" font-family="Arial, sans-serif" font-size="23" fill="#13243a">Management System</text>
+  </g>
+  <g filter="url(#shadow)">
+    <path d="M470 318c0-37 34-67 75-67h344c35 0 63 26 63 59v95H470z" fill="url(#desk)"/>
+    <path d="M470 318h482v34H470z" fill="#ffffff"/>
+    <path d="M470 352h482v55H470z" fill="#eff7fa"/>
+    <path d="M520 352h176v55H520z" fill="#ffffff" opacity=".75"/>
+    <path d="M704 352h198v55H704z" fill="#e0f0f5"/>
+    <path d="M470 407h482v24H470z" fill="#9ecfdd"/>
+    <path d="M695 252h146c10 0 18 8 18 18v67H677v-67c0-10 8-18 18-18z" fill="#12202c"/>
+    <path d="M704 262h128c6 0 11 5 11 11v51H693v-51c0-6 5-11 11-11z" fill="#1f3342"/>
+  </g>
+  <g>
+    <rect x="541" y="224" width="34" height="47" rx="3" fill="#7fb150"/>
+    <path d="M558 224c-27-31-18-61 10-78 15 30 12 55-10 78z" fill="#4d944d"/>
+    <path d="M557 224c-11-37 6-59 38-67 2 33-12 54-38 67z" fill="#6ead5b"/>
+    <path d="M558 224c13-30 39-39 70-23-18 27-41 35-70 23z" fill="#4d944d"/>
+    <rect x="534" y="267" width="49" height="14" rx="2" fill="#f4f0e7"/>
+  </g>
+  <g opacity=".45">
+    <path d="M44 402c126-44 292-47 446-28 137 17 297 42 442-8v154H44z" fill="#ffffff"/>
+    <path d="M0 440c121-33 292-37 457-20 169 17 326 32 523-14v114H0z" fill="#e8f4f8"/>
+  </g>
+</svg>

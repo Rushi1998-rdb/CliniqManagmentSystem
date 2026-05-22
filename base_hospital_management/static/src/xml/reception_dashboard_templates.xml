@@ -1,0 +1,369 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!--Reception dashboard template-->
+<templates id="reception_dashboard" xml:space="preserve">
+    <t t-name="ReceptionDashboard" owl="1">
+        <div class="oh_dashboards" style="overflow: scroll;height: 100%;"
+             t-ref="root">
+            <div class="container-fluid o_pj_dashboard">
+                <div style="width:100%; margin:0; padding:0;">
+                    <div class="row">
+                        <div class="col-12 r_dashButtonContainer">
+                        </div>
+                        <div id="view_main" class="col-md-12 col-sm-12">
+                            <!-- Appointment Button Row with Donut Chart on Left -->
+                            <!-- Appointment Button Row with Donut Charts -->
+                            <div id="buttons" class="row r_AppntBtn" style="margin-bottom: 20px;">
+                                <div class="col-md-12">
+                                    <div style="display: flex; justify-content: center; align-items: center; gap: 20px; flex-wrap: wrap;">
+                                        <!-- Follow-up Donut Chart -->
+                                        <div class="mini-donut" style="background: white; border-radius: 10px; padding: 8px 15px; box-shadow: 0 2px 8px rgba(0,0,0,0.08); display: flex; align-items: center; gap: 15px;">
+                                            <div t-if="state.loading" style="padding: 5px;">
+                                                <i class="fa fa-spinner fa-spin text-primary"></i>
+                                            </div>
+                                            <div t-else="" style="display: flex; align-items: center; gap: 15px;">
+                                                <div style="position: relative; display: inline-block;">
+                                                    <canvas id="miniFollowupDonutChart" width="55" height="55"></canvas>
+                                                    <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); text-align: center;">
+                                                        <div style="font-size: 14px; font-weight: bold; color: #ff9800;">
+                                                            <t t-esc="state.pending_followups"/>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div style="display: flex; gap: 12px;">
+                                                    <div style="text-align: center;">
+                                                        <div style="font-size: 9px; color: #7f8c8d;">Follow-ups</div>
+                                                        <div style="font-size: 16px; font-weight: bold; color: #ff9800;"><t t-esc="state.today_followups"/></div>
+                                                    </div>
+                                                    <div style="text-align: center;">
+                                                        <div style="font-size: 9px; color: #7f8c8d;">New</div>
+                                                        <div style="font-size: 16px; font-weight: bold; color: #2ecc71;"><t t-esc="state.today_new_patients"/></div>
+                                                    </div>
+                                                    <div style="text-align: center;">
+                                                        <div style="font-size: 9px; color: #7f8c8d;">Total</div>
+                                                        <div style="font-size: 16px; font-weight: bold; color: #3498db;"><t t-esc="state.today_total_patients"/></div>
+                                                    </div>
+                                                </div>
+                                                <button class="btn btn-warning btn-sm" t-on-click="viewFollowupPatients" 
+                                                        style="background: #ff9800; border: none; color: white; padding: 5px 12px; border-radius: 6px; font-size: 11px;">
+                                                    <i class="fa fa-eye me-1"></i> View
+                                                </button>
+                                            </div>
+                                        </div>
+                                        
+                                        <!-- Collection Donut Chart -->
+                                        <div class="mini-donut" style="background: white; border-radius: 10px; padding: 8px 15px; box-shadow: 0 2px 8px rgba(0,0,0,0.08); display: flex; align-items: center; gap: 15px;">
+                                            <div t-if="state.loading" style="padding: 5px;">
+                                                <i class="fa fa-spinner fa-spin text-primary"></i>
+                                            </div>
+                                            <div t-else="" style="display: flex; align-items: center; gap: 15px;">
+                                                <div style="position: relative; display: inline-block;">
+                                                    <canvas id="collectionDonutChart" width="55" height="55"></canvas>
+                                                    <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); text-align: center;">
+                                                        <div style="font-size: 12px; font-weight: bold; color: #2ecc71;">
+                                                            ₹<t t-esc="Math.floor(state.today_total_collection / 1000)"/>K
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div style="display: flex; gap: 12px;">
+                                                    <div style="text-align: center;">
+                                                        <div style="font-size: 9px; color: #7f8c8d;">Cash</div>
+                                                        <div style="font-size: 14px; font-weight: bold; color: #2ecc71;">₹<t t-esc="Math.floor(state.today_cash_collection / 1000)"/>K</div>
+                                                    </div>
+                                                    <div style="text-align: center;">
+                                                        <div style="font-size: 9px; color: #7f8c8d;">UPI</div>
+                                                        <div style="font-size: 14px; font-weight: bold; color: #3498db;">₹<t t-esc="Math.floor(state.today_upi_collection / 1000)"/>K</div>
+                                                    </div>
+                                                    <div style="text-align: center;">
+                                                        <div style="font-size: 9px; color: #7f8c8d;">Total</div>
+                                                        <div style="font-size: 14px; font-weight: bold; color: #2ecc71;">₹<t t-esc="Math.floor(state.today_total_collection / 1000)"/>K</div>
+                                                    </div>
+                                                </div>
+                                                <div style="display: flex; gap: 5px;">
+                                                    <button class="btn btn-success btn-sm" t-on-click="viewCashPayments" 
+                                                            style="background: #2ecc71; border: none; color: white; padding: 5px 10px; border-radius: 6px; font-size: 10px;">
+                                                        Cash
+                                                    </button>
+                                                    <button class="btn btn-info btn-sm" t-on-click="viewUPIPayments" 
+                                                            style="background: #3498db; border: none; color: white; padding: 5px 10px; border-radius: 6px; font-size: 10px;">
+                                                        UPI
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        
+                                        <!-- Appointment Button -->
+                                        <div class="rd_buttons" t-ref="rd_buttons">
+                                            <div id="appointment"
+                                                class="r_dashButton o_appointment_button"
+                                                style="width: 300px; margin: 0;"
+                                                t-on-click="fetchAppointmentData">
+                                                <img src="https://cdn-icons-png.flaticon.com/512/1069/1069152.png"
+                                                    width="65px" class="apnmnt_img"/>
+                                                <p>Appointment</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div id="controls" class="row r_controls"/>
+                            <div id="content" class="col r_Container container" style="padding: 0;">
+                                <div class="row">
+                                    <!-- Create Outpatient Form - Shifted to Right -->
+                                    <div class="col-md-12">
+                                        <div class="out-patient" t-ref="out-patient">
+                                            <span class="text-center"><h1 style="margin-bottom:2rem; text-align: center;">Create Outpatient</h1></span>
+                                            <div class="row" id="op_table" style="margin: 0; display: flex; justify-content: flex-end;">
+                                                <div class="col-md-10 col-lg-9 col-xl-8" style="margin: 0 auto;">
+                                                    <div class="row">
+                                                        <div class="col-md-6">
+                                                            <div class="mb-3">
+                                                                <label>Phone Number <span style="color: red; font-weight: bold;">*</span> :</label>
+                                                                <input type="tel" 
+                                                                    id="o_patient-phone"
+                                                                    class="form-control w-100"
+                                                                    t-on-input="sanitizePhoneNumber"
+                                                                    t-on-keyup="fetchPatientsByPhone"
+                                                                    inputmode="numeric"
+                                                                    pattern="[0-9]{10}"
+                                                                    maxlength="10"
+                                                                    minlength="10"
+                                                                    title="Please enter exactly 10 digits (0-9)"
+                                                                    placeholder="Enter 10-digit mobile number"/>
+                                                            </div>
+
+                                                            <div class="mb-3">
+                                                                <label>Patient Name <span style="color: red; font-weight: bold;">*</span> :</label>
+                                                                <select id="sl_patient"
+                                                                        class="form-control w-100 select_patient"
+                                                                        t-on-change="fetch_patient_id">
+                                                                    <option value="">Select Patient</option>
+                                                                </select>
+                                                                <small class="text-muted" style="display: block; margin-top: 5px;">
+                                                                    <i class="fa fa-info-circle"></i> 
+                                                                    <t t-if="state.patient_lst.length > 0">
+                                                                        Select existing patient or click "Create New Patient" to register a new one.
+                                                                    </t>
+                                                                    <t t-else="">
+                                                                        No patients found. Use "Create New Patient" to register.
+                                                                    </t>
+                                                                </small>
+                                                            </div>
+
+                                                            <!-- <div class="mb-3">
+                                                                <label>Date of Birth <span style="color: red; font-weight: bold;">*</span> :</label>
+                                                                <input type="date" class="form-control w-100" id="o_patient-dob"/>
+                                                            </div> -->
+                                                            <div class="mb-3">
+                                                                <label>Date of Birth <span style="color: red; font-weight: bold;">*</span> :</label>
+                                                                <input type="text" class="form-control w-100 datepicker-dob" id="o_patient-dob" placeholder="DD/MM/YYYY" autocomplete="off"/>
+                                                            </div>
+
+                                                            <div class="mb-3">
+                                                                <label>Blood Group :</label>
+                                                                <select id="o_patient_bloodgroup" class="form-control w-100">
+                                                                    <option value="">Select Blood Group</option>
+                                                                    <option value="a+">A+</option>
+                                                                    <option value="a-">A-</option>
+                                                                    <option value="b+">B+</option>
+                                                                    <option value="b-">B-</option>
+                                                                    <option value="ab+">AB+</option>
+                                                                    <option value="ab-">AB-</option>
+                                                                    <option value="o+">O+</option>
+                                                                    <option value="o-">O-</option>
+                                                                </select>
+                                                            </div>
+
+                                                            <div class="mb-3">
+                                                                <label>Blood Pressure (BP) :</label>
+                                                                <input type="text" id="op_bp"
+                                                                    class="form-control w-100"
+                                                                    placeholder="Example: 120/80"/>
+                                                            </div>
+
+                                                            <div class="mb-3">
+                                                                <label>Temperature (°C) :</label>
+                                                                <input type="number" step="0.1"
+                                                                    id="op_temperature"
+                                                                    class="form-control w-100"
+                                                                    placeholder="Example: 98.6"/>
+                                                            </div>
+
+                                                            <div class="mb-3">
+                                                                <label>Pulse :</label>
+                                                                <input type="number"
+                                                                    id="op_pulse"
+                                                                    class="form-control w-100"
+                                                                    placeholder="Pulse rate"/>
+                                                            </div>
+                                                        </div>
+                                            
+                                                        <div class="col-md-6">
+                                                            <div class="mb-3">
+                                                                <label>Gender <span style="color: red; font-weight: bold;">*</span> :</label><br/>
+                                                                <div style="display: flex; gap: 15px; margin-top: 5px;">
+                                                                    <label style="display: flex; align-items: center; cursor: pointer;">
+                                                                        <input type="radio" class="form-check-input" name="gender" value="male" checked="true" style="margin-right: 5px;"/>
+                                                                        <span>Male</span>
+                                                                    </label>
+                                                                    <label style="display: flex; align-items: center; cursor: pointer;">
+                                                                        <input type="radio" class="form-check-input" name="gender" value="female" style="margin-right: 5px;"/>
+                                                                        <span>Female</span>
+                                                                    </label>
+                                                                    <label style="display: flex; align-items: center; cursor: pointer;">
+                                                                        <input type="radio" class="form-check-input" name="gender" value="other" style="margin-right: 5px;"/>
+                                                                        <span>Other</span>
+                                                                    </label>
+                                                                </div>
+                                                            </div>
+
+                                                            <!-- <div class="mb-3">
+                                                                <label>OP Date <span style="color: red; font-weight: bold;">*</span> :</label>
+                                                                <input type="date" class="form-control w-100" id="op_date"/>
+                                                            </div> -->
+
+                                                            <div class="mb-3">
+                                                                <label>OP Date <span style="color: red; font-weight: bold;">*</span> :</label>
+                                                                <input type="text" class="form-control w-100 datepicker" id="op_date" placeholder="DD/MM/YYYY" autocomplete="off"/>
+                                                            </div>
+
+                                                            <!-- <div class="mb-3">
+                                                                <label>Habit History :</label>
+                                                                <input type="text" id="habit_history" class="form-control w-100"/>
+                                                            </div> -->
+
+                                                            <div class="mb-3">
+                                                                <label>Reason :</label>
+                                                                <input type="text" id="reason" class="form-control w-100"/>
+                                                            </div>
+
+                                                            <div class="mb-3">
+                                                                <label>Slot :</label>
+                                                                <input type="text" id="slot" class="form-control w-100"/>
+                                                            </div>
+
+                                                            <div class="mb-3">
+                                                                <label>Doctor Name <span style="color: red; font-weight: bold;">*</span> :</label>
+                                                                <select id="sl_dr"
+                                                                        class="form-control w-100 select_dr"
+                                                                        name="group">
+                                                                </select>
+                                                            </div>
+
+                                                            <!-- <div class="mb-3">
+                                                                <label>Visit Time :</label>
+                                                                <input type="datetime-local"
+                                                                    id="op_visit_time"
+                                                                    class="form-control w-100"
+                                                                    placeholder="Current time will be auto-filled"/>
+                                                            </div> -->
+                                                            <div class="mb-3">
+                                                                <label>Visit Time :</label>
+                                                                <input type="text" id="op_visit_time" class="form-control w-100 datetimepicker" placeholder="HH:MM AM/PM" autocomplete="off"/>
+                                                            </div>
+                                                            <div class="mb-3">
+                                                                <label>Place :</label>
+                                                                <input type="text"
+                                                                    id="o_patient_place"
+                                                                    class="form-control w-100"/>
+                                                            </div>
+                                                        </div>                                            
+                                                    </div>
+                                                    <div class="w-100 d-flex justify-content-center align-items-center mt-4">
+                                                        <button class="btn btn-outline-success me-2 save_out_patient" t-on-click="save_out_patient_data">
+                                                            <i class="fa fa-save"></i> Save
+                                                        </button>
+                                                        <button class="btn btn-outline-secondary" t-on-click="refreshStatistics">
+                                                            <i class="fa fa-refresh"></i> Refresh Stats
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <style>
+            .btn-warning {
+                background: #ff9800;
+                border: none;
+                color: white;
+            }
+            
+            .btn-warning:hover {
+                background: #f57c00;
+            }
+            
+            .btn-outline-success {
+                border-color: #2b8d72;
+                color: #2b8d72;
+            }
+            
+            .btn-outline-success:hover {
+                background: #2b8d72;
+                color: white;
+            }
+            
+            .mini-donut {
+                transition: all 0.3s ease;
+            }
+            
+            .mini-donut:hover {
+                box-shadow: 0 4px 12px rgba(0,0,0,0.12);
+            }
+            
+            #op_table {
+                margin: 0 !important;
+            }
+            
+            .form-control {
+                border-radius: 8px;
+                border: 1px solid #e0e0e0;
+                padding: 8px 12px;
+                font-size: 14px;
+            }
+            
+            .form-control:focus {
+                border-color: #2b8d72;
+                box-shadow: 0 0 0 0.2rem rgba(43,141,114,0.25);
+            }
+            
+            .mb-3 {
+                margin-bottom: 1rem;
+            }
+            
+            label {
+                font-weight: 600;
+                margin-bottom: 5px;
+                display: block;
+                color: #2c3e50;
+            }
+            
+            @media (max-width: 768px) {
+                .mini-donut {
+                    width: 100%;
+                    justify-content: center;
+                }
+                
+                .rd_buttons {
+                    width: 100%;
+                    text-align: center;
+                }
+                
+                .r_dashButton {
+                    margin: 0 auto !important;
+                }
+                
+                #op_table .col-md-10 {
+                    width: 100%;
+                }
+            }
+        </style>
+    </t>
+</templates>

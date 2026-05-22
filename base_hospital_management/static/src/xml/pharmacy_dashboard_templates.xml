@@ -1,0 +1,434 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!-- Pharmacy dashboard template -->
+<template>
+    <t t-name="PharmacyDashboard">
+        <div class="oh_dashboards" t-ref="root">
+            <div class="container-fluid o_pj_dashboard"
+                 style="height: 100vh; overflow: scroll;">
+                <div style="width:100%; margin:0; padding:0;">
+                    <div class="container">
+                        <div class="row">
+                            <div class="container col-lg-12 mt-4 pharma_container"
+                                 style="">
+                                <div class="row">
+                                    <div class="col-lg-2 mt-2 pharma_2"
+                                         style="width: 250px; height: 788px; background-color: rgb(255, 255, 255); border-radius: 40px 0px 0px 40px; margin-left: 6px;">
+                                        <h1 class="ms-4 mt-4"
+                                            style="font-size: 32px;">
+                                            <i class="fa fa-plus-circle"/>
+                                            Pharma
+                                        </h1>
+                                        <div class="menu_class">
+                                            <ul class="menu-ul">
+                                                <a href="#" class="menu_link">
+                                                    <li class="menu_item patient home"
+                                                        t-on-click="() => this.create_order('home')">
+                                                        Home
+                                                    </li>
+                                                </a>
+                                                <a href="#" class="menu_link">
+                                                    <li class="menu_item medicine_search"
+                                                        t-on-click="() => this.fetch_medicine_data('medicines')">
+                                                        Medicines
+                                                    </li>
+                                                </a>
+                                                <a href="#" class="menu_link">
+                                                    <li class="menu_item prescription_search"
+                                                        t-on-click="fetch_prescriptions">
+                                                        Prescription
+                                                    </li>
+                                                </a>
+                                                <!-- <a href="#" class="menu_link">
+                                                    <li class="menu_item vaccine_search"
+                                                        t-on-click="() => this.fetch_vaccine_data('vaccines')">
+                                                        Vaccines
+                                                    </li>
+                                                </a> -->
+                                                <a href="#" class="menu_link">
+                                                    <li class="menu_item sale_orders"
+                                                        t-on-click="() => this.fetch_sale_orders('orders')">
+                                                        Orders
+                                                    </li>
+                                                </a>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                    <div t-attf-class="main_div mt-2 ms-2 #{state.menu === 'home' ? 'col-lg-4' : 'col-lg-10'}" t-att-style="state.menu !== 'home' ? 'width: auto; flex: 1; border-radius: 40px;' : ''">
+                                        <div t-if="state.menu === 'home'" class="row content_div container"
+                                             id="content_div"
+                                             t-ref="home_content">
+                                            <h1>
+                                                <center style="padding-top:20px;">
+                                                    Sale Order
+                                                </center>
+                                            </h1>
+                                            <div class="row"
+                                                 style="margin-left: 0px"
+                                                 id="op_table">
+                                                <div class="col-m-12 col-md-12 col-lg-12">
+                                                    <table style="width:-webkit-fill-available;">
+                                                        <tr>
+                                                            <th>Name</th>
+                                                            <td>
+                                                                <input t-ref="PatientName"
+                                                                       type="text"
+                                                                       id="patient-name"
+                                                                       class="form-control"
+                                                                       placeholder="Name"/>
+                                                            </td>
+                                                        </tr>
+                                                        <tr>
+                                                            <th>Phone Number</th>
+                                                            <td>
+                                                                <input type="tel"
+                                                                       id="patient-phone"
+                                                                       placeholder="Phone Number"
+                                                                       class="form-control"/>
+                                                            </td>
+                                                        </tr>
+                                                        <tr>
+                                                            <th>Email</th>
+                                                            <td>
+                                                                <input t-ref="Email"
+                                                                       type="email"
+                                                                       style="max-width:20rem;min-height: 3rem;margin-bottom: 10px;"
+                                                                       class="form-control"
+                                                                       id="patient-mail"
+                                                                       placeholder="Email"/>
+                                                            </td>
+                                                        </tr>
+                                                        <tr>
+                                                            <th>Date of Birth</th>
+                                                            <td>
+                                                                <input type="text"
+                                                                   style="max-width:20rem;"
+                                                                   class="form-control"
+                                                                   id="patient-dob"
+                                                                   placeholder="DD/MM/YYYY"/>
+                                                            </td>
+                                                        </tr>
+                                                        <tr>
+                                                            <th>Gender</th>
+                                                            <td>
+                                                                <input type="radio"
+                                                                       class="form-check-input o_radio_input"
+                                                                       checked="true"
+                                                                       id="patient-gender"
+                                                                       name="gender"
+                                                                       value="male"/>
+                                                                <label>Male</label>
+                                                                <input type="radio"
+                                                                   class="form-check-input o_radio_input"
+                                                                   id="patient-gender"
+                                                                   name="gender"
+                                                                   value="female"/>
+                                                                <label>Female</label>
+                                                                <input type="radio"
+                                                                       class="form-check-input o_radio_input"
+                                                                       id="patient-gender"
+                                                                       name="gender"
+                                                                       value="other"/>
+                                                                <label>Other</label>
+                                                            </td>
+                                                        </tr>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                            <br/>
+                                            <div style="margin-top:15px;">
+                                                <center>
+                                                    <h1>Medicine List</h1>
+                                                </center>
+                                            </div>
+                                            <br/>
+                                            <div style="overflow: scroll; height: 325px;">
+                                                <table id="medicine_table" class="table table-bordered">
+                                                    <thead>
+                                                    <tr>
+                                                        <th style="width:130px;">Name</th>
+                                                        <th>Quantity</th>
+                                                        <th>Unit Of Measure</th>
+                                                        <th style="width:130px;">Price</th>
+                                                        <th>Sub
+                                                            Total(incl.Tax)
+                                                        </th>
+                                                    </tr>
+                                                    </thead>
+                                                    <tbody id="bill_table"
+                                                           class="bill_tables">
+                                                        <t t-foreach="state.order_line" t-as="line" t-key="line_index">
+                                                            <PharmacyOrderLines id="line.id" line="line" removeLine.bind="removeLine" updateOrderLine.bind="updateOrderLine" tax="this.tax_amount"/>
+                                                        </t>
+                                                    </tbody>
+                                                </table>
+                                                <button t-on-click="addRow">+</button>
+                                            </div>
+                                            <div class="btn-div">
+                                                <center><button class="btn-primary create_sale_order"
+                                                        style="width:150px;height:60px;border-radius:25px;"
+                                                        t-on-click="create_sale_order">
+                                                    Create Sale Order
+                                                </button></center>
+                                            </div>
+                                        </div>
+                                        <div t-if="state.menu === 'vaccines'" class="vaccine_div"
+                                             t-ref="vaccine_div">
+                                            <h2 style="margin-top:2rem;">
+                                                Vaccines
+                                            </h2>
+                                            <div class="row medicines"
+                                                 id="med_items"
+                                                 style="height:600px; margin-left:2rem; width: 100%; overflow-y: scroll; ">
+                                                <t t-foreach="state.vaccine"
+                                                   t-as="vaccine"
+                                                   t-key="vaccine.id">
+                                                    <div class="card"
+                                                         style="width: 10rem; height: 14rem;margin-top: 2rem;margin-right: 2rem;">
+                                                        <div class="card-body"
+                                                             style="margin-top: 10px;">
+                                                            <div t-if="vaccine[3]">
+                                                                <img t-att-src="'data:image/png;base64,' + vaccine[3]"
+                                                                     style="height:95px;width:97px;margin-left:-17px;margin-top: -9px"/>
+                                                            </div>
+                                                            <h3 id="medicine_name"
+                                                                class="card-title"
+                                                                style="margin-left: -20px; margin-top: 21px;">
+                                                                <t t-esc="vaccine[0]"/>
+                                                            </h3>
+                                                            <div style="float:left;width:100%;">
+                                                                <span style="float:left;">
+                                                                    Price:
+                                                                </span>
+                                                                <p id="medicine_price"
+                                                                   class="card-text">
+                                                                    <t t-esc="vaccine[1]"/>
+                                                                </p>
+                                                            </div>
+                                                            <div style="float:left;width:100%;">
+                                                                <span style="float:left;">
+                                                                    Stock:
+                                                                </span>
+                                                                <p id="medicine_stock"
+                                                                   class="card-text">
+                                                                    <t t-esc="vaccine[2]"/>
+                                                                </p>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </t>
+                                            </div>
+                                        </div>
+                                        <div t-if="state.menu === 'medicines'" class="medicine_div" t-ref="medicine_div">
+                                            <div class="d-flex justify-content-between align-items-center" style="margin-top:2rem; margin-right:2rem; margin-left:2rem;">
+                                                <h2>Medicines</h2>
+                                                <input type="text" class="form-control" style="width: 300px; border-radius: 20px;" placeholder="Search medicines..." t-on-input="search_medicines"/>
+                                            </div>
+                                            <div class="row medicines"
+                                                 id="med_items"
+                                                 style="height:600px; margin-left:2rem; width: 100%; overflow-y: scroll; ">
+                                                <t t-foreach="state.filtered_med || []"
+                                                   t-as="med"
+                                                   t-key="med[4]">
+                                                    <div t-attf-class="card #{med[2] &lt; med[5] ? 'medicine-low-stock-card' : ''}"
+                                                         style="width: 11rem; height: 15rem; margin-top: 1rem;margin-right: 2rem;">
+                                                        <div class="card-body"
+                                                             style="margin-top: 10px;">
+                                                            <div t-if="med[3]">
+                                                                <img t-att-src="'data:image/png;base64,' + med[3]"
+                                                                     style="height:100px;width:100px;margin-left:auto;"/>
+                                                            </div><br/>
+                                                            <h3 id="medicine_name"
+                                                                class="card-title">
+                                                                <t t-esc="med[0]"/>
+                                                            </h3>
+                                                            <div style="float:left;width:100%;">
+                                                                <span style="float:left;">
+                                                                    Price:
+                                                                </span>
+                                                                <p id="medicine_price"
+                                                                   class="card-text">
+                                                                    <t t-esc="med[1]"/>
+                                                                </p>
+                                                            </div>
+                                                            <div style="float:left;width:100%;">
+                                                                <span style="float:left;">
+                                                                    Stock:
+                                                                </span>
+                                                                <p id="medicine_stock"
+                                                                   class="card-text">
+                                                                    <t t-esc="med[2]"/>
+                                                                </p>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </t>
+                                            </div>
+                                        </div>
+
+                                        <div t-if="state.menu === 'prescriptions'" class="prescriptions_div" t-ref="prescriptions_div">
+                                            <h2 style="margin-top:2rem;">Prescriptions</h2>
+                                            <div style='height:712px; overflow-y: auto;'>
+                                                <table class="table table-primary table-striped">
+                                                    <thead>
+                                                        <tr>
+                                                            <th class="text-center">Date</th>
+                                                            <th class="text-center">Reference</th>
+                                                            <th class="text-center">Patient</th>
+                                                            <!-- <th class="text-center">Medicine</th> -->
+                                                            <th class="text-center">Qty</th>
+                                                            <th class="text-center">Days</th>
+                                                            <!-- <th class="text-center">Times</th> -->
+                                                            <th class="text-center">Open</th>
+                                                            <th class="text-center">Create Sale Order</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        <t t-if="state.prescription_data.length">
+                                                            <t t-foreach="state.prescription_data" t-as="prescription" t-key="prescription.id">
+                                                                <tr>
+                                                                    <td class="text-center"><t t-esc="prescription.date"/></td>
+                                                                    <td class="text-center"><t t-esc="prescription.reference"/></td>
+                                                                    <td class="text-center">
+                                                                        <t t-esc="prescription.patient"/>
+                                                                        <br/>
+                                                                        <small><t t-esc="prescription.patient_no"/></small>
+                                                                    </td>
+                                                                    <!-- <td class="text-center"><t t-esc="prescription.medicine"/></td> -->
+                                                                    <td class="text-center"><t t-esc="prescription.quantity"/></td>
+                                                                    <td class="text-center"><t t-esc="prescription.days"/></td>
+                                                                    <!-- <td class="text-center"><t t-esc="prescription.times"/></td> -->
+                                                                    <td class="text-center">
+                                                                        <button class="btn btn-sm btn-primary pharmacy-order-btn"
+                                                                                t-on-click="() => this.openPrescription(prescription.id)">
+                                                                            Open
+                                                                        </button>
+                                                                    </td>
+                                                                    <td class="text-center">
+                                                                        <button class="btn btn-sm btn-success pharmacy-order-btn"
+                                                                                t-att-disabled="prescription.sale_created"
+                                                                                t-on-click="() => this.createSaleOrderFromPrescription(prescription.id)">
+                                                                            <t t-esc="prescription.sale_created ? 'Created' : 'Create Sale Order'"/>
+                                                                        </button>
+                                                                    </td>
+                                                                </tr>
+                                                            </t>
+                                                        </t>
+                                                        <t t-else="">
+                                                            <tr>
+                                                                <td colspan="7" class="text-center">No prescriptions found.</td>
+                                                            </tr>
+                                                        </t>
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+
+                                        <div t-if="state.menu === 'orders'" class="orders_div" t-ref="orders_div">
+                                            <h2 style="margin-top:2rem;">Sale Orders</h2>
+                                            <div style='height:712px; overflow-y: auto;'>
+                                                <table class="table table-primary table-striped">
+                                                    <thead>
+                                                        <tr>
+                                                            <th class="text-center"> Number</th>
+                                                            <th class="text-center">Creation Date</th>
+                                                            <th class="text-center">Customer</th>
+                                                            <th class="text-center">Total</th>
+                                                            <th class="text-center">Status</th>
+                                                            <th class="text-center">Sale Order</th>
+                                                            <th class="text-center">Invoice</th>
+                                                            <th class="text-center">Print Invoice</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        <t t-foreach="state.order_data" t-as="testdata" t-key="testdata.id">
+                                                            <tr>
+                                                                <td class="text-center"><t t-esc="testdata.name"/></td>
+                                                                <td class="text-center"><t t-esc="testdata.create_date"/></td>
+                                                                <td class="text-center"><t t-esc="testdata.partner_id[1]"/></td>
+                                                                <td class="text-center"><t t-esc="testdata.amount_total"/></td>
+                                                                <td class="text-center"><t t-esc="testdata.state"/></td>
+                                                                <td class="text-center">
+                                                                    <button class="btn btn-sm btn-primary pharmacy-order-btn"
+                                                                            t-on-click="() => this.printSaleOrderBill(testdata.id)">
+                                                                        S/O
+                                                                    </button>
+                                                                </td>
+                                                                <td class="text-center">
+                                                                    <button class="btn btn-sm btn-secondary pharmacy-order-btn"
+                                                                            t-on-click="() => this.openOrCreateInvoice(testdata.id)">
+                                                                        <t t-esc="testdata.invoice_count ? 'View Invoice' : 'Generate Invoice'"/>
+                                                                    </button>
+                                                                </td>
+                                                                <td class="text-center">
+                                                                    <button class="btn btn-sm btn-outline-primary pharmacy-order-btn"
+                                                                            t-on-click="() => this.printInvoice(testdata.id)">
+                                                                        Print Invoice
+                                                                    </button>
+                                                                </td>
+                                                             </tr>
+                                                        </t>
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-2 profile_div mt-2 ms-2" t-if="state.menu === 'home'">
+                                        <div class="d-flex p_search"
+                                             role="search"
+                                             style="max-height:40px; margin-top:2vh;">
+                                            <input class="form-control border-end-0 border rounded-pill patient_search"
+                                                   t-ref="PatientSearch"
+                                                   id="patient_search"
+                                                   type="search"
+                                                   placeholder="Phone Number Search"
+                                                   autofocus="autofocus"
+                                                   maxlength="10"
+                                                   oninput="this.value = this.value.replace(/[^0-9]/g, '');"
+                                                   aria-label="Search"/>
+                                            <button class="btn btn-outline-secondary bg-white border-bottom-0 border rounded-pill search_btn search_pe"
+                                                    style=""
+                                                    t-on-click="fetch_patient_data">
+                                                <i class="fa fa-search"/>
+                                            </button>
+                                            <button class="btn btn-outline-secondary bg-white border-bottom-0 border rounded-pill clear_btn search_pe"
+                                                    style=""
+                                                    t-on-click="clear_data">
+                                                <i class="fa fa-times"/>
+                                            </button>
+                                        </div>
+                                        <div class="mt-2" t-if="state.patient_search_results.length">
+                                            <select class="form-control" id="patient_search_results"
+                                                    t-on-change="fetch_selected_patient_details">
+                                                <option value="">Select Patient</option>
+                                                <t t-foreach="state.patient_search_results" t-as="patient" t-key="patient.id">
+                                                    <option t-att-value="patient.id">
+                                                        <t t-esc="`${patient.patient_seq || ''} - ${patient.name || ''} (${patient.phone || ''})`"/>
+                                                    </option>
+                                                </t>
+                                            </select>
+                                        </div>
+                                        <img id="patient-image"
+                                             class="profile_pic"
+                                             src="https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png"/>
+                                        <h2 class="profile_name"
+                                            id="patient-title"/>
+                                        <h3 class="profile_code"
+                                            id="patient-code"/>
+                                        <h3 class="profile_gender"
+                                            id="patient-gender"/>
+                                        <h3 class="profile_bloodgroup"
+                                            id="patient-blood"/>
+                                        <div class="medical_list"
+                                             id="medical_list">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row" style="height:100px"/>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </t>
+</template>

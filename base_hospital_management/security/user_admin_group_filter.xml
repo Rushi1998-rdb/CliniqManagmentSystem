@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Hide specific groups from User Admin's view -->
+    <!-- <record id="base_hospital_management_group_lab_assistant" model="res.groups">
+        <field name="users" eval="[]"/>
+    </record>
+    
+    <record id="base_hospital_management_group_pharmacist" model="res.groups">
+        <field name="users" eval="[]"/>
+    </record>
+    
+    <record id="base_hospital_management_group_nurse" model="res.groups">
+        <field name="users" eval="[]"/>
+    </record> -->
+</odoo>

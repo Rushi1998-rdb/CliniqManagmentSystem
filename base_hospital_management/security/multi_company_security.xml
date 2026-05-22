@@ -1,0 +1,305 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="0">
+        <!-- Multi-Company Rules for Hospital Models -->
+
+        <record id="hospital_outpatient_rule_company" model="ir.rule">
+            <field name="name">Hospital Outpatient: Multi-Company</field>
+            <field name="model_id" ref="model_hospital_outpatient"/>
+            <field name="domain_force">['|', ('company_id', '=', False), ('company_id', 'in', company_ids)]</field>
+        </record>
+
+        <record id="hospital_inpatient_rule_company" model="ir.rule">
+            <field name="name">Hospital Inpatient: Multi-Company</field>
+            <field name="model_id" ref="model_hospital_inpatient"/>
+            <field name="domain_force">['|', ('company_id', '=', False), ('company_id', 'in', company_ids)]</field>
+        </record>
+
+        <record id="hospital_laboratory_rule_company" model="ir.rule">
+            <field name="name">Hospital Laboratory: Multi-Company</field>
+            <field name="model_id" ref="model_hospital_laboratory"/>
+            <field name="domain_force">['|', ('company_id', '=', False), ('company_id', 'in', company_ids)]</field>
+        </record>
+
+        <record id="doctor_specialization_rule_company" model="ir.rule">
+            <field name="name">Doctor Specialization: Multi-Company</field>
+            <field name="model_id" ref="model_doctor_specialization"/>
+            <field name="domain_force">['|', ('company_id', '=', False), ('company_id', 'in', company_ids)]</field>
+        </record>
+
+        <record id="hospital_degree_rule_company" model="ir.rule">
+            <field name="name">Hospital Degree: Multi-Company</field>
+            <field name="model_id" ref="model_hospital_degree"/>
+            <field name="domain_force">['|', ('company_id', '=', False), ('company_id', 'in', company_ids)]</field>
+        </record>
+
+        <record id="medicine_brand_rule_company" model="ir.rule">
+            <field name="name">Medicine Brand: Multi-Company</field>
+            <field name="model_id" ref="model_medicine_brand"/>
+            <field name="domain_force">['|', ('company_id', '=', False), ('company_id', 'in', company_ids)]</field>
+        </record>
+
+        <record id="hospital_pharmacy_rule_company" model="ir.rule">
+            <field name="name">Hospital Pharmacy: Multi-Company</field>
+            <field name="model_id" ref="model_hospital_pharmacy"/>
+            <field name="domain_force">['|', ('company_id', '=', False), ('company_id', 'in', company_ids)]</field>
+        </record>
+
+        <record id="hospital_ward_rule_company" model="ir.rule">
+            <field name="name">Hospital Ward: Multi-Company</field>
+            <field name="model_id" ref="model_hospital_ward"/>
+            <field name="domain_force">['|', ('company_id', '=', False), ('company_id', 'in', company_ids)]</field>
+        </record>
+
+        <record id="hospital_building_rule_company" model="ir.rule">
+            <field name="name">Hospital Building: Multi-Company</field>
+            <field name="model_id" ref="model_hospital_building"/>
+            <field name="domain_force">['|', ('company_id', '=', False), ('company_id', 'in', company_ids)]</field>
+        </record>
+
+        <record id="blood_donation_rule_company" model="ir.rule">
+            <field name="name">Blood Donation: Multi-Company</field>
+            <field name="model_id" ref="model_blood_donation"/>
+            <field name="domain_force">['|', ('company_id', '=', False), ('company_id', 'in', company_ids)]</field>
+        </record>
+
+        <record id="blood_bank_rule_company" model="ir.rule">
+            <field name="name">Blood Bank: Multi-Company</field>
+            <field name="model_id" ref="model_blood_bank"/>
+            <field name="domain_force">['|', ('company_id', '=', False), ('company_id', 'in', company_ids)]</field>
+        </record>
+
+        <record id="doctor_round_rule_company" model="ir.rule">
+            <field name="name">Doctor Round: Multi-Company</field>
+            <field name="model_id" ref="model_doctor_round"/>
+            <field name="domain_force">['|', ('company_id', '=', False), ('company_id', 'in', company_ids)]</field>
+        </record>
+
+        <record id="hospital_family_rule_company" model="ir.rule">
+            <field name="name">Hospital Family: Multi-Company</field>
+            <field name="model_id" ref="model_hospital_family"/>
+            <field name="domain_force">['|', ('company_id', '=', False), ('company_id', 'in', company_ids)]</field>
+        </record>
+
+        <record id="hospital_insurance_rule_company" model="ir.rule">
+            <field name="name">Hospital Insurance: Multi-Company</field>
+            <field name="model_id" ref="model_hospital_insurance"/>
+            <field name="domain_force">['|', ('company_id', '=', False), ('company_id', 'in', company_ids)]</field>
+        </record>
+
+        <record id="lab_medicine_line_rule_company" model="ir.rule">
+            <field name="name">Lab Medicine Line: Multi-Company</field>
+            <field name="model_id" ref="model_lab_medicine_line"/>
+            <field name="domain_force">['|', ('company_id', '=', False), ('company_id', 'in', company_ids)]</field>
+        </record>
+
+        <record id="lab_test_line_rule_company" model="ir.rule">
+            <field name="name">Lab Test Line: Multi-Company</field>
+            <field name="model_id" ref="model_lab_test_line"/>
+            <field name="domain_force">['|', ('company_id', '=', False), ('company_id', 'in', company_ids)]</field>
+        </record>
+
+        <record id="lab_test_result_rule_company" model="ir.rule">
+            <field name="name">Lab Test Result: Multi-Company</field>
+            <field name="model_id" ref="model_lab_test_result"/>
+            <field name="domain_force">['|', ('company_id', '=', False), ('company_id', 'in', company_ids)]</field>
+        </record>
+
+        <record id="nursing_plan_rule_company" model="ir.rule">
+            <field name="name">Nursing Plan: Multi-Company</field>
+            <field name="model_id" ref="model_nursing_plan"/>
+            <field name="domain_force">['|', ('company_id', '=', False), ('company_id', 'in', company_ids)]</field>
+        </record>
+
+        <record id="pharmacy_medicine_rule_company" model="ir.rule">
+            <field name="name">Pharmacy Medicine: Multi-Company</field>
+            <field name="model_id" ref="model_pharmacy_medicine"/>
+            <field name="domain_force">['|', ('company_id', '=', False), ('company_id', 'in', company_ids)]</field>
+        </record>
+
+        <record id="prescription_line_rule_company" model="ir.rule">
+            <field name="name">Prescription Line: Multi-Company</field>
+            <field name="model_id" ref="model_prescription_line"/>
+            <field name="domain_force">['|', ('company_id', '=', False), ('company_id', 'in', company_ids)]</field>
+        </record>
+
+        <record id="product_template_medicine_rule_company" model="ir.rule">
+            <field name="name">Product Template: Active Company Only</field>
+            <field name="model_id" ref="product.model_product_template"/>
+            <field name="global" eval="True"/>
+            <field name="domain_force">[('company_id', '=', company_ids[0])]</field>
+        </record>
+
+        <record id="product_product_medicine_rule_company" model="ir.rule">
+            <field name="name">Product Variant: Active Company Only</field>
+            <field name="model_id" ref="product.model_product_product"/>
+            <field name="global" eval="True"/>
+            <field name="domain_force">[('product_tmpl_id.company_id', '=', company_ids[0])]</field>
+        </record>
+
+        <record id="room_facility_rule_company" model="ir.rule">
+            <field name="name">Room Facility: Multi-Company</field>
+            <field name="model_id" ref="model_room_facility"/>
+            <field name="domain_force">['|', ('company_id', '=', False), ('company_id', 'in', company_ids)]</field>
+        </record>
+
+        <record id="patient_room_rule_company" model="ir.rule">
+            <field name="name">Patient Room: Multi-Company</field>
+            <field name="model_id" ref="model_patient_room"/>
+            <field name="domain_force">['|', ('company_id', '=', False), ('company_id', 'in', company_ids)]</field>
+        </record>
+
+        <record id="lab_test_rule_company" model="ir.rule">
+            <field name="name">Lab Test: Multi-Company</field>
+            <field name="model_id" ref="model_lab_test"/>
+            <field name="domain_force">['|', ('company_id', '=', False), ('company_id', 'in', company_ids)]</field>
+        </record>
+
+        <record id="hospital_bed_rule_company" model="ir.rule">
+            <field name="name">Hospital Bed: Multi-Company</field>
+            <field name="model_id" ref="model_hospital_bed"/>
+            <field name="domain_force">['|', ('company_id', '=', False), ('company_id', 'in', company_ids)]</field>
+        </record>
+
+        <record id="patient_lab_test_rule_company" model="ir.rule">
+            <field name="name">Patient Lab Test: Multi-Company</field>
+            <field name="model_id" ref="model_patient_lab_test"/>
+            <field name="domain_force">['|', ('company_id', '=', False), ('company_id', 'in', company_ids)]</field>
+        </record>
+
+        <record id="doctor_slot_rule_company" model="ir.rule">
+            <field name="name">Doctor Slot: Multi-Company</field>
+            <field name="model_id" ref="model_doctor_slot"/>
+            <field name="domain_force">['|', ('company_id', '=', False), ('company_id', 'in', company_ids)]</field>
+        </record>
+
+        <record id="doctor_allocation_rule_company" model="ir.rule">
+            <field name="name">Doctor Allocation: Multi-Company</field>
+            <field name="model_id" ref="model_doctor_allocation"/>
+            <field name="domain_force">[('company_id', '=', user.company_id.id)]</field>
+        </record>
+
+        <record id="hospital_vaccination_rule_company" model="ir.rule">
+            <field name="name">Hospital Vaccination: Multi-Company</field>
+            <field name="model_id" ref="model_hospital_vaccination"/>
+            <field name="domain_force">['|', ('company_id', '=', False), ('company_id', 'in', company_ids)]</field>
+        </record>
+
+        <record id="inpatient_payment_rule_company" model="ir.rule">
+            <field name="name">Inpatient Payment: Multi-Company</field>
+            <field name="model_id" ref="model_inpatient_payment"/>
+            <field name="domain_force">['|', ('company_id', '=', False), ('company_id', 'in', company_ids)]</field>
+        </record>
+
+        <record id="contra_indication_rule_company" model="ir.rule">
+            <field name="name">Contra Indication: Multi-Company</field>
+            <field name="model_id" ref="model_contra_indication"/>
+            <field name="domain_force">['|', ('company_id', '=', False), ('company_id', 'in', company_ids)]</field>
+        </record>
+
+        <record id="prescription_time_rule_company" model="ir.rule">
+            <field name="name">Prescription Time: Multi-Company</field>
+            <field name="model_id" ref="model_prescription_time"/>
+            <field name="domain_force">['|', ('company_id', '=', False), ('company_id', 'in', company_ids)]</field>
+        </record>
+
+        <record id="hospital_lab_test_rule_company" model="ir.rule">
+            <field name="name">Hospital Lab Test: Multi-Company</field>
+            <field name="model_id" ref="model_hospital_lab_test"/>
+            <field name="domain_force">['|', ('company_id', '=', False), ('company_id', 'in', company_ids)]</field>
+        </record>
+
+        <record id="hospital_lab_result_rule_company" model="ir.rule">
+            <field name="name">Hospital Lab Result: Multi-Company</field>
+            <field name="model_id" ref="model_hospital_lab_result"/>
+            <field name="domain_force">['|', ('company_id', '=', False), ('company_id', 'in', company_ids)]</field>
+        </record>
+
+        <record id="doctor_round_rule_company" model="ir.rule">
+            <field name="name">Doctor Round: Multi-Company</field>
+            <field name="model_id" ref="model_doctor_round"/>
+            <field name="domain_force">['|', ('company_id', '=', False), ('company_id', 'in', company_ids)]</field>
+        </record>
+
+        <record id="nursing_plan_rule_company" model="ir.rule">
+            <field name="name">Nursing Plan: Multi-Company</field>
+            <field name="model_id" ref="model_nursing_plan"/>
+            <field name="domain_force">['|', ('company_id', '=', False), ('company_id', 'in', company_ids)]</field>
+        </record>
+
+        <record id="hospital_charge_type_rule_company" model="ir.rule">
+            <field name="name">Hospital Charge Type: Multi-Company</field>
+            <field name="model_id" ref="model_hospital_charge_type"/>
+            <field name="domain_force">['|', ('company_id', '=', False), ('company_id', 'in', company_ids)]</field>
+        </record>
+
+        <record id="hospital_outpatient_charge_rule_company" model="ir.rule">
+            <field name="name">Hospital Outpatient Charge: Multi-Company</field>
+            <field name="model_id" ref="model_hospital_outpatient_charge"/>
+            <field name="domain_force">['|', ('company_id', '=', False), ('company_id', 'in', company_ids)]</field>
+        </record>
+
+        <record id="prescription_line_rule_company" model="ir.rule">
+            <field name="name">Prescription Line: Multi-Company</field>
+            <field name="model_id" ref="model_prescription_line"/>
+            <field name="domain_force">['|', ('company_id', '=', False), ('company_id', 'in', company_ids)]</field>
+        </record>
+
+        <!-- Strictest Multi-Company Rule for Partners (res.partner) -->
+        <record id="res_partner_patient_rule_company" model="ir.rule">
+            <field name="name">Partner: Strict Multi-Company Isolation</field>
+            <field name="model_id" ref="base.model_res_partner"/>
+            <field name="global" eval="True"/>
+            <field name="domain_force">['|', '|', '|', '|', '|', ('company_id', '=', False), ('id', '=', user.partner_id.id), ('id', '=', user.company_id.partner_id.id), ('is_company', '=', True), ('company_id', 'in', company_ids), ('user_ids.company_ids', 'in', company_ids)]</field>
+        </record>
+
+        <!-- Specific Rule to hide Partners of Users from other companies -->
+        <record id="res_partner_user_link_rule" model="ir.rule">
+            <field name="name">Partner: Hide Staff from Other Companies</field>
+            <field name="model_id" ref="base.model_res_partner"/>
+            <field name="global" eval="True"/>
+            <field name="domain_force">['|', '|', ('id', '=', user.partner_id.id), ('user_ids', '=', False), ('user_ids.company_ids', 'in', company_ids)]</field>
+        </record>
+
+        <!-- <record id="res_partner_own_user_partner_rule" model="ir.rule">
+            <field name="name">Partner: Read Own User Contact</field>
+            <field name="model_id" ref="base.model_res_partner"/>
+            <field name="groups" eval="[(4, ref('base.group_user'))]"/>
+            <field name="perm_read" eval="True"/>
+            <field name="perm_write" eval="False"/>
+            <field name="perm_create" eval="False"/>
+            <field name="perm_unlink" eval="False"/>
+            <field name="domain_force">[('id', '=', user.partner_id.id)]</field>
+        </record> -->
+
+        <!-- Multi-Company Rule for Users (res.users) -->
+        <record id="res_users_rule_company" model="ir.rule">
+            <field name="name">Users: Multi-Company</field>
+            <field name="model_id" ref="base.model_res_users"/>
+            <field name="domain_force">['|', '|', ('id', '=', user.id), ('share', '=', False), ('company_ids', 'in', company_ids)]</field>
+        </record>
+
+        <!-- Multi-Company Rule for Employees (hr.employee) -->
+        <record id="hr_employee_rule_company" model="ir.rule">
+            <field name="name">Employees: Multi-Company</field>
+            <field name="model_id" ref="hr.model_hr_employee"/>
+            <field name="global" eval="True"/>
+            <field name="domain_force">[('company_id', 'in', company_ids)]</field>
+        </record>
+
+        <!-- Strict Global Isolation: Users can only see invoices they created or are assigned to, EXCEPT Managers -->
+        <record id="account_move_strict_global_isolation" model="ir.rule">
+            <field name="name">Account Move: Strict Global Isolation</field>
+            <field name="model_id" ref="account.model_account_move"/>
+            <field name="global" eval="True"/>
+            <field name="domain_force">[(1, '=', 1)] if user.has_group('base_hospital_management.base_hospital_management_group_manager') or user.has_group('base_hospital_management.base_hospital_management_group_receptionist') else ['|', '|', ('id', '=', False), ('create_uid', '=', user.id), ('outpatient_id.doctor_id.doctor_id.user_id', '=', user.id)]</field>
+        </record>
+
+        <record id="account_move_line_strict_global_isolation" model="ir.rule">
+            <field name="name">Account Move Line: Strict Global Isolation</field>
+            <field name="model_id" ref="account.model_account_move_line"/>
+            <field name="global" eval="True"/>
+            <field name="domain_force">[(1, '=', 1)] if user.has_group('base_hospital_management.base_hospital_management_group_manager') or user.has_group('base_hospital_management.base_hospital_management_group_receptionist') else ['|', '|', ('id', '=', False), ('create_uid', '=', user.id), ('move_id.outpatient_id.doctor_id.doctor_id.user_id', '=', user.id)]</field>
+        </record>
+    </data>
+</odoo>

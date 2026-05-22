@@ -1,0 +1,660 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    
+    <record id="res_partner_view_search" model="ir.ui.view">
+        <field name="name">res.partner.view.search</field>
+        <field name="model">res.partner</field>
+        <field name="arch" type="xml">
+            <search string="Search Tips">
+                <field name="name" string="Name"/>
+                <field name="patient_seq" string="Patient Code"/>
+                <field name="gender" string="Gender"/>
+            </search>
+        </field>
+    </record>
+   
+    <record id="res_partner_view_kanban" model="ir.ui.view">
+        <field name="name">res.partner.view.kanban</field>
+        <field name="model">res.partner</field>
+        <field name="arch" type="xml">
+            <kanban class="o_res_partner_kanban" sample="1">
+                <field name="id"/>
+                <field name="display_name"/>
+                <field name="patient_seq"/>
+                <field name="gender"/>
+                <t t-name="kanban-box">
+                    <div t-attf-class="oe_kanban_global_click">
+                        <div class="o_kanban_image">
+                            <img alt="Avatar" t-att-src="kanban_image('res.partner', 'avatar_128',record.id.raw_value)"/>
+                        </div>
+                        <div class="oe_kanban_details">
+                            <strong class="o_kanban_record_title">
+                                <field name="display_name"/>
+                            </strong>
+                        </div>
+                    </div>
+                </t>
+            </kanban>
+        </field>
+    </record>
+    
+    <record id="res_partner_view_tree" model="ir.ui.view">
+        <field name="name">res.partner.view.tree</field>
+        <field name="model">res.partner</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="patient_seq"/>
+                <field name="name"/>
+                <field name="gender"/>
+            </tree>
+        </field>
+    </record>
+    
+    <record id="res_partner_view_form" model="ir.ui.view">
+        <field name="name">res.partner.view.form</field>
+        <field name="model">res.partner</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <div class="oe_button_box" name="button_box">
+                        <button class="oe_stat_button" type="object"
+                                name="alive_status"
+                                invisible = "['|',(is_alive == 'dead'),(name == False)]"
+                                icon="fa-check">
+                            <span class="o_stat_text text-success">ALIVE</span>
+                        </button>
+                        <button class="oe_stat_button" type="object"
+                                name="alive_status"
+                                invisible="is_alive == 'alive'"
+                                icon="fa-times-circle">
+                            <span class="o_stat_text text-danger">EXPIRED</span>
+                        </button>
+                    </div>
+                    <field name="image_1920" widget="image" class="oe_avatar"/>
+                    <div class="oe_title">
+                        <h1 class="d-flex">
+                            <field name="patient_seq" placeholder="Patient No."
+                                   required="True"/>
+                        </h1>
+                    </div>
+                    <group>
+                        <group>
+                            <field name="name"
+                                   context="{'res_partner_search_mode': 'customer', 'show_address': 1, 'show_email':1}"
+                                   options="{&quot;always_reload&quot;: True}"/>
+                            <field name="date_of_birth"/>
+                            <field name="phone" required="1"/>
+                            <field name="height" string="Height (cm)"/>
+                            <field name="weight" string="Weight (kg)"/>
+                        </group>
+                        <group>
+                            <label for="blood_group" string="Blood Group"/>
+                            <div class="o_address_format">
+                                <field name="blood_group" class="o_address_zip"/>
+                            </div>
+                            <field name="gender" required="1"/>
+                            <field name="marital_status"/>
+                            <field name="age_display" readonly="1"/>
+                            <field name="place"/>
+                            <field name="is_alive" widget="radio" invisible="1"
+                                   options="{'horizontal': true}"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <!-- Diagnosis Page -->
+                        <page string="Diagnosis"
+                              groups="base_hospital_management.base_hospital_management_group_manager,
+                                      base_hospital_management.base_hospital_management_group_doctor,
+                                      base_hospital_management.base_hospital_management_group_nurse">
+                            <field name="op_ids">
+                                <tree default_order="op_date desc">
+                                    <field name="op_reference"/>
+                                    <field name="op_date"/>
+                                    <field name="chief_complaint"/>
+                                    <field name="clinical_notes"/>
+                                    <field name="case_type"/>
+                                </tree>
+                                <form>
+                                    <!-- form content unchanged -->
+                                    <group>
+                                        <group string="Chief Complaint">
+                                            <field name="chief_complaint"/>
+                                            <field name="duration"/>
+                                            <field name="duration_note"/>
+                                        </group>
+                                        <group string="Vitals">
+                                            <field name="temperature"/>
+                                            <field name="bp"/>
+                                            <field name="pulse"/>
+                                            <field name="spo2"/>
+                                            <field name="weight"/>
+                                            <field name="height"/>
+                                        </group>
+                                        <group string="Clinical">
+                                            <field name="aggravating_factor"/>
+                                            <field name="clinical_notes"/>
+                                            <field name="diagnosis"/>
+                                            <field name="differential_diagnosis"/>
+                                            <field name="case_type"/>
+                                        </group>
+                                    </group>
+                                </form>
+                            </field>
+                        </page>
+                        
+                        <!-- Prescription Page -->
+                        <page string="Prescription" name="prescription_tab"
+                              groups="base_hospital_management.base_hospital_management_group_doctor">
+                            <field name="op_history_ids" readonly="1">
+                                <tree default_order="op_date desc">
+                                    <field name="op_reference"/>
+                                    <field name="op_date"/>
+                                    <field name="doctor_id"/>
+                                    <field name="state"/>
+                                    <button name="action_print_prescription"
+                                        type="object"
+                                        icon="fa-print"
+                                        attrs="{'invisible': [('state','!=','invoice')]}"/>
+                                </tree>
+                            </field>
+                        </page>
+                        
+                        <!-- History Page -->
+                        <page string="History"
+                              groups="base_hospital_management.base_hospital_management_group_manager,
+                                      base_hospital_management.base_hospital_management_group_doctor,
+                                      base_hospital_management.base_hospital_management_group_nurse">
+                            <field name="op_history_ids" readonly="1">
+                                <tree default_order="op_date desc">
+                                    <field name="op_reference"/>
+                                    <field name="op_date"/>
+                                    <field name="doctor_id"/>
+                                    <field name="state"/>
+                                </tree>
+                                <form string="Visit Details" create="0" edit="0">
+                                    <sheet>
+                                        <group string="Chief Complaint">
+                                            <field name="chief_complaint" readonly="1"/>
+                                        </group>
+                                        <group string="Duration">
+                                            <field name="duration" readonly="1"/>
+                                        </group>
+                                        <group string="Vitals">
+                                            <field name="temperature" readonly="1"/>
+                                            <field name="bp" readonly="1"/>
+                                            <field name="pulse" readonly="1"/>
+                                            <field name="spo2" readonly="1"/>
+                                            <field name="weight" readonly="1"/>
+                                            <field name="height" readonly="1"/>
+                                        </group>
+                                        <group string="Clinical Findings">
+                                            <field name="clinical_notes" readonly="1"/>
+                                        </group>
+                                        <group string="Medical History">
+                                            <field name="diagnosis" readonly="1"/>
+                                            <field name="differential_diagnosis" readonly="1"/>
+                                        </group>
+                                        <group string="Lab Results">
+                                            <field name="lab_result_ids" readonly="1">
+                                                <tree default_order="ordered_date desc">
+                                                    <field name="test_id"/>
+                                                    <field name="ordered_date"/>
+                                                    <field name="result_value"/>
+                                                    <field name="normal_range"/>
+                                                    <field name="status"/>
+                                                </tree>
+                                            </field>
+                                        </group>
+                                    </sheet>
+                                </form>
+                            </field>
+                        </page>
+                        
+                        <!-- Lab Results Page -->
+                        <page string="Lab Results"
+                              groups="base_hospital_management.base_hospital_management_group_manager,
+                                      base_hospital_management.base_hospital_management_group_doctor,
+                                      base_hospital_management.base_hospital_management_group_lab_assistant,
+                                      base_hospital_management.base_hospital_management_group_nurse">
+                            <field name="lab_result_ids">
+                                <tree editable="bottom" default_order="ordered_date desc">
+                                    <field name="test_id"/>
+                                    <field name="ordered_date"/>
+                                    <field name="result_value"/>
+                                    <field name="normal_range"/>
+                                    <field name="status"/>
+                                    <field name="report_file"/>
+                                    <field name="doctor_remarks"/>
+                                </tree>
+                                <form>
+                                    <group>
+                                        <group>
+                                            <field name="test_id"/>
+                                            <field name="ordered_date"/>
+                                            <field name="status"/>
+                                        </group>
+                                        <group>
+                                            <field name="result_value"/>
+                                            <field name="normal_range"/>
+                                        </group>
+                                        <group>
+                                            <field name="report_file"/>
+                                            <field name="picture"/>
+                                        </group>
+                                        <group>
+                                            <field name="doctor_remarks"/>
+                                        </group>
+                                    </group>
+                                </form>
+                            </field>
+                        </page>
+                        
+                        <!-- Fees Page -->
+                        <page string="Fees" 
+                              groups="base_hospital_management.base_hospital_management_group_manager,
+                                      base_hospital_management.base_hospital_management_group_doctor">
+                            <field name="fee_lines">
+                                <tree string="Fee History" default_order="op_date desc">
+                                    <field name="op_reference" string="OP Reference"/>
+                                    <field name="op_date" string="Date"/>
+                                    <field name="general_fee" string="General Fee" sum="Total"/>
+
+                                    <field name="total_amount" string="Total Amount" sum="Total"/>
+                                    <field name="payment_mode" string="Payment Mode"/>
+                                    <field name="state" string="Status" widget="badge"/>
+                                </tree>
+                            </field>
+                        </page>
+                        
+                        <!-- Internal notes Page -->
+                        <page string="Treatment Plan"
+                              groups="base_hospital_management.base_hospital_management_group_manager,
+                                      base_hospital_management.base_hospital_management_group_doctor,
+                                      base_hospital_management.base_hospital_management_group_nurse">
+                            <field name="notes"/>
+                        </page>
+                    </notebook>
+                </sheet>
+                <div class="oe_chatter">
+                    <field name="message_follower_ids"/>
+                    <field name="message_ids"/>
+                </div>
+            </form>
+        </field>
+    </record>
+   
+    <record id="res_partner_action" model="ir.actions.act_window">
+        <field name="name">Patients</field>
+        <field name="res_model">res.partner</field>
+        <field name="view_mode">kanban,form,tree</field>
+        <field name="view_ids" eval="[(5, 0, 0),
+        (0, 0,{'view_mode': 'kanban', 'view_id': ref('res_partner_view_kanban')}),
+        (0, 0,{'view_mode': 'tree', 'view_id': ref('res_partner_view_tree')}),
+        (0, 0,{'view_mode': 'form', 'view_id': ref('res_partner_view_form')})]"/>
+        <field name="domain">[
+            ('is_company', '=', False),
+            ('parent_id', '=', False),
+            ('patient_seq', 'not in', [False, 'New', 'Employee', 'User'])
+        ]</field>
+        <field name="context">{'is_patient': 1, 'default_is_patient': 1, 'default_customer_rank': 1}</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">Create a new Patient</p>
+        </field>
+    </record>
+
+    <menuitem id="res_partner_menu" name="Patient Details" parent="hospital_menu_root"
+            groups="base_hospital_management.base_hospital_management_group_lab_assistant,base_hospital_management.base_hospital_management_group_pharmacist,base_hospital_management.base_hospital_management_group_nurse,base_hospital_management.base_hospital_management_group_doctor,base_hospital_management.base_hospital_management_group_receptionist,base_hospital_management.base_hospital_management_group_manager"
+            action="res_partner_action" sequence="1"/>
+</odoo>
+
+
+
+
+<!-- <?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+    
+    <record id="res_partner_view_search" model="ir.ui.view">
+        <field name="name">res.partner.view.search</field>
+        <field name="model">res.partner</field>
+        <field name="arch" type="xml">
+            <search string="Search Tips">
+                <field name="name" string="Name"/>
+                <field name="patient_seq" string="Patient Code"/>
+                <field name="gender" string="Gender"/>
+            </search>
+        </field>
+    </record>
+   
+    <record id="res_partner_view_kanban" model="ir.ui.view">
+        <field name="name">res.partner.view.kanban</field>
+        <field name="model">res.partner</field>
+        <field name="arch" type="xml">
+            <kanban class="o_res_partner_kanban" sample="1">
+                <field name="id"/>
+                <field name="display_name"/>
+                <field name="patient_seq"/>
+                <field name="gender"/>
+                <t t-name="kanban-box">
+                    <div t-attf-class="oe_kanban_global_click">
+                        <div class="o_kanban_image">
+                            <img alt="Avatar"
+                                 t-att-src="kanban_image('res.partner', 'avatar_128',record.id.raw_value)"/>
+                        </div>
+                        <div class="oe_kanban_details">
+                            <strong class="o_kanban_record_title">
+                                <field name="display_name"/>
+                            </strong>
+                        </div>
+                    </div>
+                </t>
+            </kanban>
+        </field>
+    </record>
+    
+    <record id="res_partner_view_tree" model="ir.ui.view">
+        <field name="name">res.partner.view.tree</field>
+        <field name="model">res.partner</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="patient_seq"/>
+                <field name="name"/>
+                
+                <field name="gender"/>
+            </tree>
+        </field>
+    </record>
+    
+    <record id="res_partner_view_form" model="ir.ui.view">
+        <field name="name">res.partner.view.form</field>
+        <field name="model">res.partner</field>
+        <field name="arch" type="xml">
+            <form>
+                
+                <sheet>
+                    <div class="oe_button_box" name="button_box">
+                        
+                        <button class="oe_stat_button" type="object"
+                                name="alive_status"
+                                invisible = "['|',(is_alive == 'dead'),(name == False)]"
+                                icon="fa-check">
+                            <span class="o_stat_text text-success">ALIVE</span>
+                        </button>
+                        <button class="oe_stat_button" type="object"
+                                name="alive_status"
+                                invisible="is_alive == 'alive'"
+                                icon="fa-times-circle">
+                            <span class="o_stat_text text-danger">EXPIRED</span>
+                        </button>
+                    </div>
+                    <field name="image_1920" widget="image" class="oe_avatar"/>
+                    <div class="oe_title">
+                        <h1 class="d-flex">
+                            <field name="patient_seq" placeholder="Patient No."
+                                   required="True"/>
+                        </h1>
+                    </div>
+                    <group>
+                        <group>
+                            <field name="name"
+                                   context="{'res_partner_search_mode':
+                                    'customer',
+                                    'show_address': 1, 'show_email':1}"
+                                   options="{&quot;always_reload&quot;: True}"/>
+                            <field name="date_of_birth"/>
+                            <field name="phone"/>
+                            <field name="height" string="Height (Inch)"/>
+                            <field name="weight" string="Weight (kg)"/>
+                            
+                        </group>
+                        <group>
+                            <label for="blood_group" string="Blood Group"/>
+                            <div class="o_address_format">
+                                <field name="blood_group"
+                                       class="o_address_zip" required="1"/>
+                                
+                            </div>
+                            <field name="gender"/>
+                            <field name="marital_status"/>
+                            <field name="age_display" readonly="1"/>
+                            <field name="place"/>
+                            
+                            <field name="is_alive" widget="radio" invisible="1"
+                                   options="{'horizontal': true}"/>
+                        </group>
+                    </group>
+                    <notebook>
+                       
+                        <page string="Diagnosis"
+                              groups="base_hospital_management.base_hospital_management_group_manager,
+                                      base_hospital_management.base_hospital_management_group_doctor,
+                                      base_hospital_management.base_hospital_management_group_nurse">
+                            <field name="op_ids">
+                                <tree>
+                                    <field name="op_reference"/>
+                                    <field name="op_date"/>
+                                    <field name="chief_complaint"/>
+                                    <field name="diagnosis"/>
+                                    <field name="case_type"/>
+                                </tree>
+                                <form>
+                                    <group>
+                                        <group string="Chief Complaint">
+                                            <field name="chief_complaint"/>
+                                            <field name="duration"/>
+                                            <field name="duration_note"/>
+                                        </group>
+
+                                        <group string="Vitals">
+                                            <field name="temperature"/>
+                                            <field name="bp"/>
+                                            <field name="pulse"/>
+                                            <field name="spo2"/>
+                                            <field name="weight"/>
+                                            <field name="height"/>
+                                        </group>
+
+                                        <group string="Clinical">
+                                            <field name="aggravating_factor"/>
+                                            <field name="clinical_notes"/>
+                                            <field name="diagnosis"/>
+                                            <field name="differential_diagnosis"/>
+                                            <field name="case_type"/>
+                                        </group>
+                                    </group>
+                                </form>
+                            </field>
+                        </page>
+                        <page string="Prescription" name="prescription_tab"
+                            groups="base_hospital_management.base_hospital_management_group_doctor">
+
+                            
+
+                            <field name="op_history_ids" readonly="1">
+                                <tree>
+                                    <field name="op_reference"/>
+                                    <field name="op_date"/>
+                                    <field name="doctor_id"/>
+                                    <field name="state"/>
+                                    <button name="action_print_prescription"
+                                        type="object"
+                                        icon="fa-print"
+                                        attrs="{'invisible': [('state','!=','invoice')]}"/>
+                                </tree>
+                            </field>
+
+                        </page>
+                        <page string="History"
+                              groups="base_hospital_management.base_hospital_management_group_manager,
+                                      base_hospital_management.base_hospital_management_group_doctor,
+                                      base_hospital_management.base_hospital_management_group_nurse">
+                            <field name="op_history_ids" readonly="1">
+                                <tree>
+                                    <field name="op_reference"/>
+                                    <field name="op_date"/>
+                                    <field name="doctor_id"/>
+                                    <field name="state"/>
+                                </tree>
+                                <form string="Visit Details" create="0" edit="0">
+                                    <sheet>
+                                        <group string="Chief Complaint">
+                                            <field name="chief_complaint" readonly="1"/>
+                                        </group>
+                                        <group string="Duration">
+                                            <field name="duration" readonly="1"/>
+                                        </group>
+                                        <group string="Vitals">
+                                            <field name="temperature" readonly="1"/>
+                                            <field name="bp" readonly="1"/>
+                                            <field name="pulse" readonly="1"/>
+                                            <field name="spo2" readonly="1"/>
+                                            <field name="weight" readonly="1"/>
+                                            <field name="height" readonly="1"/>
+                                        </group>
+                                        <group string="Clinical Findings">
+                                            <field name="clinical_notes" readonly="1"/>
+                                        </group>
+                                        <group string="Diagnosis">
+                                            <field name="diagnosis" readonly="1"/>
+                                            <field name="differential_diagnosis" readonly="1"/>
+                                        </group>
+                                        <group string="Lab Results">
+                                            <field name="lab_result_ids" readonly="1">
+                                                <tree>
+                                                    <field name="test_id"/>
+                                                    <field name="ordered_date"/>
+                                                    <field name="result_value"/>
+                                                    <field name="normal_range"/>
+                                                    <field name="status"/>
+                                                </tree>
+                                            </field>
+                                        </group>
+                                    </sheet>
+                                </form>
+                            </field>
+                        </page>
+                        <page string="Lab Results"
+                              groups="base_hospital_management.base_hospital_management_group_manager,
+                                      base_hospital_management.base_hospital_management_group_doctor,
+                                      base_hospital_management.base_hospital_management_group_lab_assistant,
+                                      base_hospital_management.base_hospital_management_group_nurse">
+                            <field name="lab_result_ids">
+                                <tree editable="bottom">
+                                    <field name="test_id"/>
+                                    <field name="ordered_date"/>
+                                    <field name="result_value"/>
+                                    <field name="normal_range"/>
+                                    <field name="status"/>
+                                    <field name="report_file"/>
+                                    <field name="doctor_remarks"/>
+                                </tree>
+                                <form>
+                                    <group>
+                                        <group>
+                                            <field name="test_id"/>
+                                            <field name="ordered_date"/>
+                                            <field name="status"/>
+                                        </group>
+                                        <group>
+                                            <field name="result_value"/>
+                                            <field name="normal_range"/>
+                                        </group>
+                                        <group>
+                                            <field name="report_file"/>
+                                            <field name="picture"/>
+                                        </group>
+                                        <group>
+                                            <field name="doctor_remarks"/>
+                                        </group>
+                                    </group>
+                                </form>
+                            </field>
+                        </page>
+                        
+                        
+                        
+                        
+                        <page string="Gynecology"
+                              invisible="gender != 'female'"
+                              groups="base_hospital_management.base_hospital_management_group_manager,
+                                      base_hospital_management.base_hospital_management_group_doctor,
+                                      base_hospital_management.base_hospital_management_group_nurse">
+                            <group string="Gynecology">
+                                <group>
+                                    <field name="fertile"/>
+                                    <field name="menarche_age"/>
+                                    <field name="pause"/>
+                                    <field name="pause_age"/>
+                                    <field name="colposcopy"/>
+                                    <field name="self"/>
+                                </group>
+                                <group>
+                                    <field name="mommography"/>
+                                    <field name="last_pap"/>
+                                    <field name="last_col"/>
+                                </group>
+                            </group>
+                            <group string="Obstetrics">
+                                <group>
+                                    <field name="deceased"/>
+                                    <field name="grandiva"/>
+                                </group>
+                                <group>
+                                    <field name="alive"/>
+                                    <field name="premature"/>
+                                    <field name="abortions"/>
+                                </group>
+                            </group>
+                        </page>
+                        <page string="Fees" 
+                            groups="base_hospital_management.base_hospital_management_group_manager,
+                                    base_hospital_management.base_hospital_management_group_doctor">
+                            <field name="fee_lines">
+                                <tree string="Fee History">
+                                    <field name="op_reference" string="OP Reference"/>
+                                    <field name="op_date" string="Date"/>
+                                    <field name="general_fee" string="General Fee" sum="Total"/>
+
+                                    <field name="total_amount" string="Total Amount" sum="Total"/>
+                                    <field name="payment_mode" string="Payment Mode"/>
+                                    <field name="state" string="Status" widget="badge"/>
+                                </tree>
+                            </field>
+                        </page>
+                        
+                        
+                        <page string="Internal notes"
+                              groups="base_hospital_management.base_hospital_management_group_manager,
+                                      base_hospital_management.base_hospital_management_group_doctor,
+                                      base_hospital_management.base_hospital_management_group_nurse">
+                            <field name="notes"/>
+                        </page>
+                    </notebook>
+                </sheet>
+                <div class="oe_chatter">
+                    <field name="message_follower_ids"/>
+                    <field name="message_ids"/>
+                </div>
+            </form>
+        </field>
+    </record>
+   
+    <record id="res_partner_action" model="ir.actions.act_window">
+        <field name="name">Patients</field>
+        <field name="res_model">res.partner</field>
+        <field name="view_mode">kanban,form,tree</field>
+        <field name="view_ids" eval="[(5, 0, 0),
+        (0, 0,{'view_mode': 'kanban', 'view_id': ref('res_partner_view_kanban')}),
+        (0, 0,{'view_mode': 'tree', 'view_id': ref('res_partner_view_tree')}),
+        (0, 0,{'view_mode': 'form', 'view_id': ref('res_partner_view_form')})]"/>
+        <field name="domain">[('patient_seq','not in',['New', 'Employee', 'User'])]</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">Create a new Patient</p>
+        </field>
+    </record>
+    
+    <menuitem id="res_partner_menu" name="Patient" parent="hospital_menu_root"
+              action="res_partner_action" sequence="1"/>
+</odoo>
+
+
+ -->

@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Custom User Admin Menu -->
+    <menuitem id="menu_user_admin_root" 
+              name="User Management" 
+              sequence="100"
+              groups="base_hospital_management.base_hospital_management_group_user_admin"/>
+    
+    <!-- Users Action -->
+    <record id="action_user_admin_users" model="ir.actions.act_window">
+        <field name="name">Users</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">res.users</field>
+        <field name="view_mode">tree,form</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Create a new user
+            </p>
+        </field>
+    </record>
+    
+    <!-- Users Menu -->
+    <menuitem id="menu_user_admin_users" 
+              name="Users" 
+              parent="menu_user_admin_root"
+              action="action_user_admin_users"
+              sequence="10"
+              groups="base_hospital_management.base_hospital_management_group_user_admin"/>
+    
+    <!-- Companies Action -->
+    <record id="action_user_admin_companies" model="ir.actions.act_window">
+        <field name="name">Companies</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">res.company</field>
+        <field name="view_mode">tree,form</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Create a new company
+            </p>
+        </field>
+    </record>
+    
+    <!-- Companies Menu -->
+    <menuitem id="menu_user_admin_companies" 
+              name="Companies" 
+              parent="menu_user_admin_root"
+              action="action_user_admin_companies"
+              sequence="20"
+              groups="base_hospital_management.base_hospital_management_group_user_admin"/>
+</odoo>

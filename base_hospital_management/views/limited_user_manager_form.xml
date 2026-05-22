@@ -1,0 +1,155 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Simple User Form for Limited User Manager -->
+    <record id="limited_user_manager_user_form" model="ir.ui.view">
+        <field name="name">limited.user.manager.user.form</field>
+        <field name="model">res.users</field>
+        <field name="priority">100</field>
+        <field name="groups_id" eval="[(4, ref('base_hospital_management.base_hospital_management_group_limited_user_manager'))]"/>
+        <field name="arch" type="xml">
+            <form string="Users">
+                <sheet>
+                    <field name="image_1920" widget="image" class="oe_avatar"/>
+                    <div class="oe_title">
+                        <h1>
+                            <field name="name" placeholder="Name..." required="1"/>
+                        </h1>
+                        <group>
+                            <field name="login" placeholder="Email/Username" required="1"/>
+                            <field name="new_password" widget="password" placeholder="Password"/>
+                        </group>
+                    </div>
+                    <group>
+                        <group>
+                            <field name="email"/>
+                            <field name="phone"/>
+                            <field name="mobile"/>
+                        </group>
+                        <group>
+                            <field name="groups_id" widget="many2many_tags" 
+                                   domain="[('category_id.name', '=', 'Hospital Management')]"
+                                   help="Select Doctor to give doctor access"/>
+                            <field name="active"/>
+                        </group>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+    
+    <!-- Simple Tree View for Limited User Manager -->
+    <record id="limited_user_manager_user_tree" model="ir.ui.view">
+        <field name="name">limited.user.manager.user.tree</field>
+        <field name="model">res.users</field>
+        <field name="priority">100</field>
+        <field name="groups_id" eval="[(4, ref('base_hospital_management.base_hospital_management_group_limited_user_manager'))]"/>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="name"/>
+                <field name="login"/>
+                <field name="email"/>
+                <field name="active"/>
+            </tree>
+        </field>
+    </record>
+    
+    <!-- Action for Limited User Manager -->
+    <record id="limited_user_manager_action_users" model="ir.actions.act_window">
+        <field name="name">Users</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">res.users</field>
+        <field name="view_mode">tree,form</field>
+        <field name="view_id" ref="limited_user_manager_user_tree"/>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Create a new user
+            </p>
+        </field>
+    </record>
+    
+    <!-- Menu for Limited User Manager -->
+    <menuitem id="menu_limited_user_manager_root" 
+              name="User Management" 
+              sequence="10"
+              groups="base_hospital_management.base_hospital_management_group_limited_user_manager"/>
+    
+    <menuitem id="menu_limited_user_manager_users" 
+              name="Users" 
+              parent="menu_limited_user_manager_root"
+              action="limited_user_manager_action_users"
+              sequence="10"
+              groups="base_hospital_management.base_hospital_management_group_limited_user_manager"/>
+    
+    <!-- Simple Company Form for Limited User Manager -->
+    <record id="limited_user_manager_company_form" model="ir.ui.view">
+        <field name="name">limited.user.manager.company.form</field>
+        <field name="model">res.company</field>
+        <field name="priority">100</field>
+        <field name="groups_id" eval="[(4, ref('base_hospital_management.base_hospital_management_group_limited_user_manager'))]"/>
+        <field name="arch" type="xml">
+            <form string="Companies">
+                <sheet>
+                    <div class="oe_title">
+                        <h1>
+                            <field name="name" placeholder="Company Name..." required="1"/>
+                        </h1>
+                    </div>
+                    <group>
+                        <group>
+                            <field name="email"/>
+                            <field name="phone"/>
+                            <field name="website"/>
+                        </group>
+                        <group>
+                            <field name="vat"/>
+                            <field name="currency_id"/>
+                        </group>
+                    </group>
+                    <group string="Address">
+                        <field name="street"/>
+                        <field name="street2"/>
+                        <field name="city"/>
+                        <field name="state_id"/>
+                        <field name="country_id"/>
+                        <field name="zip"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+    
+    <record id="limited_user_manager_company_tree" model="ir.ui.view">
+        <field name="name">limited.user.manager.company.tree</field>
+        <field name="model">res.company</field>
+        <field name="priority">100</field>
+        <field name="groups_id" eval="[(4, ref('base_hospital_management.base_hospital_management_group_limited_user_manager'))]"/>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="name"/>
+                <field name="email"/>
+                <field name="phone"/>
+                <field name="city"/>
+            </tree>
+        </field>
+    </record>
+    
+    <record id="limited_user_manager_action_companies" model="ir.actions.act_window">
+        <field name="name">Companies</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">res.company</field>
+        <field name="view_mode">tree,form</field>
+        <field name="view_id" ref="limited_user_manager_company_tree"/>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Create a new company
+            </p>
+        </field>
+    </record>
+    
+    <menuitem id="menu_limited_user_manager_companies" 
+              name="Companies" 
+              parent="menu_limited_user_manager_root"
+              action="limited_user_manager_action_companies"
+              sequence="20"
+              groups="base_hospital_management.base_hospital_management_group_limited_user_manager"/>
+</odoo>

@@ -1,0 +1,707 @@
+.n_card-body{
+    margin-top: -285px;
+    margin-left: 76px;
+}
+.n_Container{
+    width:681px;
+    padding:2rem;
+    max-height: 90vh;
+    min-height: 90vh;
+    margin-right:21px;
+    margin-left:60px;
+    margin-top:10px;
+    margin-bottom:10px;
+    overflow-x: scroll;
+    overflow-y: scroll;
+    border-radius: 5px;
+    box-shadow: 0px 1px 3px 3px #c9c9c9;
+ }
+ .n_active,.n_active1,.n_active2{
+   background-color: rgb(215, 215, 215);
+}
+    @media screen and (max-width: 545px) {
+      .p_list tr th{
+    font-size: 9px;
+    padding: 18px 0px !important;
+    }
+    }
+/* .title{
+ font-size: 49px;
+ color:blue;
+ text-align:center;
+ margin-top: -285px;
+    margin-left: 753px;
+} */
+.title{
+    font-size:49px;
+    color:blue;
+    text-align:center;
+    width:100%;
+    display:block;
+    margin-top:40px;
+}
+.doctor_dashButtonContainer{
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    gap:30px; /* space between buttons */
+    margin-top:40px;
+}
+
+.doctor_dashButton{
+    height:75px;
+    width:220px;
+    border-radius:10px;
+    background:#2b8d72;
+    color:white;
+    font-size:22px;
+    font-weight:700;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    cursor:pointer;
+    box-shadow:0px 1px 3px 3px #e1e1e1;
+}
+/* Add at the end of your CSS file */
+.welcome-name {
+    color: #2b8d72;
+    font-weight: 800;
+}
+/* Add these styles at the end of your doctor_dashboard.css */
+
+/* Doctor Profile Card */
+.doctor-profile-card {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    border-radius: 15px;
+    padding: 30px;
+    margin: 20px 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    color: white;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+}
+
+.doctor-profile-left {
+    display: flex;
+    align-items: center;
+    gap: 25px;
+}
+
+/* Avatar Container */
+.doctor-avatar-container {
+    position: relative;
+    width: 100px;
+    height: 100px;
+}
+
+.doctor-avatar {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    overflow: hidden;
+    border: 4px solid white;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+}
+
+.doctor-avatar-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.doctor-avatar-placeholder {
+    width: 100%;
+    height: 100%;
+    background: rgba(255,255,255,0.2);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 42px;
+    font-weight: bold;
+    color: white;
+}
+
+/* Camera Upload Button */
+.camera-upload {
+    position: absolute;
+    bottom: 5px;
+    right: 5px;
+    width: 32px;
+    height: 32px;
+    background: white;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    border: 2px solid #667eea;
+    transition: all 0.3s ease;
+}
+
+.camera-upload:hover {
+    transform: scale(1.1);
+    background: #f0f0f0;
+}
+
+.camera-upload i {
+    color: #667eea;
+    font-size: 16px;
+}
+
+/* Doctor Info Text */
+.doctor-info-text {
+    display: flex;
+    flex-direction: column;
+}
+
+.welcome-title {
+    font-size: 32px;
+    margin: 0 0 5px 0;
+    font-weight: 600;
+}
+
+.doctor-name {
+    color: #ffd700;
+    font-weight: 700;
+}
+
+.doctor-title {
+    font-size: 16px;
+    margin: 0;
+    opacity: 0.9;
+}
+
+/* Right side - Date */
+.doctor-profile-right {
+    background: rgba(255,255,255,0.2);
+    padding: 15px 25px;
+    border-radius: 10px;
+}
+
+.current-date {
+    margin: 0;
+    font-size: 16px;
+    display: flex;
+    align-items: center;
+}
+
+.current-date i {
+    font-size: 18px;
+}
+
+/* Update existing button styles to include icons */
+.doctor_dashButton {
+    height: 75px;
+    width: 220px;
+    border-radius: 10px;
+    background: #2b8d72;
+    color: white;
+    font-size: 22px;
+    font-weight: 700;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    box-shadow: 0px 1px 3px 3px #e1e1e1;
+    transition: all 0.3s ease;
+}
+
+.doctor_dashButton:hover {
+    background: #1f6b56;
+    transform: translateY(-2px);
+    box-shadow: 0px 4px 6px 3px #d1d1d1;
+}
+
+/* Responsive Design */
+@media screen and (max-width: 768px) {
+    .doctor-profile-card {
+        flex-direction: column;
+        text-align: center;
+        gap: 20px;
+    }
+    
+    .doctor-profile-left {
+        flex-direction: column;
+    }
+    
+    .doctor_dashButtonContainer {
+        flex-direction: column;
+        gap: 15px;
+    }
+    
+    .doctor_dashButton {
+        width: 100%;
+        max-width: 300px;
+    }
+}
+
+/* Add these styles at the end of your CSS file */
+
+/* Statistics Circle Cards */
+.stat-circle-card {
+    background: white;
+    border-radius: 15px;
+    padding: 25px;
+    box-shadow: 0 5px 20px rgba(0,0,0,0.05);
+    text-align: center;
+    height: 100%;
+    transition: transform 0.3s ease;
+    border: 1px solid rgba(0,0,0,0.05);
+}
+
+.stat-circle-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+}
+
+.stat-circle-title {
+    color: #495057;
+    font-size: 20px;
+    font-weight: 600;
+    margin-bottom: 25px;
+    padding-bottom: 10px;
+    border-bottom: 2px solid #f0f0f0;
+}
+
+/* Circle Container */
+.circle-container {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 25px;
+}
+
+.progress-circle {
+    position: relative;
+    width: 160px;
+    height: 160px;
+    border-radius: 50%;
+    background: #f0f0f0;
+    overflow: hidden;
+}
+
+.progress-circle-fill {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    transition: all 0.3s ease;
+}
+
+.progress-circle-inner {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 120px;
+    height: 120px;
+    background: white;
+    border-radius: 50%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+}
+
+.circle-total {
+    font-size: 28px;
+    font-weight: 700;
+    color: #2c3e50;
+    line-height: 1.2;
+}
+
+.circle-label {
+    font-size: 14px;
+    color: #6c757d;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+/* Split Statistics */
+.split-stats {
+    display: flex;
+    margin: 20px 0;
+    padding: 15px 0;
+    border-top: 1px solid #f0f0f0;
+    border-bottom: 1px solid #f0f0f0;
+}
+
+.stat-item {
+    flex: 1;
+    text-align: center;
+}
+
+.stat-item:first-child {
+    border-right: 1px solid #f0f0f0;
+}
+
+.stat-label {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    margin-bottom: 8px;
+}
+
+.color-dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+}
+
+.color-dot.green { background: #28a745; }
+.color-dot.blue { background: #007bff; }
+.color-dot.yellow { background: #ffc107; }
+.color-dot.info { background: #17a2b8; }
+
+.stat-label span {
+    font-size: 14px;
+    color: #6c757d;
+    font-weight: 500;
+}
+
+.stat-value {
+    font-size: 24px;
+    font-weight: 700;
+    color: #2c3e50;
+}
+
+/* Circle Actions */
+.circle-actions {
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+    margin-top: 15px;
+}
+
+.btn-action {
+    padding: 8px 20px;
+    font-size: 14px;
+    border: 1px solid #dee2e6;
+    border-radius: 20px;
+    background: white;
+    color: #495057;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    flex: 1;
+    max-width: 120px;
+}
+
+.btn-action:hover {
+    background: #2b8d72;
+    color: white;
+    border-color: #2b8d72;
+}
+
+/* Responsive adjustments */
+@media screen and (max-width: 768px) {
+    .split-stats {
+        flex-direction: column;
+        gap: 15px;
+    }
+    
+    .stat-item:first-child {
+        border-right: none;
+        border-bottom: 1px solid #f0f0f0;
+        padding-bottom: 15px;
+    }
+    
+    .circle-actions {
+        flex-direction: column;
+        align-items: center;
+    }
+    
+    .btn-action {
+        max-width: 100%;
+        width: 100%;
+    }
+}
+
+/* Doctor Profile Card (existing styles remain) */
+.doctor-profile-card {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    border-radius: 15px;
+    padding: 30px;
+    margin: 20px 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    color: white;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+}
+
+.doctor-profile-left {
+    display: flex;
+    align-items: center;
+    gap: 25px;
+}
+
+/* Avatar Container */
+.doctor-avatar-container {
+    position: relative;
+    width: 100px;
+    height: 100px;
+}
+
+.doctor-avatar {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    overflow: hidden;
+    border: 4px solid white;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+}
+
+.doctor-avatar-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.doctor-avatar-placeholder {
+    width: 100%;
+    height: 100%;
+    background: rgba(255,255,255,0.2);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 42px;
+    font-weight: bold;
+    color: white;
+}
+
+/* Camera Upload Button */
+.camera-upload {
+    position: absolute;
+    bottom: 5px;
+    right: 5px;
+    width: 32px;
+    height: 32px;
+    background: white;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    border: 2px solid #667eea;
+    transition: all 0.3s ease;
+}
+
+.camera-upload:hover {
+    transform: scale(1.1);
+    background: #f0f0f0;
+}
+
+.camera-upload i {
+    color: #667eea;
+    font-size: 16px;
+}
+
+/* Doctor Info Text */
+.doctor-info-text {
+    display: flex;
+    flex-direction: column;
+}
+
+.welcome-title {
+    font-size: 32px;
+    margin: 0 0 5px 0;
+    font-weight: 600;
+}
+
+.doctor-name {
+    color: #ffd700;
+    font-weight: 700;
+}
+
+.doctor-title {
+    font-size: 16px;
+    margin: 0;
+    opacity: 0.9;
+}
+
+/* Right side - Date */
+.doctor-profile-right {
+    background: rgba(255,255,255,0.2);
+    padding: 15px 25px;
+    border-radius: 10px;
+}
+
+.current-date {
+    margin: 0;
+    font-size: 16px;
+    display: flex;
+    align-items: center;
+}
+
+.current-date i {
+    font-size: 18px;
+}
+
+/* Update existing button styles to include icons */
+.doctor_dashButton {
+    height: 75px;
+    width: 220px;
+    border-radius: 10px;
+    background: #2b8d72;
+    color: white;
+    font-size: 22px;
+    font-weight: 700;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    box-shadow: 0px 1px 3px 3px #e1e1e1;
+    transition: all 0.3s ease;
+}
+
+.doctor_dashButton:hover {
+    background: #1f6b56;
+    transform: translateY(-2px);
+    box-shadow: 0px 4px 6px 3px #d1d1d1;
+}
+
+/* Responsive Design */
+@media screen and (max-width: 768px) {
+    .doctor-profile-card {
+        flex-direction: column;
+        text-align: center;
+        gap: 20px;
+    }
+    
+    .doctor-profile-left {
+        flex-direction: column;
+    }
+    
+    .doctor_dashButtonContainer {
+        flex-direction: column;
+        gap: 15px;
+    }
+    
+    .doctor_dashButton {
+        width: 100%;
+        max-width: 300px;
+    }
+}
+/* Add these styles for the collection circle */
+.stat-value {
+    font-size: 24px;
+    font-weight: 700;
+    color: #2c3e50;
+}
+
+.stat-value i {
+    font-size: 18px;
+    margin-right: 5px;
+}
+
+/* Color dot for UPI (info) */
+.color-dot.info {
+    background: #17a2b8;
+}
+
+/* Make sure the progress circle works for collection */
+.progress-circle-fill {
+    transition: all 0.3s ease;
+}
+
+/* Amount formatting */
+.circle-total {
+    font-size: 24px;
+    font-weight: 700;
+    color: #2c3e50;
+    line-height: 1.2;
+}
+
+/* Responsive adjustments for collection */
+@media screen and (max-width: 768px) {
+    .stat-value {
+        font-size: 20px;
+    }
+    
+    .circle-total {
+        font-size: 20px;
+    }
+}
+
+/* Compact Statistics Cards - Reduced Height */
+.stat-circle-card {
+    padding: 15px !important;  /* Reduced from 25px */
+    margin-bottom: 15px !important;
+}
+
+.stat-circle-title {
+    font-size: 16px !important;  /* Reduced from 20px */
+    margin-bottom: 10px !important;
+    padding-bottom: 5px !important;
+}
+
+.circle-container {
+    margin-bottom: 10px !important;  /* Reduced from 25px */
+}
+
+.progress-circle {
+    width: 120px !important;  /* Reduced from 160px */
+    height: 120px !important;
+}
+
+.progress-circle-inner {
+    width: 90px !important;   /* Reduced from 120px */
+    height: 90px !important;
+}
+
+.circle-total {
+    font-size: 20px !important;  /* Reduced from 28px */
+}
+
+.circle-label {
+    font-size: 10px !important;  /* Reduced from 14px */
+}
+
+.split-stats {
+    margin: 10px 0 !important;   /* Reduced from 20px */
+    padding: 8px 0 !important;   /* Reduced from 15px */
+}
+
+.stat-value {
+    font-size: 18px !important;  /* Reduced from 24px */
+}
+
+.stat-label span {
+    font-size: 11px !important;  /* Reduced from 14px */
+}
+
+.circle-actions {
+    margin-top: 8px !important;  /* Reduced from 15px */
+    gap: 8px !important;
+}
+
+.btn-action {
+    padding: 5px 12px !important;  /* Reduced from 8px 20px */
+    font-size: 12px !important;
+    max-width: 100px !important;
+}
+
+/* Adjust responsive for mobile */
+@media screen and (max-width: 768px) {
+    .progress-circle {
+        width: 100px !important;
+        height: 100px !important;
+    }
+    .progress-circle-inner {
+        width: 75px !important;
+        height: 75px !important;
+    }
+    .circle-total {
+        font-size: 16px !important;
+    }
+    .stat-value {
+        font-size: 16px !important;
+    }
+    .btn-action {
+        font-size: 10px !important;
+        padding: 4px 8px !important;
+    }
+}

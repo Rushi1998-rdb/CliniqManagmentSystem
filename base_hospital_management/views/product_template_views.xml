@@ -1,0 +1,162 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+    <!--Inherit product template to add medicine and vaccine fields-->
+    <record id="product_template_only_form_view" model="ir.ui.view">
+        <field name="name">product.template.view.form.inherit.base.hospital.management</field>
+        <field name="model">product.template</field>
+        <field name="inherit_id"
+               ref="product.product_template_only_form_view"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='uom_id']" position="after">
+                <field name="company_id"
+                       groups="base.group_multi_company"
+                       options="{'no_create': True}"/>
+                <field name="vaccine_ok"
+                       invisible="medicine_ok == True"/>
+                <field name="medicine_ok"
+                       invisible="vaccine_ok == True"/>
+                <field name="medicine_type"
+                       invisible="(vaccine_ok == False) and
+                       (medicine_ok == False)"/>
+                <field name="dosage_uom"
+                       invisible="(vaccine_ok == False) and
+                       (medicine_ok == False)"/>
+                <field name="volume_per_bottle"
+                       invisible="(vaccine_ok == False) and
+                       (medicine_ok == False)"/>
+                <field name="low_stock_threshold"
+                       invisible="medicine_ok == False"/>
+                <!-- <field name="pharmacy_id"
+                       invisible="(vaccine_ok == False) and (medicine_ok == False)"
+                       options="{'no_create': True, 'no_edit': True}"/> -->
+            </xpath>
+            <xpath expr="//field[@name='uom_po_id']" position="attributes">
+                <attribute name="invisible">(medicine_ok == True) or (vaccine_ok == True)</attribute>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="product_template_tree_low_stock_warning" model="ir.ui.view">
+        <field name="name">product.template.tree.low.stock.warning</field>
+        <field name="model">product.template</field>
+        <field name="inherit_id" ref="product.product_template_tree_view"/>
+        <field name="arch" type="xml">
+            <xpath expr="//tree" position="attributes">
+                <attribute name="decoration-danger">low_stock_warning</attribute>
+            </xpath>
+            <xpath expr="//field[@name='active']" position="after">
+                <field name="medicine_ok" column_invisible="True"/>
+                <field name="low_stock_warning" column_invisible="True"/>
+                <field name="low_stock_threshold" string="Low Stock Threshold"
+                       optional="hide" invisible="not medicine_ok"/>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="product_template_kanban_low_stock_warning" model="ir.ui.view">
+        <field name="name">product.template.kanban.low.stock.warning</field>
+        <field name="model">product.template</field>
+        <field name="inherit_id" ref="product.product_template_kanban_view"/>
+        <field name="arch" type="xml">
+            <xpath expr="//kanban/templates" position="before">
+                <field name="low_stock_warning"/>
+            </xpath>
+            <xpath expr="//t[@t-name='kanban-box']/div" position="attributes">
+                <attribute name="t-attf-class">oe_kanban_card oe_kanban_global_click #{record.low_stock_warning.raw_value ? 'o_medicine_low_stock_card border border-danger bg-danger-subtle' : ''}</attribute>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="product_product_tree_low_stock_warning" model="ir.ui.view">
+        <field name="name">product.product.tree.low.stock.warning</field>
+        <field name="model">product.product</field>
+        <field name="inherit_id" ref="product.product_product_tree_view"/>
+        <field name="arch" type="xml">
+            <xpath expr="//tree" position="attributes">
+                <attribute name="decoration-danger">low_stock_warning</attribute>
+            </xpath>
+            <xpath expr="//field[@name='active']" position="after">
+                <field name="medicine_ok" column_invisible="True"/>
+                <field name="low_stock_warning" column_invisible="True"/>
+                <field name="low_stock_threshold" string="Low Stock Threshold"
+                       optional="hide" invisible="not medicine_ok"/>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="product_product_kanban_low_stock_warning" model="ir.ui.view">
+        <field name="name">product.product.kanban.low.stock.warning</field>
+        <field name="model">product.product</field>
+        <field name="inherit_id" ref="product.product_kanban_view"/>
+        <field name="arch" type="xml">
+            <xpath expr="//kanban/templates" position="before">
+                <field name="low_stock_warning"/>
+            </xpath>
+            <xpath expr="//t[@t-name='kanban-box']/div" position="attributes">
+                <attribute name="t-attf-class">oe_kanban_card oe_kanban_global_click #{record.low_stock_warning.raw_value ? 'o_medicine_low_stock_card border border-danger bg-danger-subtle' : ''}</attribute>
+            </xpath>
+        </field>
+    </record>
+    <!--    Vaccine menu action-->
+    <record id="product_template_action_vaccine"
+            model='ir.actions.act_window'>
+        <field name="name">Vaccine</field>
+        <field name="res_model">product.template</field>
+        <field name="view_mode">kanban,tree,form</field>
+        <field name="domain">[('vaccine_ok','=',True)]</field>
+        <field name="context">{'default_vaccine_ok': True}</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Create a new Vaccine
+            </p>
+        </field>
+    </record>
+    <!--    Medicine menu action-->
+    <record id="product_template_action_medicine"
+            model='ir.actions.act_window'>
+        <field name="name">Medicine</field>
+        <field name="res_model">product.template</field>
+        <field name="view_mode">kanban,tree,form</field>
+        <field name="domain">[('medicine_ok','=',True)]</field>
+        <field name="context">{'default_medicine_ok': True}</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Create a new Medicine
+            </p>
+        </field>
+    </record>
+
+    <!-- Default new products to Medicine from Sales/Purchase/Inventory product menus. -->
+    <record id="sale.product_template_action" model="ir.actions.act_window">
+        <field name="context">{"search_default_filter_to_sell": 1, "sale_multi_pricelist_product_template": 1, "default_medicine_ok": True}</field>
+    </record>
+
+    <record id="product.product_normal_action_sell" model="ir.actions.act_window">
+        <field name="context">{"search_default_filter_to_sell": 1, "default_medicine_ok": True}</field>
+    </record>
+
+    <record id="purchase.product_normal_action_puchased" model="ir.actions.act_window">
+        <field name="context">{"search_default_filter_to_purchase": 1, "purchase_product_template": 1, "default_medicine_ok": True}</field>
+    </record>
+
+    <record id="purchase.product_product_action" model="ir.actions.act_window">
+        <field name="context">{"search_default_filter_to_purchase": 1, "default_medicine_ok": True}</field>
+    </record>
+
+    <record id="stock.product_template_action_product" model="ir.actions.act_window">
+        <field name="context">{"search_default_consumable": 1, "default_detailed_type": "product", "default_medicine_ok": True}</field>
+    </record>
+
+    <record id="stock.stock_product_normal_action" model="ir.actions.act_window">
+        <field name="context">{"default_detailed_type": "product", "default_medicine_ok": True}</field>
+    </record>
+
+    <!--    Medicine Menu-->
+    <menuitem id="product_template_menu_medicine" name="Medicine" sequence="1"
+              parent="hospital_menu_configuration"
+              action="product_template_action_medicine"/>
+    <!--    Vaccine Menu-->
+    <!-- <menuitem id="product_template_menu_vaccine" name="Vaccine" sequence="2"
+              parent="hospital_menu_configuration"
+              action="product_template_action_vaccine"/> -->
+</odoo>

@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <!--
+            res_users_rule_company was originally loaded with noupdate="1".
+            Temporarily unlock it so module upgrades apply the corrected domain.
+        -->
+        <function name="write" model="ir.model.data">
+            <function name="search" model="ir.model.data">
+                <value eval="[('module', '=', 'base_hospital_management'), ('name', '=', 'res_users_rule_company')]"/>
+            </function>
+            <value eval="{'noupdate': False}"/>
+        </function>
+
+        <record id="res_users_rule_company" model="ir.rule">
+            <field name="name">Users: Multi-Company</field>
+            <field name="model_id" ref="base.model_res_users"/>
+            <field name="domain_force">['|', '|', ('id', '=', user.id), ('share', '=', False), ('company_ids', 'in', company_ids)]</field>
+        </record>
+
+        <function name="write" model="ir.model.data">
+            <function name="search" model="ir.model.data">
+                <value eval="[('module', '=', 'base_hospital_management'), ('name', '=', 'res_partner_user_link_rule')]"/>
+            </function>
+            <value eval="{'noupdate': False}"/>
+        </function>
+
+        <record id="res_partner_user_link_rule" model="ir.rule">
+            <field name="name">Partner: Hide Staff from Other Companies</field>
+            <field name="model_id" ref="base.model_res_partner"/>
+            <field name="global" eval="True"/>
+            <field name="domain_force">['|', '|', ('id', '=', user.partner_id.id), ('user_ids', '=', False), ('user_ids.company_ids', 'in', company_ids)]</field>
+        </record>
+
+        <function name="write" model="ir.model.data">
+            <function name="search" model="ir.model.data">
+                <value eval="[('module', '=', 'base_hospital_management'), ('name', '=', 'res_partner_patient_rule_company')]"/>
+            </function>
+            <value eval="{'noupdate': False}"/>
+        </function>
+
+        <record id="res_partner_patient_rule_company" model="ir.rule">
+            <field name="name">Partner: Strict Multi-Company Isolation</field>
+            <field name="model_id" ref="base.model_res_partner"/>
+            <field name="global" eval="True"/>
+            <field name="domain_force">['|', '|', '|', '|', '|', ('company_id', '=', False), ('id', '=', user.partner_id.id), ('id', 'in', user.env['res.company'].sudo().search([]).partner_id.ids), ('id', 'in', user.company_ids.partner_id.ids), ('company_id', 'in', company_ids), ('user_ids.company_ids', 'in', company_ids)]</field>
+        </record>
+
+        <function name="write" model="ir.model.data">
+            <function name="search" model="ir.model.data">
+                <value eval="[('module', '=', 'base_hospital_management'), ('name', '=', 'res_partner_user_link_rule')]"/>
+            </function>
+            <value eval="{'noupdate': True}"/>
+        </function>
+
+        <function name="write" model="ir.model.data">
+            <function name="search" model="ir.model.data">
+                <value eval="[('module', '=', 'base_hospital_management'), ('name', '=', 'res_partner_patient_rule_company')]"/>
+            </function>
+            <value eval="{'noupdate': True}"/>
+        </function>
+
+        <function name="write" model="ir.model.data">
+            <function name="search" model="ir.model.data">
+                <value eval="[('module', '=', 'base_hospital_management'), ('name', '=', 'res_users_rule_company')]"/>
+            </function>
+            <value eval="{'noupdate': True}"/>
+        </function>
+    </data>
+</odoo>

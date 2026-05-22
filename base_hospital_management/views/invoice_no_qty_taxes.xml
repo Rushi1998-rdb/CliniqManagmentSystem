@@ -1,0 +1,12 @@
+<odoo>
+  <data>
+    <template id="invoice_hide_qty_tax" inherit_id="account.report_invoice_document">
+      <!-- Hide Quantity column -->
+      <xpath expr="//th[@name='th_quantity']" position="replace"/>
+      <xpath expr="//td[@name='td_quantity']" position="replace"/>
+      <!-- Hide Taxes column -->
+      <xpath expr="//th[@name='th_taxes']" position="replace"/>
+      <xpath expr="//td[@name='td_taxes']" position="replace"/>
+    </template>
+  </data>
+</odoo>

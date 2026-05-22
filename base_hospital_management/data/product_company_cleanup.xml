@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <function model="product.template" name="action_assign_shared_products_to_current_company"/>
+</odoo>

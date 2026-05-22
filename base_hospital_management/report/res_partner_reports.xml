@@ -1,0 +1,478 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="paperformat_patient" model="report.paperformat">
+        <field name="name">Prescription Paper</field>
+
+        <field name="default" eval="False"/>
+
+        <!-- ONLY this -->
+        <field name="format">A4</field>
+        <field name="orientation">Portrait</field>
+
+        <field name="margin_top">10</field>
+        <field name="margin_bottom">10</field>
+        <field name="margin_left">10</field>
+        <field name="margin_right">10</field>
+
+        <field name="header_line" eval="False"/>
+        <field name="dpi">90</field>
+    </record>
+
+    <!--Patient prescription report -->
+    <record id="action_report_patient_prescription" model="ir.actions.report">
+        <field name="name">Patient Prescription</field>
+        <!-- <field name="model">res.partner</field> -->
+        <field name="model">hospital.outpatient</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">base_hospital_management.patient_prescription_report</field>
+        <field name="report_file">base_hospital_management.patient_prescription_report</field>
+        <!-- <field name="binding_model_id" ref="model_res_partner"/> -->
+        <field name="binding_model_id" ref="model_hospital_outpatient"/>
+        <field name="binding_type">report</field>
+        <field name="paperformat_id" ref="base_hospital_management.paperformat_patient"/>
+    </record>
+
+    <template id="patient_prescription_report">
+
+        <t t-call="web.html_container">
+            <t t-call="web.basic_layout">
+                <!-- ✅ FONT MUST BE HERE -->
+                <style>
+                    @font-face {
+                        font-family: 'Noto Sans Tamil';
+                        src: url('/base_hospital_management/static/src/fonts/NotoSansTamil-Regular.ttf') format('truetype');
+                    }
+
+                    * {
+                        font-family: 'Noto Sans Tamil', sans-serif !important;
+                    }
+
+                    .rx-table {
+                        border: 1px solid #777;
+                        border-collapse: collapse;
+                        width: 100%;
+                    }
+
+                    .rx-table th,
+                    .rx-table td {
+                        border: 1px solid #777;
+                    }
+
+                    .rx-table th {
+                        font-size: 15px;
+                    }
+                </style>
+
+                <t t-foreach="docs" t-as="o">
+
+                    <!-- 1. HEADER (White borders to hide unwanted lines) -->
+                    <table style="width:100%; border-collapse:collapse; border: 2px solid #fff !important; border-bottom: 2px solid #000 !important; margin-bottom: 20px;">
+                        <tr>
+                            <!-- LEFT SIDE: LOGO -->
+                            <td style="width:25%; vertical-align:middle; padding:10px; border-left: 2px solid #fff !important; border-right: 2px solid #fff !important; border-top: 2px solid #fff !important;">
+                                <div style="width:160px; height:160px; border: none !important; display:flex; align-items:center; justify-content:center; padding:5px; background-color: #fff; margin: auto;">
+                                    <img t-if="res_company.logo" t-att-src="image_data_uri(res_company.logo)"
+                                        style="max-height:150px; max-width:150px;"/>
+                                </div>
+                            </td>
+
+                            <!-- CENTER: COMPANY INFO -->
+                            <td style="width:50%; text-align:center; vertical-align:middle; padding:10px; border-left: 2px solid #fff !important; border-right: 2px solid #fff !important; border-top: 2px solid #fff !important;">
+                                <div style="font-size:28px; font-weight:bold; color: #000; margin-bottom:5px; line-height:1.2;">
+                                    <t t-esc="res_company.name"/>
+                                </div>
+                                <div style="font-size:14px; line-height:1.5;">
+                                    <t t-esc="res_company.street"/><br t-if="res_company.street"/>
+                                    <t t-if="res_company.street2" t-esc="res_company.street2"/><br t-if="res_company.street2"/>
+                                    <t t-esc="res_company.city"/> <t t-esc="res_company.zip"/>. 
+                                    <div style="margin-top: 5px;">
+                                        <b>முன்பதிவு :</b> <t t-esc="user.employee_id.work_phone or 'N/A'"/>
+                                    </div>
+                                    <div>
+                                        <b>பார்வை நேரம் :</b> <t t-esc="res_company.clinic_timing or 'N/A'"/>
+                                    </div>
+                                </div>
+                            </td>
+
+                            <!-- RIGHT SIDE: DOCTOR INFO -->
+                            <td style="width:25%; text-align:right; vertical-align:middle; padding:10px; border-left: 2px solid #fff !important; border-right: 2px solid #fff !important; border-top: 2px solid #fff !important;">
+                                <div style="font-size:22px; font-weight:bold; color: #000;">
+                                    Dr. <t t-esc="o.doctor_id.doctor_id.name"/>
+                                </div>
+                                <div style="font-size:14px; margin-top:3px; line-height:1.3;">
+                                    <t t-if="o.doctor_id.doctor_id.degree_ids">
+                                        <t t-esc="', '.join(o.doctor_id.doctor_id.degree_ids.mapped('name'))"/><br/>
+                                    </t>
+                                    <t t-if="o.doctor_id.doctor_id.specialization_ids">
+                                        <t t-esc="', '.join(o.doctor_id.doctor_id.specialization_ids.mapped('specialization'))"/>
+                                    </t>
+                                </div>
+                            </td>
+                        </tr>
+                    </table>
+
+                    <!-- 2. MAIN CONTENT (No Page Border) -->
+                    <div style="position:relative; font-family: 'Noto Sans Tamil'; font-size: 14px; min-height:850px; padding: 0 10px;">                    
+
+                        <!-- PATIENT + DATE (INLINE-BLOCK ALIGNMENT) -->
+                        <div style="margin-top:15px;">
+
+                            <!-- LINE 1 -->
+                            <div style="width:100%; margin-bottom:10px;">
+
+                                <!-- LEFT -->
+                                <span style="display:inline-block; width:70%;">
+                                    <span style="display:inline-block; width:90px;">
+                                        <b>பெயர் :</b>
+                                    </span>
+                                    <span>
+                                        <t t-esc="o.patient_id.name"/>
+                                    </span>
+                                </span>
+
+                                <!-- RIGHT -->
+                                <span style="display:inline-block; width:29%; text-align:right;">
+                                    <span style="display:inline-block; width:70px;">
+                                        <b>தேதி :</b>
+                                    </span>
+                                    <span>
+                                        <t t-esc="o.op_date.strftime('%d-%m-%Y')"/>
+                                    </span>
+                                </span>
+
+                            </div>
+
+                            <!-- LINE 2 -->
+                            <div style="width:100%;">
+
+                                <!-- LEFT -->
+                                <span style="display:inline-block; width:70%;">
+                                    <span style="display:inline-block; width:90px;">
+                                        <b>Diagnosis :</b>
+                                    </span>
+                                    <span>
+                                        <t t-esc="o.clinical_notes"/>
+                                    </span>
+                                </span>
+
+                                <!-- RIGHT -->
+                                <span style="display:inline-block; width:29%; text-align:right;">
+                                    <span style="display:inline-block; width:70px;">
+                                        <b>வயது :</b>
+                                    </span>
+                                    <span>
+                                        <t t-esc="o.patient_id.age_display"/>
+                                    </span>
+                                </span>
+
+                            </div>
+
+                        </div>
+
+                        
+                        <!-- RX SECTION -->
+                        <div style="margin-top:20px;">
+                            <h2 style="font-style:italic; font-size: 32px; margin-bottom: 10px;">Rx</h2>
+
+                            <table class="rx-table">
+
+                                <!-- HEADER -->
+                                <tr>
+                                    <th style="text-align:center; padding:8px;">மருந்து</th>
+                                    <!-- <th style="text-align:center; padding:8px;">எண்ணிக்கை</th> -->
+                                    <th style="text-align:center; padding:8px;">நாட்கள்</th>
+                                    <!-- <th style="text-align:center; padding:8px;">மொத்த அளவு </th> -->
+                                    <th style="text-align:center; padding:8px;">காலை</th>
+                                    <th style="text-align:center; padding:8px;">மதியம்</th>
+                                    <th style="text-align:center; padding:8px;">மாலை</th>
+                                </tr>
+
+                                <!-- DATA -->
+                                <tr t-foreach="o.prescription_ids" t-as="line"
+                                    style="height:35px;">
+
+                                    <td style="padding:10px 5px; font-size:17px;">
+                                        <t t-esc="line.medicine_id.name"/>
+                                    </td>
+
+                                    <!-- <td style="text-align:center; padding:10px;">
+                                        <t t-esc="line.no_intakes"/>
+                                    </td> -->
+
+                                    <td style="text-align:center; padding:10px;">
+                                        <t t-esc="line.days"/>
+                                    </td>
+
+                                    <!-- <td style="text-align:center; padding:10px;">
+                                        <t t-esc="line.quantity"/>
+                                    </td> -->
+
+                                    <!-- <td style="text-align:center; padding:10px;">
+                                        <t t-if="any('morning' in t.code for t in line.selected_times)">✔</t>
+                                    </td> -->
+                                    <td style="text-align:center;">
+                                        <t t-if="any('morning' in t.code for t in line.selected_times)">
+                                            <img src="/base_hospital_management/static/src/img/checkbox-checked.png"
+                                                style="height:12px; width:12px;"/>
+                                        </t>
+                                    </td>
+
+                                    <!-- <td style="text-align:center; padding:10px;">
+                                        <t t-if="any('afternoon' in t.code for t in line.selected_times)">Yes</t>
+                                    </td> -->
+                                    <td style="text-align:center;">
+                                        <t t-if="any('afternoon' in t.code for t in line.selected_times)">
+                                            <img src="/base_hospital_management/static/src/img/checkbox-checked.png"
+                                                style="height:12px; width:12px;"/>
+                                        </t>
+                                    </td>
+
+                                    <!-- <td style="text-align:center; padding:10px;">
+                                        <t t-if="any('evening' in t.code for t in line.selected_times)">Yes</t>
+                                    </td> -->
+                                    <td style="text-align:center;">
+                                        <t t-if="any('evening' in t.code for t in line.selected_times)">
+                                            <img src="/base_hospital_management/static/src/img/checkbox-checked.png"
+                                                style="height:12px; width:12px;"/>
+                                        </t>
+                                    </td>
+
+                                </tr>
+
+                            </table>
+
+                        </div>
+                        
+                        <!-- <div style="margin-top:100px; text-align:right;">
+                            <b>Signature</b>
+                        </div> -->
+                        <div style="position:absolute; bottom:10px; width:100%; border-top: 2px solid #000; padding-top: 10px;">
+                            <div style="text-align:right; padding-right:20px;">
+                                <b>Signature</b>
+                            </div>
+                        </div>
+                        <!-- <t t-foreach="docs" t-as="o">
+
+                            <div style="position:relative; min-height:1000px; font-family: Arial; font-size: 12px; padding:10px;">
+
+                               
+                                <div style="position:absolute; bottom:20px; right:40px;">
+                                    <b>Signature</b>
+                                </div>
+
+                            </div>
+
+                        </t> -->
+                    </div>
+
+                </t>
+
+            </t>
+        </t>
+    </template>
+    <!--        Patient card report action-->
+    <!-- <record id="action_report_patient_card" model="ir.actions.report">
+        <field name="name">Patient Card</field>
+        <field name="model">res.partner</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">base_hospital_management.patient_card_report</field>
+        <field name="report_file">base_hospital_management.patient_card_report</field>
+        <field name="binding_model_id" ref="model_res_partner"/>
+        <field name="paperformat_id"
+               ref="base_hospital_management.paperformat_patient"/>
+        <field name="binding_type">report</field>
+    </record> -->
+    <!--    Patient card template-->
+    <!-- <template id="patient_card_report">
+        <t t-call="web.html_container">
+            <section>
+                <div style="width: 500px; height: 260px; border: 2px black solid;
+            border-radius: 5px;">
+                    <div class="container"
+                         style="width: 500px; height: 50px; background-color:red">
+                        <span>
+                            <i class="fa fa-wave-pulse" style="color:black;"/>
+                        </span>
+                        <h1 style="margin-left: 150px; padding-top: 10px; color:white; border-radius: 10px;">
+                            Patient Card
+                        </h1>
+                        <div class="page">
+                            <h1 style="margin-left: 15px;">
+                                <t t-esc="name"/>
+                                <br/>
+                                <label style="font-size: 18px;">
+                                    <b>Code :
+                                        <t t-esc="code"/>
+                                    </b>
+                                </label>
+                            </h1>
+                            <p style="margin-left: 15px;">
+                                <label>
+                                    <b>Gender :</b>
+                                    <t t-esc="gender"/>
+                                </label>
+                                <br/>
+                                <label>
+                                    <b>Age :</b>
+                                    <t t-esc="age"/>
+                                </label>
+                                <br/>
+                                <label>
+                                    <b>DOB :</b>
+                                    <t t-esc="dob"/>
+                                </label>
+                                <br/>
+                                <label>
+                                    <b>Blood Group :</b>
+                                    <t t-esc="blood"/>
+                                    <br/>
+                                </label>
+                                <label>
+                                    <b>Phone :</b>
+                                    <t t-esc="phone"/>
+                                </label>
+                                <br/>
+                                <label style="position:absolute; left:350px; top:100px;">
+                                    <img t-attf-src="data:image/png;base64,{{image['image_1920']}}"
+                                         style="max-height: 130px; max-width: 130px;"/>
+                                </label>
+                                <br/>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            <section>
+                <div class="container"
+                     style="margin-top:50px">
+                    <div style="width: 500px; height: 250px; border: 2px black
+                    solid; border-radius: 5px;">
+                        <div style="margin-left: 10px; margin-top: 10px;">
+                            <span style="padding-top:5px padding-top:5px">
+                                <b>Address:</b>
+                                <br/>
+                                <t t-esc="street"/>
+                                <br/>
+                                <t t-esc="street2"/>
+                                <br/>
+                                <t t-esc='city'/>
+                                <t t-esc='state'/>
+                                <br/>
+                                <t t-esc='country'/>
+                                <br/>
+                                <br/>
+                            </span>
+                            <span style="padding-top:5px padding-top:5px">
+                                <b>
+                                    <t t-esc="company_name"/>
+                                </b>
+                                <br/>
+                                <t t-esc="company_street"/>
+                                <br/>
+                                <t t-esc="company_street2"/>
+                                <br/>
+                                <t t-esc='company_city'/>
+                                <t t-esc='company_state'/>
+                                <br/>
+                                <t t-esc='company_zip'/>
+                                <br/>
+                                <br/>
+                            </span>
+                        </div>
+                        <div>
+                            <img style="max-height: 150px; max-width: 180px;
+                            position:absolute; left:310px; top:290px;"
+                                 t-attf-src="data:image/gif;base64,
+                                 {{barcode['barcode_png']}}"/>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </t>
+    </template> -->
+    <!-- <template id="patient_card_report">
+        <t t-call="web.html_container">
+            
+               
+                <div style="width: 400px; height: 200px; border: 2px black solid; border-radius: 5px; page-break-after: always;">
+                    <div class="container" style="width: 400px; height: 50px; background-color:red ">
+                        <h1 style="margin-left: 150px; padding-top: 10px; color:white; border-radius: 10px; font-size: 20px;">
+                            Patient Card
+                        </h1>
+                    </div>
+                    <div class="page">
+                        <h1 style="margin-left: 15px; font-size: 16px;">
+                            <t t-esc="name"/>
+                            <br/>
+                            <label style="font-size: 14px;">
+                                <b>Code: <t t-esc="code"/></b>
+                            </label>
+                        </h1>
+                        <p style="margin-left: 15px; font-size: 12px;">
+                            <label>
+                                <b>Gender:</b> <t t-esc="gender"/>
+                            </label>
+                            <br/>
+                            <label>
+                                <b>Age:</b> <t t-esc="age"/>
+                            </label>
+                            <br/>
+                            <label>
+                                <b>DOB:</b> <t t-esc="dob"/>
+                            </label>
+                            <br/>
+                            <label>
+                                <b>Blood Group:</b> <t t-esc="blood"/>
+                            </label>
+                            <br/>
+                            <label>
+                                <b>Phone:</b> <t t-esc="phone"/>
+                            </label>
+                        </p>
+                        <div style="position:absolute; left:280px; top:90px;">
+                            <img t-attf-src="data:image/png;base64,{{image['image_1920']}}"
+                                style="max-height: 120px; max-width: 120px;"/>
+                        </div>
+                    </div>
+                </div>
+
+                
+                <div style="width: 400px; height: 190px; border: 2px black solid; border-radius: 5px; margin-top: 10px;">
+                    <div style="margin-left: 10px; margin-top: 10px; font-size: 12px;">
+                        <div>
+                            <b>Address:</b>
+                            <br/>
+                            <t t-esc="street"/>
+                            <br/>
+                            <t t-esc="street2"/>
+                            <br/>
+                            <t t-esc="city"/> <t t-esc="state"/>
+                            <br/>
+                            <t t-esc="country"/>
+                        </div>
+                        <div style="margin-top: 10px;">
+                            <b><t t-esc="company_name"/></b>
+                            <br/>
+                            <t t-esc="company_street"/>
+                            <br/>
+                            <t t-esc="company_street2"/>
+                            <br/>
+                            <t t-esc="company_city"/> <t t-esc="company_state"/>
+                            <br/>
+                            <t t-esc="company_zip"/>
+        
+                        </div>
+                        <div style="position: absolute; right: 20px; bottom: 20px;">
+                            <img t-attf-src="data:image/gif;base64,{{barcode['barcode_png']}}"
+                                style="max-height: 100px; max-width: 120px;"/>
+                        </div>            
+                        
+        
+                    </div>
+                </div>
+            
+        </t>
+    </template> -->
+
+</odoo>
+

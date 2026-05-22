@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="account.res_partner_action_supplier" model="ir.actions.act_window">
+        <field name="context">{'search_default_supplier': 1, 'res_partner_search_mode': 'supplier', 'show_vat': True, 'default_is_company': True, 'default_supplier_rank': 1, 'hide_current_company_partner': True, 'allow_supplier_partner_read': True}</field>
+        <field name="domain">[('supplier_rank', '&gt;', 0)]</field>
+    </record>
+
+    <record id="purchase_order_form_company_vendor_domain" model="ir.ui.view">
+        <field name="name">purchase.order.form.company.vendor.domain</field>
+        <field name="model">purchase.order</field>
+        <field name="inherit_id" ref="purchase.purchase_order_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='company_id']" position="after">
+                <field name="current_company_partner_ref" invisible="1"/>
+            </xpath>
+            <xpath expr="//field[@name='partner_id'][1]" position="attributes">
+                <attribute name="domain">[('id', '!=', current_company_partner_ref), ('supplier_rank', '>', 0), ('company_id', '=', company_id)]</attribute>
+                <attribute name="context">{'res_partner_search_mode': 'supplier', 'show_vat': True, 'default_supplier_rank': 1, 'default_company_id': company_id, 'hide_current_company_partner': True, 'allow_supplier_partner_read': True}</attribute>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="res_partner_form_purchase_company_domain" model="ir.ui.view">
+        <field name="name">res.partner.form.purchase.company.domain</field>
+        <field name="model">res.partner</field>
+        <field name="inherit_id" ref="base.view_partner_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//sheet" position="inside">
+                <field name="current_company_partner_ref" invisible="1"/>
+            </xpath>
+            <xpath expr="//field[@name='parent_id' and not(@invisible='1')]" position="attributes">
+                <attribute name="domain">[('is_company', '=', True), ('id', '!=', current_company_partner_ref), ('company_id', '=', company_id)]</attribute>
+                <attribute name="context">{'default_is_company': True, 'default_company_id': company_id, 'res_partner_search_mode': 'supplier', 'default_supplier_rank': 1, 'show_vat': True, 'allow_supplier_partner_read': True}</attribute>
+            </xpath>
+            <xpath expr="//field[@name='phone']" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>
+            <xpath expr="//field[@name='phone']" position="after">
+                <div class="o_row" style="margin-left: -65px;">
+                    <label for="vendor_phone" string="Phone" style="font-weight: 700;"/>
+                    <field name="vendor_phone" widget="phone" style="font-weight: 700;"/>
+                </div>
+            </xpath>
+            <xpath expr="//field[@name='mobile']" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>
+            <xpath expr="//field[@name='mobile']" position="after">
+                <div class="o_row" style="margin-left: -65px;">
+                    <label for="vendor_mobile" string="Mobile" style="font-weight: 700;"/>
+                    <field name="vendor_mobile" widget="phone" style="font-weight: 700;"/>
+                </div>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="product_supplierinfo_form_company_vendor_domain" model="ir.ui.view">
+        <field name="name">product.supplierinfo.form.company.vendor.domain</field>
+        <field name="model">product.supplierinfo</field>
+        <field name="inherit_id" ref="product.product_supplierinfo_form_view"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='partner_id']" position="attributes">
+                <attribute name="domain">[('company_id', '=', company_id)]</attribute>
+                <attribute name="context">{'res_partner_search_mode': 'supplier', 'hide_current_company_partner': True, 'allow_supplier_partner_read': True, 'default_company_id': company_id}</attribute>
+            </xpath>
+        </field>
+    </record>
+</odoo>

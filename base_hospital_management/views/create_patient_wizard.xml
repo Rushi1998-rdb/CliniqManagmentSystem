@@ -1,0 +1,28 @@
+<odoo>
+
+<record id="create_patient_wizard_form" model="ir.ui.view">
+    <field name="name">create.patient.wizard.form</field>
+    <field name="model">create.patient.wizard</field>
+    <field name="arch" type="xml">
+        <form string="Create Patient">
+            <group>
+                <field name="name"/>
+                <field name="phone"/>
+                <field name="gender"/>
+                <field name="date_of_birth"/>
+            </group>
+
+            <footer>
+                <button name="action_create_patient"
+                        string="Create"
+                        type="object"
+                        class="btn-primary"/>
+                <button string="Cancel"
+                        class="btn-secondary"
+                        special="cancel"/>
+            </footer>
+        </form>
+    </field>
+</record>
+
+</odoo>

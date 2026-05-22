@@ -1,0 +1,202 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!--Doctor dashboard template-->
+<templates id="doc_dashboard" xml:space="preserve">
+    <t t-name="DoctorDashboard" owl="1">
+        <div class="oh_dashboards" t-ref="root">
+            <div class="container-fluid o_pj_dashboard">
+                <div style="width:100%; margin:0; padding:0;">
+                                        
+                    <!-- Welcome Section with Profile Picture -->
+                    <div class="row mb-2">  <!-- Changed from mb-4 to mb-2 -->
+                        <div class="col-12">
+                            <div class="doctor-profile-card" style="padding: 15px 20px;">  <!-- Reduced padding -->
+                                <div class="doctor-profile-left">
+                                    <!-- Profile Picture -->
+                                    <div class="doctor-avatar-container" style="width: 70px; height: 70px;">  <!-- Reduced avatar size -->
+                                        <div class="doctor-avatar">
+                                            <t t-if="state.profileImage">
+                                                <img t-att-src="'data:image/png;base64,' + state.profileImage" 
+                                                    alt="Profile" class="doctor-avatar-img"/>
+                                            </t>
+                                            <t t-else="">
+                                                <div class="doctor-avatar-placeholder" style="font-size: 32px;">  <!-- Reduced placeholder font -->
+                                                    <t t-esc="doctorInitial"/>
+                                                </div>
+                                            </t>
+                                        </div>
+                                        <div class="camera-upload" style="width: 26px; height: 26px; bottom: 2px; right: 2px; cursor: pointer;" t-on-click="updateProfilePicture">  <!-- Smaller camera button -->
+                                            <i class="fa fa-camera" style="font-size: 12px;"/>
+                                        </div>
+                                    </div>
+                                    
+                                    <!-- Doctor Name and Title -->
+                                    <div class="doctor-info-text">
+                                        <h2 class="welcome-title" style="font-size: 24px; margin-bottom: 2px;">Welcome, <span class="doctor-name"><t t-esc="doctorName"/></span></h2>
+                                        <p class="doctor-title" style="font-size: 14px; margin-bottom: 0;">Doctor</p>
+                                    </div>
+                                </div>
+                                
+                                <!-- Date Display -->
+                                <div class="doctor-profile-right" style="padding: 10px 20px;">
+                                    <p class="current-date" style="margin-bottom: 0; font-size: 14px;">
+                                        <i class="fa fa-calendar me-2"/>
+                                        <t t-esc="new Date().toLocaleDateString('en-US', { 
+                                            weekday: 'long', 
+                                            year: 'numeric', 
+                                            month: 'long', 
+                                            day: 'numeric' 
+                                        })"/>
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Statistics Circles Row - All 3 in one row -->
+                    <div class="row">
+                        <!-- Circle 1: Today's Patients -->
+                        <div class="col-md-4 mb-4">
+                            <div class="stat-circle-card">
+                                <h3 class="stat-circle-title">Today's Patients</h3>
+                                <div class="circle-container">
+                                    <div class="progress-circle">
+                                        <div class="progress-circle-fill" 
+                                            t-att-style="'background: conic-gradient(#28a745 0deg ' + (state.today_new_patients / (state.today_new_patients + state.today_followup_patients || 1) * 360) + 'deg, #007bff ' + (state.today_new_patients / (state.today_new_patients + state.today_followup_patients || 1) * 360) + 'deg 360deg);'">
+                                        </div>
+                                        <div class="progress-circle-inner">
+                                            <span class="circle-total" t-esc="state.today_new_patients + state.today_followup_patients"/>
+                                            <span class="circle-label">Total</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="split-stats">
+                                    <div class="stat-item">
+                                        <div class="stat-label">
+                                            <span class="color-dot green"></span>
+                                            <span>New</span>
+                                        </div>
+                                        <span class="stat-value" t-esc="state.today_new_patients"/>
+                                    </div>
+                                    <div class="stat-item">
+                                        <div class="stat-label">
+                                            <span class="color-dot blue"></span>
+                                            <span>Follow-up</span>
+                                        </div>
+                                        <span class="stat-value" t-esc="state.today_followup_patients"/>
+                                    </div>
+                                </div>
+                                
+                                <div class="circle-actions">
+                                    <button class="btn-action" t-on-click="viewNewPatients">View New</button>
+                                    <button class="btn-action" t-on-click="viewFollowupPatients">View Follow-up</button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Circle 2: Consultation Status -->
+                        <div class="col-md-4 mb-4">
+                            <div class="stat-circle-card">
+                                <h3 class="stat-circle-title">Consultations</h3>
+                                <div class="circle-container">
+                                    <div class="progress-circle">
+                                        <div class="progress-circle-fill" 
+                                            t-att-style="'background: conic-gradient(#28a745 0deg ' + (state.completed_consultations / (state.total_consultations || 1) * 360) + 'deg, #ffc107 ' + (state.completed_consultations / (state.total_consultations || 1) * 360) + 'deg 360deg);'">
+                                        </div>
+                                        <div class="progress-circle-inner">
+                                            <span class="circle-total">
+                                                <t t-esc="state.completed_consultations"/> / <t t-esc="state.total_consultations"/>
+                                            </span>
+                                            <span class="circle-label">Done</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="split-stats">
+                                    <div class="stat-item">
+                                        <div class="stat-label">
+                                            <span class="color-dot green"></span>
+                                            <span>Completed</span>
+                                        </div>
+                                        <span class="stat-value" t-esc="state.completed_consultations"/>
+                                    </div>
+                                    <div class="stat-item">
+                                        <div class="stat-label">
+                                            <span class="color-dot yellow"></span>
+                                            <span>Pending</span>
+                                        </div>
+                                        <span class="stat-value" t-esc="state.pending_consultations"/>
+                                    </div>
+                                </div>
+                                
+                                <div class="circle-actions">
+                                    <button class="btn-action" t-on-click="viewCompletedConsultations">View Completed</button>
+                                    <button class="btn-action" t-on-click="viewPendingConsultations">View Pending</button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Circle 3: Today's Collection -->
+                        <div class="col-md-4 mb-4">
+                            <div class="stat-circle-card">
+                                <h3 class="stat-circle-title">Today's Collection</h3>
+                                <div class="circle-container">
+                                    <div class="progress-circle">
+                                        <div class="progress-circle-fill" 
+                                            t-att-style="'background: conic-gradient(#28a745 0deg ' + (state.today_cash_collection / (state.today_total_collection || 1) * 360) + 'deg, #17a2b8 ' + (state.today_cash_collection / (state.today_total_collection || 1) * 360) + 'deg 360deg);'">
+                                        </div>
+                                        <div class="progress-circle-inner">
+                                            <span class="circle-total">₹<t t-esc="state.today_total_collection.toLocaleString('en-IN')"/></span>
+                                            <span class="circle-label">Total</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="split-stats">
+                                    <div class="stat-item">
+                                        <div class="stat-label">
+                                            <span class="color-dot green"></span>
+                                            <span>Cash</span>
+                                        </div>
+                                        <span class="stat-value">₹<t t-esc="state.today_cash_collection.toLocaleString('en-IN')"/></span>
+                                    </div>
+                                    <div class="stat-item">
+                                        <div class="stat-label">
+                                            <span class="color-dot info"></span>
+                                            <span>UPI</span>
+                                        </div>
+                                        <span class="stat-value">₹<t t-esc="state.today_upi_collection.toLocaleString('en-IN')"/></span>
+                                    </div>
+                                </div>
+                                
+                                <div class="circle-actions">
+                                    <button class="btn-action" t-on-click="viewCashPayments">View Cash</button>
+                                    <button class="btn-action" t-on-click="viewUPIPayments">View UPI</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Existing Buttons Row -->
+                    <div class="row">
+                        <div class="col-12 doctor_dashButtonContainer">
+                            <div class="doctor_dashButton outpatient_button"
+                                id="consultation"
+                                t-on-click="fetch_consultation">
+                                <i class="fa fa-stethoscope me-2"/>
+                                Appointment
+                            </div>
+
+                            <!-- <div class="doctor_dashButton patient_data"
+                                id="patient"
+                                t-on-click="list_patient_data">
+                                <i class="fa fa-users me-2"/>
+                                Patient
+                            </div> -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </t>
+</templates>

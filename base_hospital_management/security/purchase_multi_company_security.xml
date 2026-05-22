@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="purchase_order_rule_respected_company" model="ir.rule">
+        <field name="name">Purchase Order: Respected Company Only</field>
+        <field name="model_id" ref="purchase.model_purchase_order"/>
+        <field name="groups" eval="[(4, ref('purchase.group_purchase_user'))]"/>
+        <field name="domain_force">[('company_id', '=', user.company_id.id)]</field>
+    </record>
+
+    <record id="purchase_order_line_rule_respected_company" model="ir.rule">
+        <field name="name">Purchase Order Line: Respected Company Only</field>
+        <field name="model_id" ref="purchase.model_purchase_order_line"/>
+        <field name="groups" eval="[(4, ref('purchase.group_purchase_user'))]"/>
+        <field name="domain_force">[('company_id', '=', user.company_id.id)]</field>
+    </record>
+
+    <record id="purchase_vendor_rule_respected_company" model="ir.rule">
+        <field name="name">Vendors: Respected Company Only</field>
+        <field name="model_id" ref="base.model_res_partner"/>
+        <field name="active" eval="True"/>
+        <field name="groups" eval="[(4, ref('purchase.group_purchase_user'))]"/>
+        <field name="domain_force">['|', '|', '|', '|', ('company_id', '=', False), ('id', '=', user.partner_id.id), ('id', '=', user.company_id.partner_id.id), ('company_id', 'in', company_ids), ('user_ids.company_ids', 'in', company_ids)]</field>
+    </record>
+
+
+</odoo>

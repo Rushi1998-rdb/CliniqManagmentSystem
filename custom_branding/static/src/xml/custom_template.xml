@@ -1,0 +1,111 @@
+<odoo>
+    <template id="replace_login" name="CliniQ Login Layout" inherit_id="web.login_layout" priority="99">
+        <xpath expr="t" position="replace">
+            <t t-call="web.frontend_layout">
+                <t t-set="html_data" t-value="{'style': 'height: 100%;'}"/>
+                <t t-set="body_classname" t-value="'cliniq-login-body'"/>
+                <t t-set="no_header" t-value="True"/>
+                <t t-set="no_footer" t-value="True"/>
+
+                <div class="cliniq-login-page">
+                    <header class="cliniq-login-header">
+                        <a class="cliniq-brand" href="/web/login" aria-label="CliniQ Management System">
+                            <span class="cliniq-brand-mark"><i class="fa fa-plus" aria-hidden="true"/></span>
+                            <span>
+                                <span class="cliniq-brand-name">CliniQ</span>
+                                <span class="cliniq-brand-subtitle">Management System</span>
+                            </span>
+                        </a>
+                        <nav class="cliniq-nav" aria-label="Main navigation">
+                            <a class="active" href="/web/login">Home</a>
+                            <a href="#">Features</a>
+                            <a href="#">About Us</a>
+                            <a href="#">Contact Us</a>
+                        </nav>
+                    </header>
+
+                    <main class="cliniq-login-main">
+                        <section class="cliniq-login-panel" aria-labelledby="cliniq-login-title">
+                            <h1 id="cliniq-login-title">Sign In</h1>
+                            <p class="cliniq-welcome">Welcome back! Please sign in to continue.</p>
+                            <t t-out="0"/>
+                            <!-- <div class="cliniq-or">OR</div>
+                            <a class="cliniq-unique-id" href="#">
+                                <i class="fa fa-shield" aria-hidden="true"/>
+                                <span>Sign in with Unique ID</span>
+                            </a> -->
+                            <div class="cliniq-help-card">
+                                <span class="cliniq-help-icon"><i class="fa fa-headphones" aria-hidden="true"/></span>
+                                <div>
+                                    <strong>Need Help?</strong>
+                                    <p>Contact our support team for any assistance.</p>
+                                    <p>Support Helpline No: <span>98949-177378</span></p>
+                                </div>
+                            </div>
+                        </section>
+                        <section class="cliniq-visual" aria-label="CliniQ clinic reception"/>
+                    </main>
+
+                    <section class="cliniq-contact-strip" aria-label="Contact information">
+                        <div class="cliniq-contact-item">
+                            <span class="cliniq-contact-icon"><i class="fa fa-envelope" aria-hidden="true"/></span>
+                            <span>
+                                <span class="cliniq-contact-label">Email</span>
+                                <span class="cliniq-contact-value">dngsoftwaresolutions@gmail.com</span>
+                            </span>
+                        </div>
+                        <div class="cliniq-contact-item">
+                            <span class="cliniq-contact-icon"><i class="fa fa-shield" aria-hidden="true"/></span>
+                            <span>
+                                <span class="cliniq-contact-label">Unique ID</span>
+                                <span class="cliniq-contact-value">CLQ-2026-001</span>
+                            </span>
+                        </div>
+                        <div class="cliniq-contact-item">
+                            <span class="cliniq-contact-icon"><i class="fa fa-phone" aria-hidden="true"/></span>
+                            <span>
+                                <span class="cliniq-contact-label">Support Helpline No:</span>
+                                <span class="cliniq-contact-value highlight">98949-177378</span>
+                            </span>
+                        </div>
+                    </section>
+
+                    <footer class="cliniq-footer">
+                        &#169; 2026 CliniQ Management System. All rights reserved.
+                    </footer>
+                </div>
+            </t>
+        </xpath>
+    </template>
+
+    <template id="cliniq_login_form" name="CliniQ Login Form" inherit_id="web.login">
+        <xpath expr="//div[label[@for='db']]" position="replace"/>
+        <xpath expr="//div[contains(@class, 'field-login')]/label" position="replace">
+            <label for="login" class="form-label">Username</label>
+        </xpath>
+        <xpath expr="//div[contains(@class, 'field-login')]/input" position="replace">
+            <div class="cliniq-input-wrap">
+                <i class="fa fa-user-o" aria-hidden="true"/>
+                <input type="text" placeholder="Enter your username" name="login" t-att-value="login" id="login" t-attf-class="form-control #{'form-control-sm' if form_small else ''}" required="required" autocomplete="username" autofocus="autofocus" autocapitalize="off"/>
+            </div>
+        </xpath>
+        <xpath expr="//input[@id='password']" position="replace">
+            <div class="cliniq-input-wrap">
+                <i class="fa fa-lock" aria-hidden="true"/>
+                <input type="password" placeholder="Enter your password" name="password" id="password" t-attf-class="form-control #{'form-control-sm' if form_small else ''}" required="required" autocomplete="current-password" t-att-autofocus="'autofocus' if login else None" maxlength="4096"/>
+                <!-- <span class="cliniq-password-eye"><i class="fa fa-eye" aria-hidden="true"/></span> -->
+            </div>
+        </xpath>
+        <xpath expr="//button[@type='submit'][1]" position="before">
+            <div class="cliniq-login-options">
+                <label>
+                    <input type="checkbox" name="remember_login"/>
+                    <span>Remember me</span>
+                </label>
+            </div>
+        </xpath>
+        <xpath expr="//button[@type='submit'][1]" position="replace">
+            <button type="submit" class="btn btn-primary">Sign In</button>
+        </xpath>
+    </template>
+</odoo>

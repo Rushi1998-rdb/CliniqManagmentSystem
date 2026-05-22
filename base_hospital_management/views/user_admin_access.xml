@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Access to Users model -->
+    <record id="user_admin_access_res_users" model="ir.model.access">
+        <field name="name">user.admin.access.res.users</field>
+        <field name="model_id" ref="base.model_res_users"/>
+        <field name="group_id" ref="base_hospital_management.base_hospital_management_group_user_admin"/>
+        <field name="perm_read">1</field>
+        <field name="perm_write">1</field>
+        <field name="perm_create">1</field>
+        <field name="perm_unlink">0</field>
+    </record>
+    
+    <!-- Access to Companies model -->
+    <record id="user_admin_access_res_company" model="ir.model.access">
+        <field name="name">user.admin.access.res.company</field>
+        <field name="model_id" ref="base.model_res_company"/>
+        <field name="group_id" ref="base_hospital_management.base_hospital_management_group_user_admin"/>
+        <field name="perm_read">1</field>
+        <field name="perm_write">1</field>
+        <field name="perm_create">1</field>
+        <field name="perm_unlink">0</field>
+    </record>
+    
+    <!-- Access to Groups model (read-only) -->
+    <record id="user_admin_access_res_groups" model="ir.model.access">
+        <field name="name">user.admin.access.res.groups</field>
+        <field name="model_id" ref="base.model_res_groups"/>
+        <field name="group_id" ref="base_hospital_management.base_hospital_management_group_user_admin"/>
+        <field name="perm_read">1</field>
+        <field name="perm_write">0</field>
+        <field name="perm_create">0</field>
+        <field name="perm_unlink">0</field>
+    </record>
+</odoo>

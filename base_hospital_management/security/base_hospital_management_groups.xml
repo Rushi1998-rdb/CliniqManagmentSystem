@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Hospital Management access category -->
+    <record id="base_hospital_management_access" model="ir.module.category">
+        <field name="name">Hospital Management</field>
+        <field name="description">User access levels for Hospital Management</field>
+        <field name="sequence">10</field>
+    </record>
+    
+    <!-- Existing groups -->
+    <record id="base_hospital_management_group_lab_assistant" model="res.groups">
+        <field name="name">Lab Assistant</field>
+        <field name="category_id" ref="base_hospital_management_access"/>
+        <field name="implied_ids" eval="[(4, ref('base.group_user'))]"/>
+    </record>
+    
+    <record id="base_hospital_management_group_pharmacist" model="res.groups">
+        <field name="name">Pharmacist</field>
+        <field name="category_id" ref="base_hospital_management_access"/>
+        <field name="implied_ids" eval="[(4, ref('base.group_user'))]"/>
+    </record>
+    
+    <record id="base_hospital_management_group_nurse" model="res.groups">
+        <field name="name">Nurse</field>
+        <field name="category_id" ref="base_hospital_management_access"/>
+        <field name="implied_ids" eval="[(4, ref('base.group_user'))]"/>
+    </record>
+    
+    <record id="base_hospital_management_group_doctor" model="res.groups">
+        <field name="name">Doctor</field>
+        <field name="category_id" ref="base_hospital_management_access"/>
+        <field name="implied_ids" eval="[(4, ref('base.group_user'))]"/>
+    </record>
+    
+    <record id="base_hospital_management_group_receptionist" model="res.groups">
+        <field name="name">Receptionist</field>
+        <field name="category_id" ref="base_hospital_management_access"/>
+        <field name="implied_ids" eval="[(4, ref('base.group_user'))]"/>
+    </record>
+    
+    <record id="base_hospital_management_group_manager" model="res.groups">
+        <field name="name">Manager</field>
+        <field name="category_id" ref="base_hospital_management_access"/>
+        <field name="implied_ids" eval="[(4, ref('base.group_user'))]"/>
+    </record>
+
+    <record id="base_hospital_management_group_hide_home_menus" model="res.groups">
+        <field name="name">Hide Home Menus</field>
+        <field name="category_id" ref="base_hospital_management_access"/>
+    </record>
+
+    <record id="base_hospital_management_group_hide_employee_home_menu" model="res.groups">
+        <field name="name">Hide Employee Home Menu</field>
+        <field name="category_id" ref="base_hospital_management_access"/>
+    </record>
+
+    <record id="base_hospital_management_group_hide_apps_home_menu" model="res.groups">
+        <field name="name">Hide Apps Home Menu</field>
+        <field name="category_id" ref="base_hospital_management_access"/>
+    </record>
+
+    <record id="base_hospital_management_group_hide_settings_home_menu" model="res.groups">
+        <field name="name">Hide Settings Home Menu</field>
+        <field name="category_id" ref="base_hospital_management_access"/>
+    </record>
+
+    <!-- <record id="base_hospital_management_group_hide_apps_settings_menu" model="res.groups">
+        <field name="name">Hide Apps and Settings Home Menu</field>
+        <field name="category_id" ref="base_hospital_management_access"/>
+        <field name="implied_ids" eval="[
+            (4, ref('base_hospital_management_group_hide_apps_home_menu')),
+            (4, ref('base_hospital_management_group_hide_settings_home_menu'))
+        ]"/>
+    </record> -->
+    
+    <!-- User Admin Group -->
+    <record id="base_hospital_management_group_user_admin" model="res.groups">
+        <field name="name">User Admin</field>
+        <field name="category_id" ref="base_hospital_management_access"/>
+        <field name="implied_ids" eval="[
+            (4, ref('base.group_user')),
+            (4, ref('base.group_erp_manager')),
+            (4, ref('base.group_no_one'))
+        ]"/>
+    </record>
+</odoo>

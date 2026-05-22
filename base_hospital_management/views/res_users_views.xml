@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- <record id="view_users_form_inherit_hospital" model="ir.ui.view">
+        <field name="name">res.users.form.inherit.hospital</field>
+        <field name="model">res.users</field>
+        <field name="inherit_id" ref="base.view_users_form"/>
+        <field name="arch" type="xml">
+            
+            
+            <xpath expr="//field[@name='name']" position="after">
+                <field name="is_doctor_group" string="Doctor"/>
+            </xpath>
+            
+        </field>
+    </record> -->
+</odoo>

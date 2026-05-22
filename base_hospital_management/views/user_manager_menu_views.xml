@@ -1,0 +1,161 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    
+
+    <!-- Main menu for User Manager -->
+    <menuitem id="menu_user_manager_root" 
+              name="User Management" 
+              sequence="10"
+              groups="base_hospital_management.base_hospital_management_group_user_manager"/>
+    
+
+    
+    <!-- Users Tree View -->
+    <record id="view_user_manager_users_tree" model="ir.ui.view">
+        <field name="name">user.manager.users.tree</field>
+        <field name="model">res.users</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="name"/>
+                <field name="login"/>
+                <field name="email"/>
+                <field name="company_id"/>
+                <field name="active"/>
+            </tree>
+        </field>
+    </record>
+    
+    <!-- Users Form View -->
+    <record id="view_user_manager_users_form" model="ir.ui.view">
+        <field name="name">user.manager.users.form</field>
+        <field name="model">res.users</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <field name="image_1920" widget="image" class="oe_avatar"/>
+                    <div class="oe_title">
+                        <h1>
+                            <field name="name" placeholder="Name..."/>
+                        </h1>
+                        <group>
+                            <field name="login" placeholder="Login Email/Username"/>
+                            <field name="new_password" widget="password" placeholder="Password"/>
+                        </group>
+                    </div>
+                    <group>
+                        <group>
+                            <field name="email"/>
+                            <field name="phone"/>
+                            <field name="company_id"/>
+                            <field name="company_ids" widget="many2many_tags"/>
+                        </group>
+                        <group>
+                            <field name="groups_id" widget="many2many_tags"/>
+                            <field name="active"/>
+                        </group>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+    
+    <!-- Users Action -->
+    <record id="action_user_manager_users" model="ir.actions.act_window">
+        <field name="name">Users</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">res.users</field>
+        <field name="view_mode">tree,form</field>
+        <field name="view_id" ref="view_user_manager_users_tree"/>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Create a new user
+            </p>
+        </field>
+    </record>
+    
+    <!-- Users Menu Item -->
+    <menuitem id="menu_user_manager_users" 
+              name="Users" 
+              parent="menu_user_manager_root"
+              action="action_user_manager_users"
+              sequence="10"
+              groups="base_hospital_management.base_hospital_management_group_user_manager"/>
+    
+    <!-- ================================================ -->
+    <!-- Companies Section -->
+    <!-- ================================================ -->
+    
+    <!-- Companies Tree View -->
+    <record id="view_user_manager_companies_tree" model="ir.ui.view">
+        <field name="name">user.manager.companies.tree</field>
+        <field name="model">res.company</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="name"/>
+                <field name="email"/>
+                <field name="phone"/>
+                <field name="city"/>
+                <field name="country_id"/>
+            </tree>
+        </field>
+    </record>
+    
+    <!-- Companies Form View -->
+    <record id="view_user_manager_companies_form" model="ir.ui.view">
+        <field name="name">user.manager.companies.form</field>
+        <field name="model">res.company</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <div class="oe_title">
+                        <h1>
+                            <field name="name" placeholder="Company Name..."/>
+                        </h1>
+                    </div>
+                    <group>
+                        <group>
+                            <field name="email"/>
+                            <field name="phone"/>
+                            <field name="website"/>
+                        </group>
+                        <group>
+                            <field name="vat"/>
+                            <field name="currency_id"/>
+                        </group>
+                    </group>
+                    <group string="Address">
+                        <field name="street"/>
+                        <field name="street2"/>
+                        <field name="city"/>
+                        <field name="state_id"/>
+                        <field name="country_id"/>
+                        <field name="zip"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+    
+    <!-- Companies Action -->
+    <record id="action_user_manager_companies" model="ir.actions.act_window">
+        <field name="name">Companies</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">res.company</field>
+        <field name="view_mode">tree,form</field>
+        <field name="view_id" ref="view_user_manager_companies_tree"/>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Create a new company
+            </p>
+        </field>
+    </record>
+    
+    <!-- Companies Menu Item -->
+    <menuitem id="menu_user_manager_companies" 
+              name="Companies" 
+              parent="menu_user_manager_root"
+              action="action_user_manager_companies"
+              sequence="20"
+              groups="base_hospital_management.base_hospital_management_group_user_manager"/>
+
+</odoo>

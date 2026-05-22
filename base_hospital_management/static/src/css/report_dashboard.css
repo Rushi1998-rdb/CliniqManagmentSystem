@@ -1,0 +1,299 @@
+.report-dashboard {
+    min-height: 100%;
+    padding: 24px;
+    background:
+        radial-gradient(circle at top right, rgba(124, 58, 237, 0.15), transparent 24%),
+        linear-gradient(180deg, #f8fafc 0%, #eef2ff 100%);
+}
+
+.report-dashboard__shell {
+    max-width: 1500px;
+    margin: 0 auto;
+    display: grid;
+    gap: 20px;
+}
+
+.report-dashboard__header,
+.report-dashboard__panel,
+.report-dashboard__card {
+    background: rgba(255, 255, 255, 0.92);
+    border: 1px solid rgba(148, 163, 184, 0.18);
+    box-shadow: 0 16px 40px rgba(15, 23, 42, 0.08);
+}
+
+.report-dashboard__header,
+.report-dashboard__panel {
+    border-radius: 24px;
+    padding: 22px 24px;
+}
+
+.report-dashboard__header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 16px;
+}
+
+.report-dashboard__header h1,
+.report-dashboard__panel h2 {
+    margin: 0;
+    color: #1e1b4b;
+    font-weight: 700;
+}
+
+.report-dashboard__header p,
+.report-dashboard__panel p,
+.report-dashboard__card-caption {
+    margin: 4px 0 0;
+    color: #64748b;
+}
+
+.report-dashboard__actions,
+.report-dashboard__filters {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+}
+
+.report-dashboard__cards {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 16px;
+}
+
+.report-dashboard__card {
+    border-radius: 22px;
+    padding: 20px;
+}
+
+.report-dashboard__card-head {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 12px;
+}
+
+.report-dashboard__card-title {
+    color: #7c3aed;
+    font-weight: 700;
+}
+
+.report-dashboard__card-arrow {
+    width: 34px;
+    height: 34px;
+    border: 0;
+    border-radius: 999px;
+    background: #ede9fe;
+    color: #7c3aed;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    transition: transform 0.15s ease, background 0.15s ease;
+}
+
+.report-dashboard__card-arrow:hover {
+    background: #ddd6fe;
+    transform: translateX(2px);
+}
+
+.report-dashboard__card-amount {
+    margin-top: 12px;
+    font-size: 2rem;
+    font-weight: 800;
+    color: #0f172a;
+}
+
+.report-dashboard__card-growth {
+    margin-top: 8px;
+    color: #16a34a;
+    font-weight: 700;
+}
+
+.report-dashboard__card-growth span {
+    color: #64748b;
+    font-weight: 500;
+}
+
+.report-dashboard__grid {
+    display: grid;
+    grid-template-columns: 1.25fr 1fr;
+    gap: 20px;
+}
+
+.report-dashboard__stack {
+    display: grid;
+    gap: 20px;
+}
+
+.report-dashboard__panel-head {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 16px;
+    margin-bottom: 16px;
+}
+
+.report-dashboard__panel-head--wrap {
+    flex-wrap: wrap;
+}
+
+.report-dashboard__panel-head .form-select {
+    max-width: 180px;
+}
+
+.report-dashboard__table {
+    margin-bottom: 0;
+}
+
+.report-dashboard__table thead th {
+    color: #475569;
+    font-weight: 700;
+    border-bottom: 0;
+    background: #f8fafc;
+}
+
+.report-dashboard__table tbody td {
+    vertical-align: middle;
+}
+
+.report-dashboard__total-row {
+    margin-top: 12px;
+    padding-top: 12px;
+    border-top: 1px solid #e2e8f0;
+    display: flex;
+    justify-content: space-between;
+    font-size: 1.05rem;
+}
+
+.report-dashboard__chart-wrap {
+    display: grid;
+    grid-template-columns: 220px 1fr;
+    gap: 20px;
+    align-items: center;
+}
+
+.report-dashboard__donut {
+    width: 220px;
+    height: 220px;
+    border-radius: 50%;
+    position: relative;
+    margin: 0 auto;
+}
+
+.report-dashboard__donut::after {
+    content: "";
+    position: absolute;
+    inset: 24px;
+    border-radius: 50%;
+    background: white;
+    box-shadow: inset 0 0 0 1px rgba(148, 163, 184, 0.15);
+}
+
+.report-dashboard__donut-center {
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+}
+
+.report-dashboard__donut-center span {
+    color: #64748b;
+    font-size: 0.95rem;
+}
+
+.report-dashboard__donut-center strong {
+    color: #0f172a;
+    font-size: 1.5rem;
+}
+
+.report-dashboard__legend {
+    display: grid;
+    gap: 12px;
+}
+
+.report-dashboard__legend-item,
+.report-dashboard__legend-left {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 10px;
+}
+
+.report-dashboard__dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    display: inline-block;
+}
+
+.report-dashboard__dot--teal { background: #14b8a6; }
+.report-dashboard__dot--blue { background: #3b82f6; }
+.report-dashboard__dot--violet { background: #a855f7; }
+.report-dashboard__dot--amber { background: #f59e0b; }
+.report-dashboard__dot--slate { background: #94a3b8; }
+
+.report-dashboard__stats {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 14px;
+}
+
+.report-dashboard__stat-box {
+    padding: 18px;
+    border-radius: 18px;
+    background: linear-gradient(180deg, #ffffff 0%, #f8fafc 100%);
+    border: 1px solid #e2e8f0;
+}
+
+.report-dashboard__stat-box span {
+    display: block;
+    color: #64748b;
+}
+
+.report-dashboard__stat-box strong {
+    display: block;
+    margin-top: 6px;
+    font-size: 1.8rem;
+    color: #0f172a;
+}
+
+.report-dashboard__transactions .table-responsive {
+    max-height: 420px;
+    overflow: auto;
+}
+
+@media (max-width: 1200px) {
+    .report-dashboard__cards,
+    .report-dashboard__grid,
+    .report-dashboard__chart-wrap {
+        grid-template-columns: 1fr;
+    }
+
+    .report-dashboard__donut {
+        width: 190px;
+        height: 190px;
+    }
+}
+
+@media (max-width: 768px) {
+    .report-dashboard {
+        padding: 16px;
+    }
+
+    .report-dashboard__header,
+    .report-dashboard__actions,
+    .report-dashboard__filters,
+    .report-dashboard__stats {
+        grid-template-columns: 1fr;
+    }
+
+    .report-dashboard__header,
+    .report-dashboard__actions,
+    .report-dashboard__filters {
+        display: grid;
+    }
+}

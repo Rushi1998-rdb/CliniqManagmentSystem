@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="report_invoice_document_inherit" inherit_id="account.report_invoice_document">
+        <xpath expr="//t[@t-call='web.external_layout']" position="inside">
+            <style>
+                @font-face {
+                    font-family: 'Noto Sans Tamil';
+                    src: url('/base_hospital_management/static/src/fonts/NotoSansTamil-Regular.ttf') format('truetype');
+                }
+
+                .o_company_1_layout,
+                .o_company_2_layout,
+                .o_company_3_layout,
+                .o_company_4_layout,
+                .o_company_5_layout,
+                .o_company_6_layout,
+                .o_company_7_layout,
+                .o_company_8_layout,
+                .article,
+                .page,
+                address,
+                span,
+                div,
+                p,
+                td,
+                th {
+                    font-family: 'Noto Sans Tamil', sans-serif !important;
+                }
+            </style>
+        </xpath>
+
+        <!-- Remove the Taxes column data from each line -->
+        <xpath expr="//td[@name='td_taxes']" position="replace"/>
+        
+        <!-- Remove the Taxes column header -->
+        <xpath expr="//th[@name='th_taxes']" position="replace"/>
+
+
+        <!-- Remove Quantity column -->
+        <xpath expr="//td[@name='td_quantity']" position="replace"/>
+        <xpath expr="//th[@name='th_quantity']" position="replace"/>
+
+    </template>
+</odoo>

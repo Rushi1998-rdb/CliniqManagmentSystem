@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    
+    <!-- Custom root menu for User Manager -->
+    <menuitem id="menu_usermanager_root" 
+              name="User Management" 
+              sequence="10"
+              web_icon="base,static/description/icon.png"
+              groups="base_hospital_management.base_hospital_management_group_user_manager"/>
+    
+    <!-- Users menu -->
+    <record id="action_res_users_usermanager" model="ir.actions.act_window">
+        <field name="name">Users</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">res.users</field>
+        <field name="view_mode">tree,form</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Create a new user
+            </p>
+        </field>
+    </record>
+    
+    <menuitem id="menu_usermanager_users" 
+              name="Users" 
+              parent="menu_usermanager_root"
+              action="action_res_users_usermanager"
+              sequence="10"
+              groups="base_hospital_management.base_hospital_management_group_user_manager"/>
+    
+    <!-- Companies menu -->
+    <record id="action_res_company_usermanager" model="ir.actions.act_window">
+        <field name="name">Companies</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">res.company</field>
+        <field name="view_mode">tree,form</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Create a new company
+            </p>
+        </field>
+    </record>
+    
+    <menuitem id="menu_usermanager_companies" 
+              name="Companies" 
+              parent="menu_usermanager_root"
+              action="action_res_company_usermanager"
+              sequence="20"
+              groups="base_hospital_management.base_hospital_management_group_user_manager"/>
+    
+    <!-- Simplified User Form View for User Manager -->
+    <record id="view_users_form_simple_usermanager" model="ir.ui.view">
+        <field name="name">res.users.form.simple.usermanager</field>
+        <field name="model">res.users</field>
+        <field name="priority">100</field>
+        <field name="groups_id" eval="[(4, ref('base_hospital_management.base_hospital_management_group_user_manager'))]"/>
+        <field name="arch" type="xml">
+            <form string="Users">
+                <sheet>
+                    <div class="oe_button_box" name="button_box" position="replace"/>
+                    <field name="image_1920" widget="image" class="oe_avatar"/>
+                    <div class="oe_title">
+                        <label for="name" string="User Name"/>
+                        <h1>
+                            <field name="name" placeholder="Name..."/>
+                        </h1>
+                        <group>
+                            <field name="login" placeholder="Login Email/Username"/>
+                            <field name="new_password" widget="password" placeholder="Password"/>
+                        </group>
+                    </div>
+                    <group>
+                        <group>
+                            <field name="email"/>
+                            <field name="phone"/>
+                            <field name="company_id" options="{'no_create': True}"/>
+                            <field name="company_ids" widget="many2many_tags" options="{'no_create': True}"/>
+                        </group>
+                        <group>
+                            <field name="groups_id" widget="many2many_tags" 
+                                   domain="[('category_id.name', '=', 'Hospital Management')]"/>
+                            <field name="active"/>
+                        </group>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+    
+    <!-- Simplified Company Form View for User Manager -->
+    <record id="view_company_form_simple_usermanager" model="ir.ui.view">
+        <field name="name">res.company.form.simple.usermanager</field>
+        <field name="model">res.company</field>
+        <field name="priority">100</field>
+        <field name="groups_id" eval="[(4, ref('base_hospital_management.base_hospital_management_group_user_manager'))]"/>
+        <field name="arch" type="xml">
+            <form string="Companies">
+                <sheet>
+                    <div class="oe_title">
+                        <h1>
+                            <field name="name" placeholder="Company Name..."/>
+                        </h1>
+                    </div>
+                    <group>
+                        <group>
+                            <field name="email"/>
+                            <field name="phone"/>
+                            <field name="website"/>
+                        </group>
+                        <group>
+                            <field name="vat"/>
+                            <field name="currency_id" options="{'no_create': True}"/>
+                        </group>
+                    </group>
+                    <group string="Address">
+                        <field name="street"/>
+                        <field name="street2"/>
+                        <field name="city"/>
+                        <field name="state_id" options="{'no_create': True}"/>
+                        <field name="country_id" options="{'no_create': True}"/>
+                        <field name="zip"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+</odoo>

@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="res_users_rule_company" model="ir.rule">
+        <field name="name">Users: Multi-Company</field>
+        <field name="model_id" ref="base.model_res_users"/>
+        <field name="domain_force">['|', '|', ('id', '=', user.id), ('share', '=', False), ('company_ids', 'in', company_ids)]</field>
+    </record>
+
+    <record id="sale_team_rule_company_strict" model="ir.rule">
+        <field name="name">Sales Teams: Company Only</field>
+        <field name="model_id" ref="sales_team.model_crm_team"/>
+        <field name="global" eval="True"/>
+        <field name="domain_force">[('company_id', 'in', company_ids)]</field>
+    </record>
+
+    <record id="crm_tag_rule_company" model="ir.rule">
+        <field name="name">CRM Tags: Company Only</field>
+        <field name="model_id" ref="sales_team.model_crm_tag"/>
+        <field name="global" eval="True"/>
+        <field name="domain_force">[('company_id', 'in', company_ids)]</field>
+    </record>
+
+    <record id="product_category_rule_company" model="ir.rule">
+        <field name="name">Product Categories: Company Only</field>
+        <field name="model_id" ref="product.model_product_category"/>
+        <field name="global" eval="True"/>
+        <field name="domain_force">['|', ('company_id', '=', False), ('company_id', 'in', company_ids)]</field>
+    </record>
+
+    <record id="mail_activity_plan_rule_company" model="ir.rule">
+        <field name="name">Activity Plans: Company Only</field>
+        <field name="model_id" ref="mail.model_mail_activity_plan"/>
+        <field name="global" eval="True"/>
+        <field name="domain_force">[('company_id', 'in', company_ids)]</field>
+    </record>
+
+    <record id="stock_quant_rule_respected_company" model="ir.rule">
+        <field name="name">Stock Quant: Respected Company Only</field>
+        <field name="model_id" ref="stock.model_stock_quant"/>
+        <field name="global" eval="True"/>
+        <field name="domain_force">[('company_id', 'in', company_ids)]</field>
+    </record>
+
+    <record id="stock_location_rule_respected_company" model="ir.rule">
+        <field name="name">Stock Location: Respected Company Only</field>
+        <field name="model_id" ref="stock.model_stock_location"/>
+        <field name="global" eval="True"/>
+        <field name="domain_force">['|', ('company_id', '=', False), ('company_id', 'in', company_ids)]</field>
+    </record>
+
+    <record id="stock_partner_rule_respected_company" model="ir.rule">
+        <field name="name">Inventory Partners: Respected Company Only</field>
+        <field name="model_id" ref="base.model_res_partner"/>
+        <field name="groups" eval="[(4, ref('stock.group_stock_user'))]"/>
+        <field name="domain_force">['|', '|', '|', '|', ('company_id', '=', False), ('id', '=', user.partner_id.id), ('id', '=', user.company_id.partner_id.id), ('company_id', 'in', company_ids), ('user_ids.company_ids', 'in', company_ids)]</field>
+    </record>
+
+    <record id="purchase_order_rule_respected_company" model="ir.rule">
+        <field name="name">Purchase Order: Respected Company Only</field>
+        <field name="model_id" ref="purchase.model_purchase_order"/>
+        <field name="groups" eval="[(4, ref('purchase.group_purchase_user'))]"/>
+        <field name="domain_force">[('company_id', 'in', company_ids)]</field>
+    </record>
+
+    <record id="purchase_order_line_rule_respected_company" model="ir.rule">
+        <field name="name">Purchase Order Line: Respected Company Only</field>
+        <field name="model_id" ref="purchase.model_purchase_order_line"/>
+        <field name="groups" eval="[(4, ref('purchase.group_purchase_user'))]"/>
+        <field name="domain_force">[('company_id', 'in', company_ids)]</field>
+    </record>
+
+    <record id="account_payment_term_company_strict_rule" model="ir.rule">
+        <field name="name">Payment Terms: Company Only</field>
+        <field name="model_id" ref="account.model_account_payment_term"/>
+        <field name="global" eval="True"/>
+        <field name="domain_force">[('company_id', 'in', company_ids)]</field>
+    </record>
+
+    <record id="account_tax_company_strict_rule" model="ir.rule">
+        <field name="name">Taxes: Company Only</field>
+        <field name="model_id" ref="account.model_account_tax"/>
+        <field name="global" eval="True"/>
+        <field name="domain_force">[('company_id', 'in', company_ids)]</field>
+    </record>
+
+    <record id="partner_bank_company_strict_rule" model="ir.rule">
+        <field name="name">Bank Accounts: Company Only</field>
+        <field name="model_id" ref="base.model_res_partner_bank"/>
+        <field name="global" eval="True"/>
+        <field name="domain_force">[('company_id', 'in', company_ids)]</field>
+    </record>
+
+    <record id="payment_provider_company_strict_rule" model="ir.rule">
+        <field name="name">Payment Providers: Company Only</field>
+        <field name="model_id" ref="payment.model_payment_provider"/>
+        <field name="global" eval="True"/>
+        <field name="domain_force">[('company_id', 'in', company_ids)]</field>
+    </record>
+
+    <record id="account_incoterms_company_rule" model="ir.rule">
+        <field name="name">Incoterms: Company Only</field>
+        <field name="model_id" ref="account.model_account_incoterms"/>
+        <field name="global" eval="True"/>
+        <field name="domain_force">[('company_id', 'in', company_ids)]</field>
+    </record>
+
+    <record id="res_currency_company_rule" model="ir.rule">
+        <field name="name">Currencies: Company Only</field>
+        <field name="model_id" ref="base.model_res_currency"/>
+        <field name="global" eval="True"/>
+        <field name="domain_force">['|', ('company_id', 'in', company_ids), ('id', 'in', user.company_ids.currency_id.ids)]</field>
+    </record>
+    <record id="barcode_nomenclature_rule_company" model="ir.rule">
+        <field name="name">Barcode Nomenclature: Company Only</field>
+        <field name="model_id" ref="barcodes.model_barcode_nomenclature"/>
+        <field name="global" eval="True"/>
+        <field name="domain_force">['|', ('company_id', '=', False), ('company_id', 'in', company_ids)]</field>
+    </record>
+</odoo>

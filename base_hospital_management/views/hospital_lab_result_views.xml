@@ -1,0 +1,48 @@
+<odoo>
+
+    <record id="hospital_lab_result_tree" model="ir.ui.view">
+        <field name="name">hospital.lab.result.tree</field>
+        <field name="model">hospital.lab.result</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="patient_id"/>
+                <field name="test_id"/>
+                <field name="ordered_date"/>
+                <field name="lab_test_charge"/>
+                <field name="status"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="hospital_lab_result_form" model="ir.ui.view">
+        <field name="name">hospital.lab.result.form</field>
+        <field name="model">hospital.lab.result</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <group>
+                        <field name="patient_id"/>
+                        <!-- <field name="outpatient_id"/> -->
+                        <field name="test_id"/>
+                        <field name="ordered_date"/>
+                        <field name="result_value"/>
+                        <field name="normal_range"/>
+                        <field name="lab_test_charge"/>
+                        <field name="status"/>
+                        <field name="picture"/>
+                        <field name="report_file" filename="report_filename"/>
+                        <field name="doctor_remarks"/>
+                        <field name="company_id" groups="base.group_multi_company" options="{'no_create': True}"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="hospital_lab_result_action" model="ir.actions.act_window">
+        <field name="name">Lab Results</field>
+        <field name="res_model">hospital.lab.result</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+</odoo>
