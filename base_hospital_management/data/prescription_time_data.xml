@@ -1,18 +1,33 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
     <record model="prescription.time" id="prescription_time_morning">
-        <field name="name">Morning</field>
-        <field name="code">morning</field>
-        <field name="description">Morning Intake</field>
+        <field name="name">Morning (Before Food)</field>
+        <field name="code">morning_before</field>
+        <field name="description">Morning Intake Before Food</field>
+    </record>
+    <record model="prescription.time" id="prescription_time_morning_after">
+        <field name="name">Morning (After Food)</field>
+        <field name="code">morning_after</field>
+        <field name="description">Morning Intake After Food</field>
     </record>
     <record model="prescription.time" id="prescription_time_afternoon">
-        <field name="name">Afternoon</field>
-        <field name="code">afternoon</field>
-        <field name="description">Afternoon Intake</field>
+        <field name="name">Afternoon (Before Food)</field>
+        <field name="code">afternoon_before</field>
+        <field name="description">Afternoon Intake Before Food</field>
+    </record>
+    <record model="prescription.time" id="prescription_time_afternoon_after">
+        <field name="name">Afternoon (After Food)</field>
+        <field name="code">afternoon_after</field>
+        <field name="description">Afternoon Intake After Food</field>
     </record>
     <record model="prescription.time" id="prescription_time_night">
-        <field name="name">Evening</field>
-        <field name="code">evening</field>
-        <field name="description">Evening Intake</field>
+        <field name="name">Evening (Before Food)</field>
+        <field name="code">evening_before</field>
+        <field name="description">Evening Intake Before Food</field>
+    </record>
+    <record model="prescription.time" id="prescription_time_evening_after">
+        <field name="name">Evening (After Food)</field>
+        <field name="code">evening_after</field>
+        <field name="description">Evening Intake After Food</field>
     </record>
 </odoo>

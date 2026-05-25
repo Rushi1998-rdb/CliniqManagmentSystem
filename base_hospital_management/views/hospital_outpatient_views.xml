@@ -245,7 +245,7 @@
                                     type="object"
                                     class="btn-primary"
                                     invisible="payment_mode == False or state != 'op' or invoice_id != False"
-                                    groups="base_hospital_management.base_hospital_management_group_manager,base_hospital_management.base_hospital_management_group_doctor"/>
+                                    groups="base_hospital_management.base_hospital_management_group_manager,base_hospital_management.base_hospital_management_group_doctor,base_hospital_management.base_hospital_management_group_receptionist"/>
                             <button name="action_view_invoice"
                                     string="View Invoice"
                                     type="object"

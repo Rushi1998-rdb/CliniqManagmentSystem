@@ -175,56 +175,99 @@ class PrescriptionTime(models.Model):
     @api.model
     def _standard_time_options(self):
         return [
-            ('morning', 'Morning'),
-            ('afternoon', 'Afternoon'),
-            ('evening', 'Evening'),
+            ('morning_before', 'Morning (Before Food)'),
+            ('morning_after', 'Morning (After Food)'),
+            ('afternoon_before', 'Afternoon (Before Food)'),
+            ('afternoon_after', 'Afternoon (After Food)'),
+            ('evening_before', 'Evening (Before Food)'),
+            ('evening_after', 'Evening (After Food)'),
         ]
 
     def init(self):
-        """Clean up deprecated options and link standard ones to XML IDs."""
+        """Keep standard intake options stable across module updates."""
         super().init()
         cr = self.env.cr
-        
-        # 1. Clean up truly deprecated intake options
-        unwanted_codes = [
-            'morning_before', 'morning_after', 
-            'afternoon_before', 'afternoon_after', 
-            'evening_before', 'evening_after', 
-            'custom'
-        ]
+
+        unwanted_codes = ['custom']
         cr.execute("SELECT id FROM prescription_time WHERE code IN %s", [tuple(unwanted_codes)])
         ids_to_delete = [r[0] for r in cr.fetchall()]
         if ids_to_delete:
             _logger.info(f"Cleaning up deprecated intake time IDs: {ids_to_delete}")
             cr.execute("DELETE FROM prescription_line_prescription_time_rel WHERE prescription_time_id IN %s", [tuple(ids_to_delete)])
             cr.execute("DELETE FROM prescription_time WHERE id IN %s", [tuple(ids_to_delete)])
-        
-        # Migrating 'night' to 'evening' if it exists to maintain user data
-        cr.execute("UPDATE prescription_time SET code = 'evening', name = 'Evening' WHERE code = 'night'")
-        
-        # 2. Link existing standard records to XML IDs to prevent UniqueViolation during XML load
-        for code in ['morning', 'afternoon', 'evening']:
+
+        xml_id_map = {
+            'morning_before': 'prescription_time_morning',
+            'morning_after': 'prescription_time_morning_after',
+            'afternoon_before': 'prescription_time_afternoon',
+            'afternoon_after': 'prescription_time_afternoon_after',
+            'evening_before': 'prescription_time_night',
+            'evening_after': 'prescription_time_evening_after',
+        }
+        legacy_code_map = {
+            'morning': 'morning_before',
+            'afternoon': 'afternoon_before',
+            'evening': 'evening_before',
+            'night': 'evening_before',
+        }
+
+        # Convert old broad options to the new before-food options so the
+        # existing XML IDs can update cleanly when data files are loaded.
+        for old_code, new_code in legacy_code_map.items():
+            cr.execute("SELECT id FROM prescription_time WHERE code = %s", [old_code])
+            old_res = cr.fetchone()
+            if not old_res:
+                continue
+
+            old_id = old_res[0]
+            cr.execute("SELECT id FROM prescription_time WHERE code = %s", [new_code])
+            new_res = cr.fetchone()
+            if new_res:
+                new_id = new_res[0]
+                cr.execute("""
+                    UPDATE prescription_line_prescription_time_rel
+                       SET prescription_time_id = %s
+                     WHERE prescription_time_id = %s
+                       AND NOT EXISTS (
+                           SELECT 1
+                             FROM prescription_line_prescription_time_rel existing
+                            WHERE existing.prescription_line_id = prescription_line_prescription_time_rel.prescription_line_id
+                              AND existing.prescription_time_id = %s
+                       )
+                """, [new_id, old_id, new_id])
+                cr.execute("DELETE FROM prescription_line_prescription_time_rel WHERE prescription_time_id = %s", [old_id])
+                cr.execute("DELETE FROM ir_model_data WHERE model = 'prescription.time' AND res_id = %s", [old_id])
+                cr.execute("DELETE FROM prescription_time WHERE id = %s", [old_id])
+            else:
+                display_name = dict(self._standard_time_options())[new_code]
+                cr.execute(
+                    "UPDATE prescription_time SET code = %s, name = %s WHERE id = %s",
+                    [new_code, display_name, old_id]
+                )
+
+        # Link standard records to XML IDs to prevent unique-code conflicts
+        # when updating databases that already have these rows.
+        for code, xml_id in xml_id_map.items():
             cr.execute("SELECT id FROM prescription_time WHERE code = %s", [code])
             res = cr.fetchone()
-            if res:
-                rec_id = res[0]
-                # Map standard codes to their corresponding XML IDs in base_hospital_management
-                # Note: 'evening' maps to 'prescription_time_night' because we reused that record ID
-                xml_id_map = {
-                    'morning': 'prescription_time_morning',
-                    'afternoon': 'prescription_time_afternoon',
-                    'evening': 'prescription_time_night'
-                }
-                xml_id = xml_id_map[code]
-                
-                # Check if it's already linked
-                cr.execute("SELECT id FROM ir_model_data WHERE model = 'prescription.time' AND res_id = %s", [rec_id])
-                if not cr.fetchone():
-                    # Link it
-                    cr.execute("""
-                        INSERT INTO ir_model_data (name, module, model, res_id, noupdate)
-                        VALUES (%s, 'base_hospital_management', 'prescription.time', %s, true)
-                    """, [xml_id, rec_id])
+            if not res:
+                continue
+
+            rec_id = res[0]
+            cr.execute("""
+                SELECT id
+                  FROM ir_model_data
+                 WHERE module = 'base_hospital_management'
+                   AND name = %s
+            """, [xml_id])
+            xml_res = cr.fetchone()
+            if xml_res:
+                cr.execute("UPDATE ir_model_data SET model = 'prescription.time', res_id = %s WHERE id = %s", [rec_id, xml_res[0]])
+            else:
+                cr.execute("""
+                    INSERT INTO ir_model_data (name, module, model, res_id, noupdate)
+                    VALUES (%s, 'base_hospital_management', 'prescription.time', %s, true)
+                """, [xml_id, rec_id])
         cr.commit()
 
     _sql_constraints = [
