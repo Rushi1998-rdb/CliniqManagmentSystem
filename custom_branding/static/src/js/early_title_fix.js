@@ -1,6 +1,6 @@
 /** @odoo-module **/
 
-const BRAND = "Dreamwarez";
+const BRAND = "DNG Software Solutions";
 
 // 1. Set immediately
 document.title = BRAND;
